@@ -8,5 +8,5 @@ This game has WAY more content like:
 * Crafting
 * Enemy
 * Weapons to kill said Enemy
+* Day/Night Cycle
 * & More!
-
