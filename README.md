@@ -3,6 +3,7 @@ Night collector is the full game of [Cherry Picking Simulator](https://kufferey.
 
 # Difference?
 This game has WAY more content like:
+* 3D World
 * More items
 * Inventory
 * Crafting
