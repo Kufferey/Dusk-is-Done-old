@@ -4,7 +4,7 @@ Night collector is the full game of [Cherry Picking Simulator](https://kufferey.
 # Difference?
 So, The core game:
 * Polish
-* Smoother Gameplay
+* Smoother Gameplay (Kinda)
 * Player Choices
 
 This game's more content:
