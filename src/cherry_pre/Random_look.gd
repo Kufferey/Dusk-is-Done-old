@@ -8,7 +8,7 @@ func _ready() -> void:
 	var Random_look = randi_range(0,1)
 	_cherry_look(Random_look)
 	
-func _cherry_look(_look:int=0):
+static func _cherry_look(_look:int=0):
 	match _look:
 		0:
 			$cherry1.show()

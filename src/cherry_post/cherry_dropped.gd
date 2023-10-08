@@ -32,6 +32,6 @@ func _process(delta: float) -> void:
 	SPEED_ANGLE += 0.003
 	SPEED += curSpeedacc
 	position.y += SPEED * delta
-
-func _on_timer_timeout() -> void:
+	
+	await (get_tree().create_timer(1, false, false, false).timeout)
 	queue_free()
