@@ -1,0 +1,40 @@
+[gd_scene load_steps=5 format=3 uid="uid://ct7ktqf18c3sk"]
+
+[ext_resource type="Texture2D" uid="uid://c6v6mm2youemj" path="res://assets/images/mouse/Mouse_normal.png" id="1_08g7f"]
+[ext_resource type="Script" path="res://src/Mouse/Mouse.gd" id="1_n6n1r"]
+[ext_resource type="Texture2D" uid="uid://brg3j7vp2167o" path="res://assets/images/mouse/Mouse_open.png" id="2_v8l7u"]
+[ext_resource type="Texture2D" uid="uid://bsobj3dnnaqo" path="res://assets/images/mouse/Mouse_grab.png" id="3_p8cx4"]
+
+[node name="Mouse" type="CanvasLayer"]
+
+[node name="Mouse" type="Node2D" parent="."]
+position = Vector2(-55, -53)
+script = ExtResource("1_n6n1r")
+
+[node name="Mouse_textures" type="Node2D" parent="Mouse"]
+position = Vector2(55, 53)
+metadata/_edit_lock_ = true
+
+[node name="Normal" type="Sprite2D" parent="Mouse/Mouse_textures"]
+visible = false
+texture_filter = 1
+texture = ExtResource("1_08g7f")
+metadata/_edit_lock_ = true
+
+[node name="Open" type="Sprite2D" parent="Mouse/Mouse_textures"]
+visible = false
+texture_filter = 1
+position = Vector2(67, 93)
+scale = Vector2(2.53333, 2.53333)
+texture = ExtResource("2_v8l7u")
+metadata/_edit_lock_ = true
+
+[node name="Grab" type="Sprite2D" parent="Mouse/Mouse_textures"]
+visible = false
+texture_filter = 1
+position = Vector2(145, 172)
+scale = Vector2(3.33333, 3.33333)
+texture = ExtResource("3_p8cx4")
+metadata/_edit_lock_ = true
+
+[connection signal="_change_mouse_sig" from="Mouse" to="Mouse" method="_on__change_mouse_sig"]

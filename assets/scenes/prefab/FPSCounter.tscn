@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://kh2n031iiids"]
+
+[ext_resource type="Script" path="res://src/fpsopin/FPSCounter.gd" id="1_jgjul"]
+
+[node name="FPSCounter" type="CanvasLayer"]
+script = ExtResource("1_jgjul")
+
+[node name="Label" type="Label" parent="."]
+offset_top = 128.0
+offset_right = 40.0
+offset_bottom = 151.0
