@@ -6,6 +6,7 @@ So, The core game:
 * Polish
 * Smoother Gameplay (Kinda)
 * Player Choices
+* Remade Music
 
 This game's more content:
 * 3D World
