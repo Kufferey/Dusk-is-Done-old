@@ -83,4 +83,4 @@ func _on_exit_pressed() -> void:
 	if (!isInShop):
 		Data.isPaused = false
 		emit_signal("Remove_self")
-		get_tree().change_scene_to_file("res://scenes/mainmenu.tscn")
+		get_tree().change_scene_to_file("res://scenes/mainmenu/mainmenu.tscn")
