@@ -19,6 +19,7 @@ This game's more content:
 * & More!
 
 Planned Content:
-* Core CPS (75%)
+* Core Gamemode (75%)
 * Inventory (0%)
 * Crafting (0%)
+* Modding
