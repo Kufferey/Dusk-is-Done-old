@@ -25,7 +25,11 @@ Planned Content:
 * Modding (0%)
 
 # Debugging Options
-in the game's folder. create a file called `launch.txt`. Codes below
+in the game's folder. create a file called `launch.txt`. In the file C&P this:
+``
+%GAMEPLAY_CHANGER% 411
+``
+
 * `411` - Adds all items
 * `477182` - Makes you have infinite health, Hunger, Score
 * `69420` - :)
