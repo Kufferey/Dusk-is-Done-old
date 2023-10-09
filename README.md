@@ -23,3 +23,9 @@ Planned Content:
 * Inventory (0%)
 * Crafting (0%)
 * Modding (0%)
+
+# Debugging Options
+in the game's folder. create a file called `launch.txt`. Codes below
+* `411` - Adds all items
+* `477182` - Makes you have infinite health, Hunger, Score
+* `69420` - :)
