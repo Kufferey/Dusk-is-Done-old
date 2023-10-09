@@ -15,6 +15,7 @@ var curCherryModel:int = 1
 var Player:Dictionary = {
 	"Score": 0,
 	"Cherrys": 0,
+	"cherrysMulti": 1,
 	"Upgrades": {
 		"ScoreMulti": 0,
 		"HungerMulti": 0,

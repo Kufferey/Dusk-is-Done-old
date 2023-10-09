@@ -20,9 +20,9 @@ func _drop_cherry() -> void:
 	if (Data.isPaused == false):
 		var dropped_cherry_instance = Dropped_cherry.instantiate()
 		dropped_cherry_instance.position = get_global_mouse_position()
-		Data.cur_Times += 1
-		Data.cur_multi += .99
-		Data.score += 7
+		Data.Player["Score"] += 7
+		Data.Player["Cherrys"] += 1
+		Data.Player["cherrysMulti"] += .50
 		add_child(dropped_cherry_instance)
 
 static func _reload_cherry() -> void:
@@ -40,7 +40,7 @@ static func _reload_cherry() -> void:
 				
 			$Cherry_init.emit_signal(
 				"_cherry_pick_location_sig",
-				Data.cur_Times / Data.cur_multi)
+				(randi_range(1,5)))
 
 func _cherry_timer_main() -> void:
 	if (Data.isPaused == false):
