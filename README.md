@@ -23,7 +23,6 @@ Planned Content:
 * Core Gamemode (75%)
 * Inventory (0%)
 * Crafting (0%)
-* Modding (0%)
 
 # Debugging Options
 in the game's folder. create a file called `launch.txt`. In the file C&P this:
