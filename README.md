@@ -7,6 +7,7 @@ So, The core game:
 * Smoother Gameplay (Kinda)
 * Player Choices
 * Remade Music
+* Refactored Source Code
 
 This game's more content:
 * 3D World
