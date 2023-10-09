@@ -17,3 +17,8 @@ This game's more content:
 * Weapons to kill said Enemy
 * Day/Night Cycle
 * & More!
+
+Planned Content:
+* Core CPS (75%)
+* Inventory (0%)
+* Crafting (0%)
