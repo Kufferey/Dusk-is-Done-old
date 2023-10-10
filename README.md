@@ -34,6 +34,6 @@ Then after you typed `%GAMEPLAY_CHANGER%`. Type put a space. then the code. Code
 
 Here is how mine looks like: `%GAMEPLAY_CHANGER% 411`
 
-> **WARNING**
+> **DANGER**
 > 
 > This does not work with Godot 4.X, since it relies on GDNative, a Godot 3.X only technology.
