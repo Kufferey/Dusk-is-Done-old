@@ -33,6 +33,7 @@ Then after you typed `%GAMEPLAY_CHANGER%`. Type put a space. then the code. Code
 * `69420` - :)
 
 Here is how mine looks like: `%GAMEPLAY_CHANGER% 411`
+
 > **DONT!**
-> Compile
-> Relocate
+>
+> RELOCATE MASTER
