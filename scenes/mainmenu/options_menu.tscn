@@ -1,0 +1,63 @@
+[gd_scene load_steps=5 format=3 uid="uid://dta8xoyo254xg"]
+
+[ext_resource type="Script" path="res://src/options_menu.gd" id="1_bnl8o"]
+
+[sub_resource type="Theme" id="Theme_coprj"]
+default_font_size = 25
+
+[sub_resource type="Theme" id="Theme_frp21"]
+default_font_size = 25
+
+[sub_resource type="Theme" id="Theme_vn2l2"]
+default_font_size = 25
+
+[node name="OptionsMenu" type="Node2D"]
+script = ExtResource("1_bnl8o")
+
+[node name="Background" type="Panel" parent="."]
+modulate = Color(0, 0, 0, 1)
+self_modulate = Color(0, 0, 0, 0.588235)
+offset_left = -8.0
+offset_top = -8.0
+offset_right = 1160.0
+offset_bottom = 656.0
+
+[node name="Buttons" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="FS" type="CheckButton" parent="Buttons"]
+texture_filter = 1
+layout_mode = 0
+offset_top = 64.0
+offset_right = 256.0
+offset_bottom = 128.0
+mouse_default_cursor_shape = 2
+theme = SubResource("Theme_coprj")
+text = "FULLSCREEN"
+
+[node name="ShowCustomMouse" type="CheckButton" parent="Buttons"]
+layout_mode = 0
+offset_top = 128.0
+offset_right = 256.0
+offset_bottom = 192.0
+mouse_default_cursor_shape = 2
+theme = SubResource("Theme_frp21")
+button_pressed = true
+text = "CUSTOM MOUSE"
+
+[node name="Apply" type="Button" parent="Buttons"]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 560.0
+offset_right = 152.0
+offset_bottom = 624.0
+mouse_default_cursor_shape = 2
+theme = SubResource("Theme_vn2l2")
+text = "APPLY"
+
+[connection signal="toggled" from="Buttons/FS" to="." method="_on_fs_toggled"]
+[connection signal="toggled" from="Buttons/ShowCustomMouse" to="." method="_on_show_custom_mouse_toggled"]
+[connection signal="pressed" from="Buttons/Apply" to="." method="_on_apply_pressed"]

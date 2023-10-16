@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=3 uid="uid://chpftxn6kh45j"]
+
+[ext_resource type="Script" path="res://src/cherry_pre/Random_look.gd" id="1_5mwpy"]
+[ext_resource type="Texture2D" uid="uid://bs2j8w4ydimn" path="res://assets/images/pickups/Cherry_1.png" id="2_vlr3p"]
+[ext_resource type="Texture2D" uid="uid://bd0vbxmfsbbnh" path="res://assets/images/pickups/Cherry_2.png" id="3_chalr"]
+
+[node name="Cherry_onB" type="Node2D"]
+script = ExtResource("1_5mwpy")
+
+[node name="cherry1" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("2_vlr3p")
+
+[node name="cherry2" type="Sprite2D" parent="."]
+visible = false
+texture_filter = 1
+texture = ExtResource("3_chalr")
+
+[node name="Button" type="Button" parent="."]
+modulate = Color(1, 1, 1, 0)
+offset_left = -35.0
+offset_top = -70.0
+offset_right = 61.0
+offset_bottom = 58.0
+mouse_default_cursor_shape = 2
+
+[connection signal="Choose_cherry_look" from="." to="." method="_on_choose_cherry_look"]
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

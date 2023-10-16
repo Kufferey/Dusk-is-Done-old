@@ -1,0 +1,131 @@
+[gd_scene load_steps=9 format=3 uid="uid://yet3iimqdga6"]
+
+[ext_resource type="Script" path="res://src/mainmenu.gd" id="1_qtmel"]
+[ext_resource type="Texture2D" uid="uid://ct2ij5axkd7fy" path="res://assets/images/Logo.png" id="6_11sfr"]
+[ext_resource type="AudioStream" uid="uid://dxceeas5f2j2i" path="res://assets/music/Main_menu.ogg" id="7_b7u7o"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_it51v"]
+bg_color = Color(0.686275, 0.686275, 0.686275, 1)
+corner_radius_top_right = 25
+corner_detail = 15
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0571f"]
+bg_color = Color(0.196078, 0.196078, 0.196078, 1)
+corner_radius_top_right = 25
+corner_detail = 15
+shadow_size = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oetjq"]
+bg_color = Color(0.313726, 0.313726, 0.313726, 1)
+corner_radius_top_right = 25
+corner_detail = 15
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7n7ws"]
+bg_color = Color(0.0980392, 0.0980392, 0.0980392, 1)
+corner_radius_top_right = 25
+corner_detail = 15
+
+[sub_resource type="Theme" id="Theme_q3iup"]
+default_font_size = 25
+Button/styles/focus = SubResource("StyleBoxFlat_it51v")
+Button/styles/hover = SubResource("StyleBoxFlat_0571f")
+Button/styles/normal = SubResource("StyleBoxFlat_oetjq")
+Button/styles/pressed = SubResource("StyleBoxFlat_7n7ws")
+
+[node name="mainmenu" type="Node2D"]
+script = ExtResource("1_qtmel")
+
+[node name="Buttons" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Play" type="Button" parent="Buttons"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 192.0
+offset_right = 216.0
+offset_bottom = 216.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_default_cursor_shape = 2
+theme = SubResource("Theme_q3iup")
+text = "PLAY
+"
+
+[node name="Continue" type="Button" parent="Buttons"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 320.0
+offset_top = 288.0
+offset_right = 536.0
+offset_bottom = 312.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_default_cursor_shape = 2
+theme = SubResource("Theme_q3iup")
+text = "CONTINUE"
+
+[node name="NewGame" type="Button" parent="Buttons"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 320.0
+offset_top = 192.0
+offset_right = 536.0
+offset_bottom = 216.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_default_cursor_shape = 2
+theme = SubResource("Theme_q3iup")
+text = "NEW GAME"
+
+[node name="Options" type="Button" parent="Buttons"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 320.0
+offset_right = 216.0
+offset_bottom = 344.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_default_cursor_shape = 2
+theme = SubResource("Theme_q3iup")
+text = "OPTIONS"
+
+[node name="Exit" type="Button" parent="Buttons"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 448.0
+offset_right = 216.0
+offset_bottom = 472.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_default_cursor_shape = 2
+theme = SubResource("Theme_q3iup")
+text = "QUIT"
+
+[node name="Logo" type="Sprite2D" parent="."]
+position = Vector2(904, 152)
+texture = ExtResource("6_11sfr")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_b7u7o")
+volume_db = -5.0
+autoplay = true
+
+[connection signal="pressed" from="Buttons/Play" to="." method="_on_play_pressed"]
+[connection signal="pressed" from="Buttons/Options" to="." method="_on_options_pressed"]
+[connection signal="pressed" from="Buttons/Exit" to="." method="_on_exit_pressed"]
+[connection signal="finished" from="AudioStreamPlayer" to="." method="_on_audio_stream_player_finished"]

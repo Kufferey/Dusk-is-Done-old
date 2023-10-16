@@ -1,0 +1,180 @@
+[gd_scene load_steps=15 format=3 uid="uid://bdp18h45rfme8"]
+
+[ext_resource type="Script" path="res://src/pause_menu.gd" id="1_hdv0r"]
+[ext_resource type="Theme" uid="uid://wpua2j4icbk3" path="res://assets/Themes/pause_menu_theme.tres" id="1_npa0q"]
+[ext_resource type="Script" path="res://src/pause_menu/pause_menu_tree.gd" id="1_q71ko"]
+[ext_resource type="Script" path="res://src/pause_menu/Shop_home.gd" id="3_l7kv5"]
+[ext_resource type="Texture2D" uid="uid://bd0vbxmfsbbnh" path="res://assets/images/pickups/Cherry_2.png" id="3_s7ac6"]
+[ext_resource type="Texture2D" uid="uid://ct0ndbwgc21bi" path="res://assets/images/misc/BOX.png" id="3_ykg82"]
+[ext_resource type="Script" path="res://src/pause_menu/icons/2xupgrades.gd" id="5_8bnln"]
+[ext_resource type="Theme" uid="uid://dxdbakvl0431u" path="res://assets/Themes/Shop_label_theme.tres" id="5_eutq0"]
+[ext_resource type="Theme" uid="uid://ck4v68llxy7th" path="res://assets/Themes/Shop_label_square_theme.tres" id="6_pelta"]
+[ext_resource type="Script" path="res://src/pause_menu/icons/hungerupgrades.gd" id="8_m4auv"]
+[ext_resource type="Script" path="res://src/pause_menu/icons/roughnessupgrades.gd" id="9_wv1lv"]
+[ext_resource type="Texture2D" uid="uid://ct2ij5axkd7fy" path="res://assets/images/Logo.png" id="12_j7siu"]
+
+[sub_resource type="VisualShader" id="VisualShader_wajet"]
+code = "shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_lambert, specular_schlick_ggx;
+
+
+
+"
+graph_offset = Vector2(-402.444, 4.41516)
+nodes/fragment/0/position = Vector2(180, 80)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hdy3y"]
+render_priority = 0
+shader = SubResource("VisualShader_wajet")
+
+[node name="MainMenu" type="Node2D"]
+script = ExtResource("1_q71ko")
+
+[node name="PauseMenu_stuff" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_hdv0r")
+
+[node name="Panel" type="Panel" parent="PauseMenu_stuff"]
+layout_mode = 0
+offset_left = -8.0
+offset_top = -8.0
+offset_right = 1160.0
+offset_bottom = 656.0
+
+[node name="Logo" type="Sprite2D" parent="PauseMenu_stuff"]
+position = Vector2(936, 136)
+scale = Vector2(0.825421, 0.825421)
+texture = ExtResource("12_j7siu")
+
+[node name="Resume" type="Button" parent="PauseMenu_stuff"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.296
+anchor_right = 0.222
+anchor_bottom = 0.395
+offset_top = 192.0
+offset_right = 256.0
+offset_bottom = 259.0
+mouse_default_cursor_shape = 2
+theme = ExtResource("1_npa0q")
+text = "RESUME"
+alignment = 0
+
+[node name="Shop" type="Button" parent="PauseMenu_stuff"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.494
+anchor_right = 0.222
+anchor_bottom = 0.593
+offset_top = 320.0
+offset_right = 256.0
+offset_bottom = 384.0
+mouse_default_cursor_shape = 2
+theme = ExtResource("1_npa0q")
+text = "SHOP"
+alignment = 0
+
+[node name="Exit" type="Button" parent="PauseMenu_stuff"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.691
+anchor_right = 0.222
+anchor_bottom = 0.79
+offset_top = 448.0
+offset_right = 256.0
+offset_bottom = 512.0
+mouse_default_cursor_shape = 2
+theme = ExtResource("1_npa0q")
+text = "EXIT TO MENU"
+alignment = 0
+
+[node name="Shop_home" type="Node2D" parent="PauseMenu_stuff"]
+visible = false
+script = ExtResource("3_l7kv5")
+
+[node name="Background2" type="Sprite2D" parent="PauseMenu_stuff/Shop_home"]
+modulate = Color(1, 1, 1, 0.784314)
+position = Vector2(575, 323)
+scale = Vector2(2.308, 1.3)
+texture = ExtResource("3_ykg82")
+metadata/_edit_lock_ = true
+
+[node name="Icons" type="Node2D" parent="PauseMenu_stuff/Shop_home"]
+
+[node name="2xupgrades" type="Node2D" parent="PauseMenu_stuff/Shop_home/Icons"]
+position = Vector2(560, 320)
+scale = Vector2(2.04946, 2.04946)
+script = ExtResource("5_8bnln")
+
+[node name="Sprite2D" type="Sprite2D" parent="PauseMenu_stuff/Shop_home/Icons/2xupgrades"]
+texture_filter = 1
+texture = ExtResource("3_s7ac6")
+
+[node name="Label" type="Label" parent="PauseMenu_stuff/Shop_home/Icons/2xupgrades"]
+material = SubResource("ShaderMaterial_hdy3y")
+offset_left = -72.0
+offset_top = 32.0
+offset_right = 90.0
+offset_bottom = 80.0
+theme = ExtResource("5_eutq0")
+text = "x2 Upgrades"
+
+[node name="hungerupgrades" type="Node2D" parent="PauseMenu_stuff/Shop_home/Icons"]
+position = Vector2(-320, 336)
+scale = Vector2(2.04946, 2.04946)
+script = ExtResource("8_m4auv")
+
+[node name="Sprite2D" type="Sprite2D" parent="PauseMenu_stuff/Shop_home/Icons/hungerupgrades"]
+texture_filter = 1
+texture = ExtResource("3_s7ac6")
+
+[node name="Label" type="Label" parent="PauseMenu_stuff/Shop_home/Icons/hungerupgrades"]
+material = SubResource("ShaderMaterial_hdy3y")
+offset_left = -101.49
+offset_top = 35.1312
+offset_right = 122.51
+offset_bottom = 83.1312
+theme = ExtResource("5_eutq0")
+text = "Hunger Upgrades"
+horizontal_alignment = 1
+
+[node name="roughnessupgrades" type="Node2D" parent="PauseMenu_stuff/Shop_home/Icons"]
+position = Vector2(-1144, 336)
+scale = Vector2(2.04946, 2.04946)
+script = ExtResource("9_wv1lv")
+
+[node name="Sprite2D" type="Sprite2D" parent="PauseMenu_stuff/Shop_home/Icons/roughnessupgrades"]
+texture_filter = 1
+texture = ExtResource("3_s7ac6")
+
+[node name="Label" type="Label" parent="PauseMenu_stuff/Shop_home/Icons/roughnessupgrades"]
+material = SubResource("ShaderMaterial_hdy3y")
+offset_left = -117.104
+offset_top = 35.1312
+offset_right = 147.896
+offset_bottom = 83.1312
+theme = ExtResource("5_eutq0")
+text = "Roughness Upgrades"
+horizontal_alignment = 1
+
+[node name="instru" type="Sprite2D" parent="PauseMenu_stuff/Shop_home"]
+
+[node name="desc" type="Label" parent="PauseMenu_stuff/Shop_home"]
+offset_top = 600.0
+offset_right = 936.0
+offset_bottom = 648.0
+theme = ExtResource("6_pelta")
+text = "Use [ARROW KEYS | <- and -> |] and [ESC] to exit. To switch and use different upgrade stations."
+
+[connection signal="Remove_self" from="PauseMenu_stuff" to="." method="_on_pause_menu_stuff_remove_self"]
+[connection signal="pressed" from="PauseMenu_stuff/Resume" to="PauseMenu_stuff" method="_on_resume_pressed"]
+[connection signal="pressed" from="PauseMenu_stuff/Shop" to="PauseMenu_stuff" method="_on_shop_pressed"]
+[connection signal="pressed" from="PauseMenu_stuff/Exit" to="PauseMenu_stuff" method="_on_exit_pressed"]
+[connection signal="move_icon_2xupgrades" from="PauseMenu_stuff/Shop_home/Icons/2xupgrades" to="PauseMenu_stuff/Shop_home/Icons/2xupgrades" method="_on_move_icon_2_xupgrades"]
+[connection signal="move_icon_hungerupgrades" from="PauseMenu_stuff/Shop_home/Icons/hungerupgrades" to="PauseMenu_stuff/Shop_home/Icons/hungerupgrades" method="_on_move_icon_hungerupgrades"]
+[connection signal="move_icon_roughupgrades" from="PauseMenu_stuff/Shop_home/Icons/roughnessupgrades" to="PauseMenu_stuff/Shop_home/Icons/roughnessupgrades" method="_on_move_icon_roughupgrades"]

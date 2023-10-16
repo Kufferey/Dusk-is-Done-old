@@ -1,0 +1,99 @@
+[gd_scene load_steps=12 format=3 uid="uid://cob0s6rvvkkup"]
+
+[ext_resource type="Script" path="res://src/main.gd" id="1_3hc7g"]
+[ext_resource type="Texture2D" uid="uid://df7l1k8ogbhui" path="res://assets/images/Land.png" id="1_5rq4r"]
+[ext_resource type="Texture2D" uid="uid://cfcbbt28qecf6" path="res://assets/images/bush.png" id="3_boyfi"]
+[ext_resource type="Texture2D" uid="uid://bd0vbxmfsbbnh" path="res://assets/images/pickups/Cherry_2.png" id="4_6tyxv"]
+[ext_resource type="Script" path="res://src/Cherry_init.gd" id="4_bpxda"]
+[ext_resource type="AudioStream" uid="uid://xd06lyexyokq" path="res://assets/sound/Cherry_snap.ogg" id="6_ik8ns"]
+[ext_resource type="Script" path="res://src/Cherry_hold.gd" id="6_y7nys"]
+[ext_resource type="PackedScene" uid="uid://f4s735vi1in1" path="res://assets/scenes/prefab/UI.tscn" id="7_kb7u1"]
+[ext_resource type="Texture2D" uid="uid://bs2j8w4ydimn" path="res://assets/images/pickups/Cherry_1.png" id="7_nhcsy"]
+[ext_resource type="AudioStream" uid="uid://bc6apk21c46t8" path="res://assets/music/Gameplay_music.ogg" id="10_724wg"]
+
+[sub_resource type="Theme" id="Theme_ccyom"]
+
+[node name="main" type="Node2D"]
+script = ExtResource("1_3hc7g")
+
+[node name="BG" type="Sprite2D" parent="."]
+position = Vector2(568, 320)
+scale = Vector2(2.83102, 1.50615)
+texture = ExtResource("1_5rq4r")
+
+[node name="bush" type="Sprite2D" parent="."]
+modulate = Color(0.282353, 0.282353, 0.282353, 1)
+position = Vector2(208, 416)
+texture = ExtResource("3_boyfi")
+
+[node name="bush2" type="Sprite2D" parent="."]
+modulate = Color(0.282353, 0.282353, 0.282353, 1)
+position = Vector2(928, 224)
+rotation = 3.14159
+texture = ExtResource("3_boyfi")
+
+[node name="Cherry_container" type="Node2D" parent="."]
+
+[node name="Cherry_init" type="Node2D" parent="."]
+script = ExtResource("4_bpxda")
+
+[node name="point1" type="Marker2D" parent="Cherry_init"]
+position = Vector2(64, 312)
+
+[node name="point2" type="Marker2D" parent="Cherry_init"]
+position = Vector2(128, 576)
+
+[node name="point3" type="Marker2D" parent="Cherry_init"]
+position = Vector2(240, 520)
+
+[node name="point4" type="Marker2D" parent="Cherry_init"]
+position = Vector2(40, 600)
+
+[node name="point5" type="Marker2D" parent="Cherry_init"]
+position = Vector2(128, 432)
+
+[node name="point6" type="Marker2D" parent="Cherry_init"]
+position = Vector2(904, 112)
+
+[node name="point7" type="Marker2D" parent="Cherry_init"]
+position = Vector2(1016, 192)
+
+[node name="point8" type="Marker2D" parent="Cherry_init"]
+position = Vector2(1064, 80)
+
+[node name="point9" type="Marker2D" parent="Cherry_init"]
+position = Vector2(1080, 320)
+
+[node name="Cherrys" type="Node2D" parent="Cherry_init"]
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Cherry_init"]
+stream = ExtResource("6_ik8ns")
+pitch_scale = 2.0
+
+[node name="Cherry_hold" type="Node2D" parent="."]
+script = ExtResource("6_y7nys")
+
+[node name="Cherry1" type="Sprite2D" parent="Cherry_hold"]
+visible = false
+texture_filter = 1
+texture = ExtResource("7_nhcsy")
+
+[node name="Cherry2" type="Sprite2D" parent="Cherry_hold"]
+visible = false
+texture = ExtResource("4_6tyxv")
+
+[node name="UI" parent="." instance=ExtResource("7_kb7u1")]
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("10_724wg")
+volume_db = -15.0
+autoplay = true
+
+[node name="Label" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 23.0
+theme = SubResource("Theme_ccyom")
+
+[connection signal="_cherry_pick_location_sig" from="Cherry_init" to="Cherry_init" method="_on__cherry_pick_location_sig"]
+[connection signal="look_for_cherry_model" from="Cherry_hold" to="Cherry_hold" method="_on_look_for_cherry_model"]
+[connection signal="finished" from="AudioStreamPlayer" to="." method="_on_audio_stream_player_finished"]
