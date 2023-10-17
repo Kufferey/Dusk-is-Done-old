@@ -4,8 +4,16 @@ signal _change_mouse_sig(_new:int)
 
 var mouse_mode = 0
 
+var mouse1
+var mouse2
+var mouse3
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	mouse1 = $Mouse_textures/Normal
+	mouse2 = $Mouse_textures/Open
+	mouse3 = $Mouse_textures/Grab
+	
 	if (Data.Settings["customMouse"] == true):
 		Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
 

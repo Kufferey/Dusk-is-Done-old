@@ -1,15 +1,27 @@
-[gd_scene load_steps=5 format=3 uid="uid://dta8xoyo254xg"]
+[gd_scene load_steps=8 format=3 uid="uid://dta8xoyo254xg"]
 
 [ext_resource type="Script" path="res://src/options_menu.gd" id="1_bnl8o"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g6r67"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
 [sub_resource type="Theme" id="Theme_coprj"]
 default_font_size = 25
+CheckButton/styles/focus = SubResource("StyleBoxFlat_g6r67")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3l5kj"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
 
 [sub_resource type="Theme" id="Theme_frp21"]
 default_font_size = 25
+CheckButton/styles/focus = SubResource("StyleBoxFlat_3l5kj")
 
 [sub_resource type="Theme" id="Theme_vn2l2"]
 default_font_size = 25
+
+[sub_resource type="Theme" id="Theme_v8w4y"]
+default_font_size = 25
+Label/colors/font_color = Color(1, 1, 0, 1)
 
 [node name="OptionsMenu" type="Node2D"]
 script = ExtResource("1_bnl8o")
@@ -34,6 +46,7 @@ layout_mode = 0
 offset_top = 64.0
 offset_right = 256.0
 offset_bottom = 128.0
+focus_mode = 0
 mouse_default_cursor_shape = 2
 theme = SubResource("Theme_coprj")
 text = "FULLSCREEN"
@@ -43,6 +56,7 @@ layout_mode = 0
 offset_top = 128.0
 offset_right = 256.0
 offset_bottom = 192.0
+focus_mode = 0
 mouse_default_cursor_shape = 2
 theme = SubResource("Theme_frp21")
 button_pressed = true
@@ -54,10 +68,43 @@ offset_left = 24.0
 offset_top = 560.0
 offset_right = 152.0
 offset_bottom = 624.0
+focus_mode = 0
 mouse_default_cursor_shape = 2
 theme = SubResource("Theme_vn2l2")
-text = "APPLY"
+text = "Apply"
+
+[node name="RestoreDe" type="Button" parent="Buttons"]
+layout_mode = 0
+offset_left = 160.0
+offset_top = 560.0
+offset_right = 288.0
+offset_bottom = 624.0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme = SubResource("Theme_vn2l2")
+text = "Restore Default"
+
+[node name="Cancel" type="Button" parent="Buttons"]
+layout_mode = 0
+offset_left = 368.0
+offset_top = 560.0
+offset_right = 488.0
+offset_bottom = 624.0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme = SubResource("Theme_vn2l2")
+text = "Cancel"
+
+[node name="restartrq" type="Label" parent="."]
+visible = false
+offset_left = 496.0
+offset_top = 576.0
+offset_right = 987.0
+offset_bottom = 614.0
+theme = SubResource("Theme_v8w4y")
+text = "RESTART REQUIRED TO APPLY SETTINGS."
 
 [connection signal="toggled" from="Buttons/FS" to="." method="_on_fs_toggled"]
 [connection signal="toggled" from="Buttons/ShowCustomMouse" to="." method="_on_show_custom_mouse_toggled"]
 [connection signal="pressed" from="Buttons/Apply" to="." method="_on_apply_pressed"]
+[connection signal="pressed" from="Buttons/Cancel" to="." method="_on_cancel_pressed"]

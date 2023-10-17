@@ -6,6 +6,20 @@ var Dropped_cherry = preload("res://assets/scenes/prefab/cherry_dropped.tscn")
 var Pause_menu = preload("res://scenes/pause_menu.tscn")
 # INSTANT
 var holding_cherry:Node2D
+# MONSTER
+var monster_location:Array = [
+	"None",          # 0
+	"hill_upper",    # 1
+	"hill_lower",    # 2
+	"behind_barn",   # 3
+	"behind_fence",  # 4
+	"past_fence",    # 5
+	"past_fence_x1", # 6
+	"past_fence_x2", # 7
+	"past_fence_x3", # 8
+	"past_fence_x4", # 9
+	"past_fence_x5"  # 10
+]
 
 func _ready() -> void:
 	mouse = Game_Mouse
@@ -56,6 +70,9 @@ func _process(delta: float) -> void:
 		_cherry_timer_main()
 		holding_cherry.position = get_global_mouse_position()
 		if (Data.isHoldingCherry == true):
+			Game_Mouse.get_node("Mouse/Mouse_textures/Normal").hide()
+			Game_Mouse.get_node("Mouse/Mouse_textures/Grab").show()
+			Game_Mouse.get_node("Mouse/Mouse_textures/Open").hide()
 			holding_cherry.show()
 			if (Data.isClicked == true):
 				$Cherry_init/AudioStreamPlayer2D.play(0.0)
@@ -70,7 +87,29 @@ func _process(delta: float) -> void:
 		
 		$Cherry_hold.emit_signal(
 			"look_for_cherry_model")
-
+			
+		match monster_location:
+			0:
+				pass
+			1:
+				pass
+			2:
+				pass
+			3:
+				pass
+			4:
+				pass
+			5:
+				pass
+			6:
+				pass
+			7:
+				pass
+			8:
+				pass
+			9:
+				pass
+				
 func _input(event: InputEvent) -> void:
 	if (Data.isPaused == false):
 		if (Input.is_action_just_pressed("get_cherry")):

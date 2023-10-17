@@ -29,3 +29,9 @@ func _on_button_pressed() -> void:
 		
 		Data.isHoldingCherry = true
 		queue_free()
+
+func _process(delta: float) -> void:
+	if ($Button.is_hovered()):
+		Game_Mouse.get_node("Mouse/Mouse_textures/Normal").hide()
+		Game_Mouse.get_node("Mouse/Mouse_textures/Grab").hide()
+		Game_Mouse.get_node("Mouse/Mouse_textures/Open").show()

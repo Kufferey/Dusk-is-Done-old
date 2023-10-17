@@ -6,17 +6,14 @@ var Play_pressed:bool = false
 
 func _ready() -> void:
 	Data._load_settings()
-	
-	if (Data.Settings["fullScreen"] == true):
-		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
-	if (Data.Settings["fullScreen"] == false):
-		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+	Data._load_player()
 	
 	$Buttons/Continue.hide()
 	$Buttons/NewGame.hide()
 
 func _on_play_pressed() -> void:
-	Play_pressed = !Play_pressed
+	get_tree().change_scene_to_file("res://scenes/main.tscn")
+#	Play_pressed = !Play_pressed
 
 func _on_exit_pressed() -> void:
 	get_tree().quit(0)

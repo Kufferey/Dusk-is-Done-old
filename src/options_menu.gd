@@ -38,6 +38,11 @@ func _on_apply_pressed() -> void:
 		Data.Settings["customMouse"] = false
 	
 	Data._save_settings()
+	Data._load_settings()
 	
+	Data.isInOptionsMenu = false
+	queue_free()
+
+func _on_cancel_pressed() -> void:
 	Data.isInOptionsMenu = false
 	queue_free()

@@ -28,11 +28,8 @@ var Settings:Dictionary = {
 	"fullScreen": false
 }
 # SAVE PATHS
-var save_path_settings = "res://SAVE_DATA.json"
-
-func _set_fullscreen_on():
-	Settings["fullScreen"] = true
-	return true
+var save_path_settings = "res://saves/options.json"
+var save_path_player = "res://saves/player_data.json"
 
 func _load_settings():
 	var file = FileAccess.open(save_path_settings, FileAccess.READ)
@@ -46,7 +43,11 @@ func _load_settings():
 			if (cl):
 				Settings["customMouse"] = cl["customMouse"]
 				Settings["fullScreen"] = cl["fullScreen"]
-			
+						
+	if (Data.Settings["fullScreen"] == true):
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+	if (Data.Settings["fullScreen"] == false):
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
 	
 func _save_settings():
 	var file = FileAccess.open(save_path_settings, FileAccess.WRITE)
@@ -56,6 +57,36 @@ func _save_settings():
 	}
 	var items_mashed = JSON.stringify(item)
 	file.store_line(items_mashed)
-	
+
+func _load_player():
+	var file = FileAccess.open(save_path_player, FileAccess.READ)
+	if (not file):
+		return
+	if (file == null):
+		return
+	if (file.file_exists(save_path_player)):
+		if (!file.eof_reached()):
+			var cl = JSON.parse_string(file.get_line())
+			if (cl):
+				Player["Score"] = cl["score"]
+				Player["Cherrys"] = cl["cherrys"]
+				Player["cherrysMulti"] = cl["cherrysMulti"]
+				
+				Player["ScoreMulti"] = cl["scoreMulti"]
+				Player["HingerMulti"] = cl["hungerMulti"]
+				Player["RoughnessMulti"] = cl["roughnessMulti"]
+
 func _save_player_build():
-	pass
+	var file = FileAccess.open(save_path_player, FileAccess.WRITE)
+	var item = {
+	"score": Player["Score"],
+	"cherrys": Player["Cherrys"],
+	"cherrysMulti": Player["cherrysMulti"],
+	"upgrades": {
+		"scoreMulti": Player["ScoreMulti"],
+		"hungerMulti": Player["HungerMulti"],
+		"roughnessMulti": Player["RoughnessMulti"]
+		}
+	}
+	var itemsmerged = JSON.stringify(item)
+	file.store_line(itemsmerged)
