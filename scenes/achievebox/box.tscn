@@ -1,3 +1,18 @@
-[gd_scene format=3 uid="uid://dcotq5fdsg0lf"]
+[gd_scene load_steps=2 format=3 uid="uid://dcotq5fdsg0lf"]
+
+[ext_resource type="Texture2D" uid="uid://ct0ndbwgc21bi" path="res://assets/images/misc/BOX.png" id="1_awgcn"]
 
 [node name="Achieve_box" type="Node2D"]
+z_index = 5
+
+[node name="bg_1" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0.392157)
+position = Vector2(575, 323)
+scale = Vector2(2.34, 1.332)
+texture = ExtResource("1_awgcn")
+
+[node name="bg_2" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0.588235)
+position = Vector2(575, 319)
+scale = Vector2(2.052, 1.028)
+texture = ExtResource("1_awgcn")

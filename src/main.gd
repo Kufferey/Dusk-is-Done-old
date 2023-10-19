@@ -88,7 +88,7 @@ func _process(delta: float) -> void:
 		$Cherry_hold.emit_signal(
 			"look_for_cherry_model")
 			
-		match monster_location:
+		match monster_location: # Monster Locations.
 			0:
 				pass
 			1:

@@ -1,3 +1,30 @@
-[gd_scene format=3 uid="uid://bdih3sdf4m00y"]
+[gd_scene load_steps=2 format=3 uid="uid://bdih3sdf4m00y"]
+
+[ext_resource type="Script" path="res://src/mainmenu/achievements_menu.gd" id="1_ixhpw"]
 
 [node name="achievements_menu" type="Node2D"]
+script = ExtResource("1_ixhpw")
+
+[node name="bg" type="Panel" parent="."]
+modulate = Color(0, 0, 0, 0.392157)
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 1168.0
+offset_bottom = 664.0
+
+[node name="bg2" type="Panel" parent="."]
+modulate = Color(0, 0, 0, 0.588235)
+offset_left = 64.0
+offset_top = 64.0
+offset_right = 1088.0
+offset_bottom = 576.0
+
+[node name="Back" type="Button" parent="."]
+offset_left = 8.0
+offset_top = 592.0
+offset_right = 192.0
+offset_bottom = 641.0
+mouse_default_cursor_shape = 2
+text = "BACK"
+
+[connection signal="pressed" from="Back" to="." method="_on_back_pressed"]

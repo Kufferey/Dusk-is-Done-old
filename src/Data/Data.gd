@@ -6,6 +6,7 @@ var isClicked:bool = false
 var isPaused:bool = false
 var isInCombo:bool = false
 var isInOptionsMenu:bool = false
+var isInAchievementsMenu:bool = false
 # INTS
 var score:int = 0
 var cur_Times:int = 0
@@ -20,6 +21,13 @@ var Player:Dictionary = {
 		"ScoreMulti": 0,
 		"HungerMulti": 0,
 		"RoughnessMulti": 0
+	},
+	"Achievements": {
+#		"": false,
+#		"": false,
+#		"": false,
+#		"": false,
+#		"": false
 	}
 }
 # SETTINGS
@@ -72,9 +80,9 @@ func _load_player():
 				Player["Cherrys"] = cl["cherrys"]
 				Player["cherrysMulti"] = cl["cherrysMulti"]
 				
-				Player["ScoreMulti"] = cl["scoreMulti"]
-				Player["HingerMulti"] = cl["hungerMulti"]
-				Player["RoughnessMulti"] = cl["roughnessMulti"]
+				Player["Upgrades"]["ScoreMulti"] = cl["Upgrades"]["scoreMulti"]
+				Player["Upgrades"]["HingerMulti"] = cl["Upgrades"]["hungerMulti"]
+				Player["Upgrades"]["RoughnessMulti"] = cl["Upgrades"]["roughnessMulti"]
 
 func _save_player_build():
 	var file = FileAccess.open(save_path_player, FileAccess.WRITE)

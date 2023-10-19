@@ -58,6 +58,7 @@ text = "PLAY
 "
 
 [node name="Continue" type="Button" parent="Buttons"]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -74,6 +75,7 @@ theme = SubResource("Theme_q3iup")
 text = "CONTINUE"
 
 [node name="NewGame" type="Button" parent="Buttons"]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -145,5 +147,6 @@ autoplay = true
 
 [connection signal="pressed" from="Buttons/Play" to="." method="_on_play_pressed"]
 [connection signal="pressed" from="Buttons/Options" to="." method="_on_options_pressed"]
+[connection signal="pressed" from="Buttons/Achi" to="." method="_on_achi_pressed"]
 [connection signal="pressed" from="Buttons/Exit" to="." method="_on_exit_pressed"]
 [connection signal="finished" from="AudioStreamPlayer" to="." method="_on_audio_stream_player_finished"]

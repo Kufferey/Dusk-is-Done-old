@@ -1,6 +1,7 @@
 extends Node2D
 
 var Options_Menu = preload("res://scenes/mainmenu/options_menu.tscn")
+var Achievements_Menu = preload("res://scenes/mainmenu/achievements_menu.tscn")
 
 var Play_pressed:bool = false
 
@@ -35,7 +36,12 @@ func _process(delta: float) -> void:
 		$Buttons/Continue.hide()
 		$Buttons/NewGame.hide()
 		
-	if (Data.isInOptionsMenu == true):
+	if (Data.isInOptionsMenu == true || Data.isInAchievementsMenu == true):
 		$Buttons.hide()
 	else :
 		$Buttons.show()
+
+func _on_achi_pressed() -> void:
+	Data.isInAchievementsMenu = true
+	var Achi_instance = Achievements_Menu.instantiate()
+	add_child(Achi_instance)
