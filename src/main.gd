@@ -45,7 +45,7 @@ static func _reload_cherry() -> void:
 		var Child = Cherry_count.get_child_count(true)
 		
 		if (Child < 1):
-			
+
 			for i in range(Child):
 				var child = Cherry_count.get_child(0)
 				Cherry_count.remove_child(child)

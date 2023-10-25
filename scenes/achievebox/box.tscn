@@ -1,18 +1,44 @@
-[gd_scene load_steps=2 format=3 uid="uid://dcotq5fdsg0lf"]
+[gd_scene load_steps=5 format=3 uid="uid://dcotq5fdsg0lf"]
 
 [ext_resource type="Texture2D" uid="uid://ct0ndbwgc21bi" path="res://assets/images/misc/BOX.png" id="1_awgcn"]
+[ext_resource type="Script" path="res://src/achievement/box.gd" id="1_eaww7"]
 
-[node name="Achieve_box" type="Node2D"]
-z_index = 5
+[sub_resource type="Theme" id="Theme_t1l86"]
+default_font_size = 18
 
-[node name="bg_1" type="Sprite2D" parent="."]
-modulate = Color(1, 1, 1, 0.392157)
-position = Vector2(575, 323)
-scale = Vector2(2.34, 1.332)
+[sub_resource type="Theme" id="Theme_js0v3"]
+default_font_size = 25
+
+[node name="Achieve_box" type="Panel"]
+anchors_preset = -1
+anchor_right = 0.333
+anchor_bottom = 0.296
+offset_right = 0.384003
+offset_bottom = 0.192001
+script = ExtResource("1_eaww7")
+
+[node name="_desc" type="Label" parent="."]
+layout_mode = 0
+offset_top = 64.0
+offset_right = 384.0
+offset_bottom = 192.0
+theme = SubResource("Theme_t1l86")
+text = "ADD TEXT DESCRITION."
+autowrap_mode = 3
+
+[node name="_name" type="Label" parent="."]
+layout_mode = 0
+offset_right = 320.0
+offset_bottom = 64.0
+theme = SubResource("Theme_js0v3")
+text = "ADD TEXT NAME."
+autowrap_mode = 3
+clip_text = true
+
+[node name="_icon" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(64, 64)
+scale = Vector2(0.256, 0.256)
 texture = ExtResource("1_awgcn")
 
-[node name="bg_2" type="Sprite2D" parent="."]
-modulate = Color(1, 1, 1, 0.588235)
-position = Vector2(575, 319)
-scale = Vector2(2.052, 1.028)
-texture = ExtResource("1_awgcn")
+[connection signal="Change_box" from="." to="." method="_on_change_box"]

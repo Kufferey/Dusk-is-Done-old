@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://bdih3sdf4m00y"]
+[gd_scene load_steps=3 format=3 uid="uid://bdih3sdf4m00y"]
 
 [ext_resource type="Script" path="res://src/mainmenu/achievements_menu.gd" id="1_ixhpw"]
+[ext_resource type="PackedScene" uid="uid://dcotq5fdsg0lf" path="res://scenes/achievebox/box.tscn" id="2_gp24r"]
 
 [node name="achievements_menu" type="Node2D"]
 script = ExtResource("1_ixhpw")
@@ -11,6 +12,7 @@ offset_left = -16.0
 offset_top = -16.0
 offset_right = 1168.0
 offset_bottom = 664.0
+metadata/_edit_lock_ = true
 
 [node name="bg2" type="Panel" parent="."]
 modulate = Color(0, 0, 0, 0.588235)
@@ -26,5 +28,40 @@ offset_right = 192.0
 offset_bottom = 641.0
 mouse_default_cursor_shape = 2
 text = "BACK"
+
+[node name="achieve_rect" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 64.0
+offset_top = 64.0
+offset_right = 1088.0
+offset_bottom = 576.0
+
+[node name="Control" type="Control" parent="achieve_rect"]
+layout_mode = 2
+anchors_preset = 0
+
+[node name="Achieve_box" parent="achieve_rect/Control" instance=ExtResource("2_gp24r")]
+layout_mode = 1
+offset_right = 256.0
+offset_bottom = 128.0
+
+[node name="Achieve_box2" parent="achieve_rect/Control" instance=ExtResource("2_gp24r")]
+layout_mode = 1
+offset_top = 272.0
+offset_right = 256.0
+offset_bottom = 400.0
+
+[node name="Achieve_box3" parent="achieve_rect/Control" instance=ExtResource("2_gp24r")]
+layout_mode = 1
+offset_left = 320.0
+offset_right = 576.0
+offset_bottom = 128.0
+
+[node name="Achieve_box4" parent="achieve_rect/Control" instance=ExtResource("2_gp24r")]
+layout_mode = 1
+offset_top = 136.0
+offset_right = 256.0
+offset_bottom = 264.0
 
 [connection signal="pressed" from="Back" to="." method="_on_back_pressed"]
