@@ -6,6 +6,8 @@ var Dropped_cherry = preload("res://assets/scenes/prefab/cherry_dropped.tscn")
 var Pause_menu = preload("res://scenes/pause_menu.tscn")
 # INSTANT
 var holding_cherry:Node2D
+# GAMEPLAY
+var isLookingBehind:bool = false
 # MONSTER
 var monster_location:Array = [
 	"None",          # 0
@@ -20,6 +22,27 @@ var monster_location:Array = [
 	"past_fence_x4", # 9
 	"past_fence_x5"  # 10
 ]
+
+func _check_timescale():
+	var time = Data.cur_timeScale
+	if (time >= 0.50):
+		pass
+
+func _hide_gameplay():
+	Data.isPaused = true
+	$bush.hide()
+	$bush2.hide()
+	$Cherry_container.hide()
+	$Cherry_init.hide()
+	$Cherry_hold.hide()
+
+func _show_gameplay():
+	Data.isPaused = false
+	$bush.show()
+	$bush2.show()
+	$Cherry_container.show()
+	$Cherry_init.show()
+	$Cherry_hold.show()
 
 func _ready() -> void:
 	mouse = Game_Mouse
@@ -88,6 +111,12 @@ func _process(delta: float) -> void:
 		$Cherry_hold.emit_signal(
 			"look_for_cherry_model")
 			
+#		time_ex = time_ex + 0.001
+#		$World/DirectionalLight3D.rotate_z(time_ex)
+#
+#		if (time_ex > 0.01):
+#			time_ex = 0
+			
 		match monster_location: # Monster Locations.
 			0:
 				pass
@@ -112,6 +141,15 @@ func _process(delta: float) -> void:
 				
 func _input(event: InputEvent) -> void:
 	if (Data.isPaused == false):
+		if (Input.is_action_just_pressed("look_behind")):
+			isLookingBehind = !isLookingBehind
+			if (isLookingBehind):
+				print("Looked Behind")
+				
+			elif (!isLookingBehind):
+				print("Looked frou")
+			
+		
 		if (Input.is_action_just_pressed("get_cherry")):
 			if (Data.isHoldingCherry == true):
 				Data.isHoldingCherry = false

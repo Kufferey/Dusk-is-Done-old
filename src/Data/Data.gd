@@ -11,6 +11,7 @@ var isInAchievementsMenu:bool = false
 var score:int = 0
 var cur_Times:int = 0
 var cur_multi:int = 1
+var cur_timeScale:int = 0
 var curCherryModel:int = 1
 # PLAYER SAVE
 var Player:Dictionary = {
