@@ -3,11 +3,26 @@ extends Node2D
 var Options_Menu = preload("res://scenes/mainmenu/options_menu.tscn")
 var Achievements_Menu = preload("res://scenes/mainmenu/achievements_menu.tscn")
 
+var progress = 0
+var new
+
 var Play_pressed:bool = false
+
+func _update_player_level():
+	$Level/cl.text = str("CURRENT LEVEL: ",Data.Player["Level"])
+	
+	var progress = 0
+	
+	$Level/progress.value = progress
+	
+	if (progress != Data.Player["Level"]):
+		progress = progress + 1
 
 func _ready() -> void:
 	Data._load_settings()
 	Data._load_player()
+	
+	new = Data.Player["Level"]
 	
 	$Buttons/Continue.hide()
 	$Buttons/NewGame.hide()
@@ -29,6 +44,13 @@ func _on_audio_stream_player_finished() -> void:
 	$AudioStreamPlayer.play(0)
 
 func _process(delta: float) -> void:
+	$Level/cl.text = str("CURRENT LEVEL: ",Data.Player["Level"])
+	$Level/percent.text = str($Level/progress.value,"%")
+	progress += 0.5
+	$Level/progress.value = progress
+	if (progress > new):
+		$Level/progress.value = new
+		
 	if (Play_pressed):
 		$Buttons/Continue.show()
 		$Buttons/NewGame.show()

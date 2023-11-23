@@ -1,0 +1,213 @@
+[gd_scene load_steps=17 format=3 uid="uid://cob0s6rvvkkup"]
+
+[ext_resource type="Script" path="res://src/main.gd" id="1_3hc7g"]
+[ext_resource type="Texture2D" uid="uid://crpc1emfd5l0b" path="res://assets/images/background/sky.jpg" id="2_0sy0t"]
+[ext_resource type="Texture2D" uid="uid://d3fw67aikt4s0" path="res://assets/images/background/Mountain.png" id="2_i6jvt"]
+[ext_resource type="Texture2D" uid="uid://cfcbbt28qecf6" path="res://assets/images/bush.png" id="3_boyfi"]
+[ext_resource type="Texture2D" uid="uid://dv4v87rbhrnv5" path="res://assets/images/background/Barnold.png" id="3_gtbky"]
+[ext_resource type="Texture2D" uid="uid://bd0vbxmfsbbnh" path="res://assets/images/pickups/Cherry_2.png" id="4_6tyxv"]
+[ext_resource type="Script" path="res://src/Cherry_init.gd" id="4_bpxda"]
+[ext_resource type="AudioStream" uid="uid://xd06lyexyokq" path="res://assets/sound/Cherry_snap.ogg" id="6_ik8ns"]
+[ext_resource type="Script" path="res://src/Cherry_hold.gd" id="6_y7nys"]
+[ext_resource type="PackedScene" uid="uid://f4s735vi1in1" path="res://assets/scenes/prefab/UI.tscn" id="7_kb7u1"]
+[ext_resource type="Texture2D" uid="uid://bs2j8w4ydimn" path="res://assets/images/pickups/Cherry_1.png" id="7_nhcsy"]
+[ext_resource type="AudioStream" uid="uid://bc6apk21c46t8" path="res://assets/music/Gameplay_music.ogg" id="10_724wg"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_u1c3j"]
+panorama = ExtResource("2_0sy0t")
+
+[sub_resource type="Sky" id="Sky_wu6qc"]
+sky_material = SubResource("PanoramaSkyMaterial_u1c3j")
+process_mode = 1
+radiance_size = 6
+
+[sub_resource type="Environment" id="Environment_rtdb0"]
+background_mode = 2
+sky = SubResource("Sky_wu6qc")
+sky_rotation = Vector3(6.28319, 3.83449, 0)
+
+[sub_resource type="Theme" id="Theme_ccyom"]
+
+[node name="main" type="Node2D"]
+script = ExtResource("1_3hc7g")
+
+[node name="World" type="Node3D" parent="."]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="World"]
+environment = SubResource("Environment_rtdb0")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="World"]
+transform = Transform3D(0.573777, -0.641517, 0.509153, 0, 0.621667, 0.783281, -0.819012, -0.449428, 0.356698, 0, 7.48724, 0)
+
+[node name="Camera3D" type="Camera3D" parent="World"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.55546, 1.31314)
+
+[node name="Backgrounds" type="Node3D" parent="World"]
+
+[node name="c" type="Node3D" parent="World/Backgrounds"]
+
+[node name="Sprite3D" type="Sprite3D" parent="World/Backgrounds/c"]
+transform = Transform3D(4.9884, 0, 0.340425, 0, 5, 0, -0.340425, 0, 4.9884, 0, 12.6864, -50.6201)
+texture = ExtResource("2_i6jvt")
+
+[node name="Sprite3D2" type="Sprite3D" parent="World/Backgrounds/c"]
+transform = Transform3D(4.9884, 0, 0.340425, 0, 6.0871, 0, -0.340425, 0, 4.9884, -7.18128, 14.4203, -53.1475)
+texture = ExtResource("2_i6jvt")
+
+[node name="Sprite3D3" type="Sprite3D" parent="World/Backgrounds/c"]
+transform = Transform3D(4.9884, 0, 0.340425, 0, 5, 0, -0.340425, 0, 4.9884, 6.37095, 12.1318, -61.1166)
+texture = ExtResource("2_i6jvt")
+
+[node name="Sprite3D4" type="Sprite3D" parent="World/Backgrounds/c"]
+transform = Transform3D(4.9884, 0, 0.340425, 0, 7.11505, 0, -0.340425, 0, 4.9884, -17.0724, 17.3421, -47.7201)
+texture = ExtResource("2_i6jvt")
+
+[node name="c2" type="Node3D" parent="World/Backgrounds"]
+transform = Transform3D(-1.01057, 0, 0.42363, 0, 1, 0, 0.472614, 0, 0.905835, -23.0939, 0, 0)
+
+[node name="Sprite3D" type="Sprite3D" parent="World/Backgrounds/c2"]
+transform = Transform3D(4.9884, 0, 0.340424, 0, 5, 0, -0.340425, 0, 4.9884, 9.20249, 12.1584, -55.4215)
+texture = ExtResource("2_i6jvt")
+
+[node name="Sprite3D2" type="Sprite3D" parent="World/Backgrounds/c2"]
+transform = Transform3D(4.9884, 0, 0.340425, 0, 6.0871, 0, -0.340425, 0, 4.9884, -7.18128, 14.4203, -53.1475)
+texture = ExtResource("2_i6jvt")
+
+[node name="Sprite3D3" type="Sprite3D" parent="World/Backgrounds/c2"]
+transform = Transform3D(4.9884, 0, 0.340425, 0, 5, 0, -0.340425, 0, 4.9884, 6.37095, 12.1318, -61.1166)
+texture = ExtResource("2_i6jvt")
+
+[node name="Sprite3D4" type="Sprite3D" parent="World/Backgrounds/c2"]
+transform = Transform3D(4.9884, 0, 0.340425, 0, 7.11505, 0, -0.340425, 0, 4.9884, -17.0724, 17.3421, -47.7201)
+texture = ExtResource("2_i6jvt")
+
+[node name="c3" type="Node3D" parent="World/Backgrounds"]
+transform = Transform3D(-0.962577, 0, -0.505522, 0, 1, 0, -0.56397, 0, 0.862813, -3.94809, 1.18451, 0)
+
+[node name="Sprite3D" type="Sprite3D" parent="World/Backgrounds/c3"]
+transform = Transform3D(4.9884, 0, 0.340424, 0, 5, 0, -0.340425, 0, 4.9884, 9.20249, 12.1584, -55.4215)
+texture = ExtResource("2_i6jvt")
+
+[node name="Sprite3D2" type="Sprite3D" parent="World/Backgrounds/c3"]
+transform = Transform3D(4.9884, 0, 0.340425, 0, 6.0871, 0, -0.340425, 0, 4.9884, -7.18128, 14.4203, -53.1475)
+texture = ExtResource("2_i6jvt")
+
+[node name="Sprite3D3" type="Sprite3D" parent="World/Backgrounds/c3"]
+transform = Transform3D(4.9884, 0, 0.340425, 0, 5, 0, -0.340425, 0, 4.9884, 6.37095, 12.1318, -61.1166)
+texture = ExtResource("2_i6jvt")
+
+[node name="Sprite3D4" type="Sprite3D" parent="World/Backgrounds/c3"]
+transform = Transform3D(4.9884, 0, 0.340425, 0, 7.11505, 0, -0.340425, 0, 4.9884, -17.0724, 17.3421, -47.7201)
+texture = ExtResource("2_i6jvt")
+
+[node name="c4" type="Node3D" parent="World/Backgrounds"]
+transform = Transform3D(-0.596237, 0, -0.845206, 0, 1, 0, -0.94293, 0, 0.53444, -1.0468, 0, 0)
+
+[node name="Sprite3D" type="Sprite3D" parent="World/Backgrounds/c4"]
+transform = Transform3D(4.9884, 0, 0.340424, 0, 5, 0, -0.340425, 0, 4.9884, 9.20249, 12.1584, -55.4215)
+texture = ExtResource("2_i6jvt")
+
+[node name="Sprite3D2" type="Sprite3D" parent="World/Backgrounds/c4"]
+transform = Transform3D(4.9884, 0, 0.340425, 0, 6.0871, 0, -0.340425, 0, 4.9884, -7.18128, 14.4203, -53.1475)
+texture = ExtResource("2_i6jvt")
+
+[node name="Sprite3D3" type="Sprite3D" parent="World/Backgrounds/c4"]
+transform = Transform3D(4.9884, 0, 0.340425, 0, 5, 0, -0.340425, 0, 4.9884, 6.37095, 12.1318, -61.1166)
+texture = ExtResource("2_i6jvt")
+
+[node name="Sprite3D4" type="Sprite3D" parent="World/Backgrounds/c4"]
+transform = Transform3D(4.9884, 0, 0.340425, 0, 7.11505, 0, -0.340425, 0, 4.9884, -17.0724, 17.3421, -47.7201)
+texture = ExtResource("2_i6jvt")
+
+[node name="FrontGrounds" type="Node3D" parent="World"]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="World/FrontGrounds"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.51493, 0)
+size = Vector3(38.0191, 1, 35.352)
+
+[node name="Sprite3D2" type="Sprite3D" parent="World/FrontGrounds"]
+transform = Transform3D(0.72014, 0, -0.693829, 0, 1, 0, 0.693829, 0, 0.72014, 1.90014, 5.28731, -3.46518)
+texture = ExtResource("3_gtbky")
+
+[node name="Player" type="Node3D" parent="World"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.83034, 0)
+
+[node name="Camera3D" type="Camera3D" parent="World/Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.631249, 1.33932)
+
+[node name="bush" type="Sprite2D" parent="."]
+modulate = Color(0.282353, 0.282353, 0.282353, 1)
+position = Vector2(208, 416)
+texture = ExtResource("3_boyfi")
+
+[node name="bush2" type="Sprite2D" parent="."]
+modulate = Color(0.282353, 0.282353, 0.282353, 1)
+position = Vector2(928, 224)
+rotation = 3.14159
+texture = ExtResource("3_boyfi")
+
+[node name="Cherry_container" type="Node2D" parent="."]
+
+[node name="Cherry_init" type="Node2D" parent="."]
+script = ExtResource("4_bpxda")
+
+[node name="point1" type="Marker2D" parent="Cherry_init"]
+position = Vector2(64, 312)
+
+[node name="point2" type="Marker2D" parent="Cherry_init"]
+position = Vector2(128, 576)
+
+[node name="point3" type="Marker2D" parent="Cherry_init"]
+position = Vector2(240, 520)
+
+[node name="point4" type="Marker2D" parent="Cherry_init"]
+position = Vector2(40, 600)
+
+[node name="point5" type="Marker2D" parent="Cherry_init"]
+position = Vector2(128, 432)
+
+[node name="point6" type="Marker2D" parent="Cherry_init"]
+position = Vector2(904, 112)
+
+[node name="point7" type="Marker2D" parent="Cherry_init"]
+position = Vector2(1016, 192)
+
+[node name="point8" type="Marker2D" parent="Cherry_init"]
+position = Vector2(1064, 80)
+
+[node name="point9" type="Marker2D" parent="Cherry_init"]
+position = Vector2(1080, 320)
+
+[node name="Cherrys" type="Node2D" parent="Cherry_init"]
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Cherry_init"]
+stream = ExtResource("6_ik8ns")
+pitch_scale = 2.0
+
+[node name="Cherry_hold" type="Node2D" parent="."]
+script = ExtResource("6_y7nys")
+
+[node name="Cherry1" type="Sprite2D" parent="Cherry_hold"]
+visible = false
+texture_filter = 1
+texture = ExtResource("7_nhcsy")
+
+[node name="Cherry2" type="Sprite2D" parent="Cherry_hold"]
+visible = false
+texture = ExtResource("4_6tyxv")
+
+[node name="UI" parent="." instance=ExtResource("7_kb7u1")]
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("10_724wg")
+volume_db = -15.0
+autoplay = true
+
+[node name="Label" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 23.0
+theme = SubResource("Theme_ccyom")
+
+[connection signal="_cherry_pick_location_sig" from="Cherry_init" to="Cherry_init" method="_on__cherry_pick_location_sig"]
+[connection signal="look_for_cherry_model" from="Cherry_hold" to="Cherry_hold" method="_on_look_for_cherry_model"]
+[connection signal="finished" from="AudioStreamPlayer" to="." method="_on_audio_stream_player_finished"]

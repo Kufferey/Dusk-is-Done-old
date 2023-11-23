@@ -1,6 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://yet3iimqdga6"]
+[gd_scene load_steps=12 format=3 uid="uid://yet3iimqdga6"]
 
 [ext_resource type="Script" path="res://src/mainmenu.gd" id="1_qtmel"]
+[ext_resource type="Texture2D" uid="uid://b4p42nvgm1ije" path="res://assets/images/level/Border.png" id="4_h661t"]
+[ext_resource type="Texture2D" uid="uid://uxfau2f2d88g" path="res://assets/images/level/Progress.png" id="5_5tj22"]
 [ext_resource type="Texture2D" uid="uid://ct2ij5axkd7fy" path="res://assets/images/Logo.png" id="6_11sfr"]
 [ext_resource type="AudioStream" uid="uid://dxceeas5f2j2i" path="res://assets/music/Main_menu.ogg" id="7_b7u7o"]
 
@@ -31,6 +33,9 @@ Button/styles/focus = SubResource("StyleBoxFlat_it51v")
 Button/styles/hover = SubResource("StyleBoxFlat_0571f")
 Button/styles/normal = SubResource("StyleBoxFlat_oetjq")
 Button/styles/pressed = SubResource("StyleBoxFlat_7n7ws")
+
+[sub_resource type="Theme" id="Theme_qdxe3"]
+default_font_size = 10
 
 [node name="mainmenu" type="Node2D"]
 script = ExtResource("1_qtmel")
@@ -144,6 +149,33 @@ texture = ExtResource("6_11sfr")
 stream = ExtResource("7_b7u7o")
 volume_db = -7.0
 autoplay = true
+
+[node name="Level" type="Node2D" parent="."]
+
+[node name="progress" type="TextureProgressBar" parent="Level"]
+offset_right = 112.0
+offset_bottom = 112.0
+step = -5.0
+exp_edit = true
+fill_mode = 4
+nine_patch_stretch = true
+texture_over = ExtResource("4_h661t")
+texture_progress = ExtResource("5_5tj22")
+
+[node name="cl" type="Label" parent="Level"]
+offset_left = 112.0
+offset_top = 40.0
+offset_right = 152.0
+offset_bottom = 63.0
+text = "CURRENT LEVEL: "
+
+[node name="percent" type="Label" parent="Level"]
+offset_left = 112.0
+offset_top = 32.0
+offset_right = 243.0
+offset_bottom = 58.0
+theme = SubResource("Theme_qdxe3")
+text = "CURRENT LEVEL: "
 
 [connection signal="pressed" from="Buttons/Play" to="." method="_on_play_pressed"]
 [connection signal="pressed" from="Buttons/Options" to="." method="_on_options_pressed"]

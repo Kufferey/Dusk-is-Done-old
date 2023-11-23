@@ -62,7 +62,7 @@ func _drop_cherry() -> void:
 		Data.Player["cherrysMulti"] += .50
 		add_child(dropped_cherry_instance)
 
-static func _reload_cherry() -> void:
+func _reload_cherry() -> void:
 	if (Data.isPaused == false):
 		var Cherry_count = $Cherry_init/Cherrys
 		var Child = Cherry_count.get_child_count(true)

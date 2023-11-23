@@ -15,6 +15,7 @@ var cur_timeScale:int = 0
 var curCherryModel:int = 1
 # PLAYER SAVE
 var Player:Dictionary = {
+	"Level": 0,
 	"Score": 0,
 	"Cherrys": 0,
 	"cherrysMulti": 1,
@@ -77,24 +78,26 @@ func _load_player():
 		if (!file.eof_reached()):
 			var cl = JSON.parse_string(file.get_line())
 			if (cl):
+				Player["Level"] = cl["level"]
 				Player["Score"] = cl["score"]
 				Player["Cherrys"] = cl["cherrys"]
 				Player["cherrysMulti"] = cl["cherrysMulti"]
 				
-				Player["Upgrades"]["ScoreMulti"] = cl["Upgrades"]["scoreMulti"]
-				Player["Upgrades"]["HingerMulti"] = cl["Upgrades"]["hungerMulti"]
-				Player["Upgrades"]["RoughnessMulti"] = cl["Upgrades"]["roughnessMulti"]
+				Player["Upgrades"]["ScoreMulti"] = cl["upgrades"]["scoreMulti"]
+				Player["Upgrades"]["HingerMulti"] = cl["upgrades"]["hungerMulti"]
+				Player["Upgrades"]["RoughnessMulti"] = cl["upgrades"]["roughnessMulti"]
 
 func _save_player_build():
 	var file = FileAccess.open(save_path_player, FileAccess.WRITE)
 	var item = {
+	"level": Player["Level"],
 	"score": Player["Score"],
 	"cherrys": Player["Cherrys"],
 	"cherrysMulti": Player["cherrysMulti"],
 	"upgrades": {
-		"scoreMulti": Player["ScoreMulti"],
-		"hungerMulti": Player["HungerMulti"],
-		"roughnessMulti": Player["RoughnessMulti"]
+		"scoreMulti": Player["Upgrades"]["ScoreMulti"],
+		"hungerMulti": Player["Upgrades"]["HungerMulti"],
+		"roughnessMulti": Player["Upgrades"]["RoughnessMulti"]
 		}
 	}
 	var itemsmerged = JSON.stringify(item)
