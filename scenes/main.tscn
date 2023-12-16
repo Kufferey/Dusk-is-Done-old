@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://cob0s6rvvkkup"]
+[gd_scene load_steps=18 format=3 uid="uid://cob0s6rvvkkup"]
 
 [ext_resource type="Script" path="res://src/main.gd" id="1_3hc7g"]
 [ext_resource type="Texture2D" uid="uid://crpc1emfd5l0b" path="res://assets/images/background/sky.jpg" id="2_0sy0t"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://dv4v87rbhrnv5" path="res://assets/images/background/Barnold.png" id="3_gtbky"]
 [ext_resource type="Texture2D" uid="uid://bd0vbxmfsbbnh" path="res://assets/images/pickups/Cherry_2.png" id="4_6tyxv"]
 [ext_resource type="Script" path="res://src/Cherry_init.gd" id="4_bpxda"]
+[ext_resource type="PackedScene" uid="uid://brao5g7wn8rq6" path="res://assets/3dmodels/hill.glb" id="4_bufek"]
 [ext_resource type="AudioStream" uid="uid://xd06lyexyokq" path="res://assets/sound/Cherry_snap.ogg" id="6_ik8ns"]
 [ext_resource type="Script" path="res://src/Cherry_hold.gd" id="6_y7nys"]
 [ext_resource type="PackedScene" uid="uid://f4s735vi1in1" path="res://assets/scenes/prefab/UI.tscn" id="7_kb7u1"]
@@ -25,6 +26,15 @@ radiance_size = 6
 background_mode = 2
 sky = SubResource("Sky_wu6qc")
 sky_rotation = Vector3(6.28319, 3.83449, 0)
+ambient_light_color = Color(0.407843, 0.407843, 0.407843, 1)
+ssao_enabled = true
+ssao_detail = 0.0
+ssil_enabled = true
+ssil_sharpness = 1.0
+ssil_normal_rejection = 0.0
+sdfgi_bounce_feedback = 0.58
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.083
 
 [sub_resource type="Theme" id="Theme_ccyom"]
 
@@ -37,7 +47,7 @@ script = ExtResource("1_3hc7g")
 environment = SubResource("Environment_rtdb0")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="World"]
-transform = Transform3D(0.573777, -0.641517, 0.509153, 0, 0.621667, 0.783281, -0.819012, -0.449428, 0.356698, 0, 7.48724, 0)
+transform = Transform3D(0.521636, -0.324284, 0.789136, -0.238989, 0.832378, 0.500031, -0.819012, -0.449429, 0.356698, 0, 7.48724, 0)
 
 [node name="Camera3D" type="Camera3D" parent="World"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.55546, 1.31314)
@@ -118,6 +128,113 @@ texture = ExtResource("2_i6jvt")
 [node name="Sprite3D4" type="Sprite3D" parent="World/Backgrounds/c4"]
 transform = Transform3D(4.9884, 0, 0.340425, 0, 7.11505, 0, -0.340425, 0, 4.9884, -17.0724, 17.3421, -47.7201)
 texture = ExtResource("2_i6jvt")
+
+[node name="hills" type="Node3D" parent="World/Backgrounds"]
+
+[node name="hill" parent="World/Backgrounds/hills" instance=ExtResource("4_bufek")]
+transform = Transform3D(115.94, 12.8525, 88.2737, 0.757387, 144.612, -22.0502, -89.2012, 17.9331, 114.547, -28.2751, 1.74041, -32.1496)
+
+[node name="hill2" parent="World/Backgrounds/hills" instance=ExtResource("4_bufek")]
+transform = Transform3D(143.812, 3.30035, 26.5845, 0.757387, 144.612, -22.0502, -26.7779, 21.8149, 142.15, -18.7135, 1.74041, -32.1496)
+
+[node name="hill3" parent="World/Backgrounds/hills" instance=ExtResource("4_bufek")]
+transform = Transform3D(146.066, -1.95133, -7.78035, 0.757387, 144.612, -22.0502, 7.98547, 21.9767, 144.405, -9.36232, 1.74041, -32.1496)
+
+[node name="hill4" parent="World/Backgrounds/hills" instance=ExtResource("4_bufek")]
+transform = Transform3D(142.246, 4.41679, 33.8527, 0.757387, 144.612, -22.0502, -34.1312, 21.6165, 140.596, -0.536764, 1.74041, -32.1496)
+
+[node name="hill5" parent="World/Backgrounds/hills" instance=ExtResource("4_bufek")]
+transform = Transform3D(115.94, 12.8525, 88.2737, 0.757387, 144.612, -22.0502, -89.2012, 17.9331, 114.547, 0.183947, 1.74041, -32.1496)
+
+[node name="hill6" parent="World/Backgrounds/hills" instance=ExtResource("4_bufek")]
+transform = Transform3D(146.272, -1.02971, -1.729, 0.757387, 144.612, -22.0502, 1.86443, 22.0391, 144.604, 5.82904, 1.74041, -26.5996)
+
+[node name="hill7" parent="World/Backgrounds/hills" instance=ExtResource("4_bufek")]
+transform = Transform3D(129.452, -10.9317, -67.2475, 0.757387, 144.612, -22.0502, 68.126, 19.1646, 128.028, 13.3323, 1.74041, -20.6731)
+
+[node name="hill8" parent="World/Backgrounds/hills" instance=ExtResource("4_bufek")]
+transform = Transform3D(109.673, -15.1532, -95.6125, 0.757387, 144.612, -22.0502, 96.8029, 16.0363, 108.497, 20.6705, 1.74041, -14.8769)
+
+[node name="hill9" parent="World/Backgrounds/hills" instance=ExtResource("4_bufek")]
+transform = Transform3D(132.781, -9.93266, -60.581, 0.757387, 144.612, -22.0501, 61.3851, 19.7009, 131.314, 27.5962, 1.74041, -9.40649)
+
+[node name="hill10" parent="World/Backgrounds/hills" instance=ExtResource("4_bufek")]
+transform = Transform3D(146.272, -1.02971, -1.729, 0.757387, 144.612, -22.0502, 1.86443, 22.0391, 144.604, 28.1618, 1.74041, -8.95977)
+
+[node name="hill11" parent="World/Backgrounds/hills" instance=ExtResource("4_bufek")]
+transform = Transform3D(53.5745, -20.7926, -134.525, 0.757387, 144.612, -22.0502, 136.12, 7.37897, 53.0693, 23.8113, 1.74041, -4.43451)
+
+[node name="hill12" parent="World/Backgrounds/hills" instance=ExtResource("4_bufek")]
+transform = Transform3D(-14.1281, -21.8751, -143.949, 0.757389, 144.612, -22.0502, 145.6, -2.87487, -13.8532, 21.1613, 1.74041, 4.75249)
+
+[node name="hill13" parent="World/Backgrounds/hills" instance=ExtResource("4_bufek")]
+transform = Transform3D(-48.1543, -20.575, -136.592, 0.757387, 144.612, -22.0501, 138.131, -7.96566, -47.4969, 18.5696, 1.74041, 13.7374)
+
+[node name="hill14" parent="World/Backgrounds/hills" instance=ExtResource("4_bufek")]
+transform = Transform3D(-6.62891, -21.9939, -144.471, 0.757388, 144.612, -22.0501, 146.133, -1.74719, -6.43922, 16.1237, 1.74041, 22.2172)
+
+[node name="hill15" parent="World/Backgrounds/hills" instance=ExtResource("4_bufek")]
+transform = Transform3D(53.5745, -20.7926, -134.525, 0.757387, 144.612, -22.0502, 136.12, 7.37897, 53.0693, 15.9239, 1.74041, 22.9097)
+
+[node name="hill16" parent="World/Backgrounds/hills" instance=ExtResource("4_bufek")]
+transform = Transform3D(-120.01, -11.9942, -82.7839, 0.757387, 144.612, -22.0502, 83.6448, -18.5182, -118.575, 6.33311, 1.74041, 23.2209)
+
+[node name="hill17" parent="World/Backgrounds/hills" instance=ExtResource("4_bufek")]
+transform = Transform3D(-144.913, -2.26983, -19.8639, 0.757389, 144.612, -22.0502, 19.9788, -21.9461, -143.244, -3.21785, 1.74041, 22.7708)
+
+[node name="hill18" parent="World/Backgrounds/hills" instance=ExtResource("4_bufek")]
+transform = Transform3D(-145.528, 2.98364, 14.5691, 0.757387, 144.612, -22.0501, -14.8522, -21.8605, -143.879, -12.5587, 1.74041, 22.3306)
+
+[node name="hill19" parent="World/Backgrounds/hills" instance=ExtResource("4_bufek")]
+transform = Transform3D(-143.695, -3.39436, -27.1971, 0.757388, 144.612, -22.0501, 27.3976, -21.8005, -142.034, -21.3744, 1.74041, 21.9152)
+
+[node name="hill20" parent="World/Backgrounds/hills" instance=ExtResource("4_bufek")]
+transform = Transform3D(-120.01, -11.9942, -82.7839, 0.757387, 144.612, -22.0502, 83.6448, -18.5182, -118.575, -22.0943, 1.74041, 21.8813)
+
+[node name="hill21" parent="World/Backgrounds/hills" instance=ExtResource("4_bufek")]
+transform = Transform3D(146.272, -1.02971, -1.729, 0.757387, 144.612, -22.0502, 1.86443, 22.0391, 144.604, -35.1701, 2.39406, 2.69236)
+
+[node name="hill22" parent="World/Backgrounds/hills" instance=ExtResource("4_bufek")]
+transform = Transform3D(129.452, -10.9317, -67.2475, 0.757387, 144.612, -22.0502, 68.126, 19.1646, 128.028, -27.6669, 2.39406, 8.61893)
+
+[node name="hill23" parent="World/Backgrounds/hills" instance=ExtResource("4_bufek")]
+transform = Transform3D(109.673, -15.1532, -95.6125, 0.757387, 144.612, -22.0502, 96.8029, 16.0363, 108.497, -20.3287, 2.39406, 14.4151)
+
+[node name="hill24" parent="World/Backgrounds/hills" instance=ExtResource("4_bufek")]
+transform = Transform3D(132.781, -9.93266, -60.581, 0.757387, 144.612, -22.0501, 61.3851, 19.7009, 131.314, -13.403, 2.39406, 19.8855)
+
+[node name="hill25" parent="World/Backgrounds/hills" instance=ExtResource("4_bufek")]
+transform = Transform3D(146.272, -1.02971, -1.729, 0.757387, 144.612, -22.0502, 1.86443, 22.0391, 144.604, -12.8374, 2.39406, 20.3322)
+
+[node name="hill26" parent="World/Backgrounds/hills" instance=ExtResource("4_bufek")]
+transform = Transform3D(72.9943, 18.7355, 125.381, 0.757387, 144.612, -22.0502, -126.771, 11.6518, 72.0623, -64.0469, 1.74041, -26.0803)
+
+[node name="hill27" parent="World/Backgrounds/hills" instance=ExtResource("4_bufek")]
+transform = Transform3D(122.627, 11.395, 78.9445, 0.757389, 144.612, -22.0502, -79.759, 18.8928, 121.165, -55.2128, 1.74041, -29.7382)
+
+[node name="hill28" parent="World/Backgrounds/hills" instance=ExtResource("4_bufek")]
+transform = Transform3D(138.009, 6.60476, 48.0566, 0.757387, 144.612, -22.0501, -48.5024, 21.0514, 136.396, -46.573, 1.74041, -33.3157)
+
+[node name="hill29" parent="World/Backgrounds/hills" instance=ExtResource("4_bufek")]
+transform = Transform3D(118.367, 12.3506, 85.0654, 0.757388, 144.612, -22.0501, -85.954, 18.2824, 116.949, -38.4188, 1.74041, -36.6921)
+
+[node name="hill30" parent="World/Backgrounds/hills" instance=ExtResource("4_bufek")]
+transform = Transform3D(72.9943, 18.7355, 125.381, 0.757387, 144.612, -22.0502, -126.771, 11.6518, 72.0623, -37.7529, 1.74041, -36.9678)
+
+[node name="hill31" parent="World/Backgrounds/hills" instance=ExtResource("4_bufek")]
+transform = Transform3D(-7.69346, 22.0593, 144.408, 0.757387, 144.612, -22.0502, -146.081, -0.411997, -7.71966, -83.6852, 1.74041, 4.76499)
+
+[node name="hill32" parent="World/Backgrounds/hills" instance=ExtResource("4_bufek")]
+transform = Transform3D(59.5252, 19.8377, 132.147, 0.757389, 144.612, -22.0502, -133.625, 9.65663, 58.7416, -78.2613, 1.74041, -3.10935)
+
+[node name="hill33" parent="World/Backgrounds/hills" instance=ExtResource("4_bufek")]
+transform = Transform3D(89.4328, 16.9918, 114.51, 0.757387, 144.612, -22.0501, -115.761, 14.0734, 88.3218, -72.9568, 1.74041, -10.8104)
+
+[node name="hill34" parent="World/Backgrounds/hills" instance=ExtResource("4_bufek")]
+transform = Transform3D(52.5813, 20.3076, 134.99, 0.757388, 144.612, -22.0501, -136.507, 8.62467, 51.8747, -67.9505, 1.74041, -18.0787)
+
+[node name="hill35" parent="World/Backgrounds/hills" instance=ExtResource("4_bufek")]
+transform = Transform3D(-7.69346, 22.0593, 144.408, 0.757387, 144.612, -22.0502, -146.081, -0.411997, -7.71966, -67.5417, 1.74041, -18.6722)
 
 [node name="FrontGrounds" type="Node3D" parent="World"]
 
@@ -207,6 +324,9 @@ autoplay = true
 offset_right = 40.0
 offset_bottom = 23.0
 theme = SubResource("Theme_ccyom")
+
+[node name="hill" parent="." instance=ExtResource("4_bufek")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32.2292, 4.76837e-07, -20.6183)
 
 [connection signal="_cherry_pick_location_sig" from="Cherry_init" to="Cherry_init" method="_on__cherry_pick_location_sig"]
 [connection signal="look_for_cherry_model" from="Cherry_hold" to="Cherry_hold" method="_on_look_for_cherry_model"]

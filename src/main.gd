@@ -9,19 +9,46 @@ var holding_cherry:Node2D
 # GAMEPLAY
 var isLookingBehind:bool = false
 # MONSTER
-var monster_location:Array = [
-	"None",          # 0
-	"hill_upper",    # 1
-	"hill_lower",    # 2
-	"behind_barn",   # 3
-	"behind_fence",  # 4
-	"past_fence",    # 5
-	"past_fence_x1", # 6
-	"past_fence_x2", # 7
-	"past_fence_x3", # 8
-	"past_fence_x4", # 9
-	"past_fence_x5"  # 10
-]
+enum {
+	None,          # 0
+	hill_upper,    # 1
+	hill_lower,    # 2
+	behind_barn,   # 3
+	behind_fence,  # 4
+	past_fence,    # 5
+	past_fence_x1, # 6
+	past_fence_x2, # 7
+	past_fence_x3, # 8
+	past_fence_x4, # 9
+	past_fence_x5  # 10
+}
+
+var current_monster_location = None
+
+func check_monster_location():
+	match current_monster_location:
+		None:
+			pass
+		hill_upper:
+			pass
+		hill_lower:
+			pass
+		behind_barn:
+			pass
+		behind_fence:
+			pass
+		past_fence:
+			pass
+		past_fence_x1:
+			pass
+		past_fence_x2:
+			pass
+		past_fence_x3:
+			pass
+		past_fence_x4:
+			pass
+		past_fence_x5:
+			pass
 
 func _check_timescale():
 	var time = Data.cur_timeScale
@@ -116,28 +143,6 @@ func _process(delta: float) -> void:
 #
 #		if (time_ex > 0.01):
 #			time_ex = 0
-			
-		match monster_location: # Monster Locations.
-			0:
-				pass
-			1:
-				pass
-			2:
-				pass
-			3:
-				pass
-			4:
-				pass
-			5:
-				pass
-			6:
-				pass
-			7:
-				pass
-			8:
-				pass
-			9:
-				pass
 				
 func _input(event: InputEvent) -> void:
 	if (Data.isPaused == false):
