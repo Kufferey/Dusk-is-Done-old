@@ -7,53 +7,6 @@ var Pause_menu = preload("res://scenes/pause_menu.tscn")
 # INSTANT
 var holding_cherry:Node2D
 # GAMEPLAY
-var isLookingBehind:bool = false
-# MONSTER
-enum {
-	None,          # 0
-	hill_upper,    # 1
-	hill_lower,    # 2
-	behind_barn,   # 3
-	behind_fence,  # 4
-	past_fence,    # 5
-	past_fence_x1, # 6
-	past_fence_x2, # 7
-	past_fence_x3, # 8
-	past_fence_x4, # 9
-	past_fence_x5  # 10
-}
-
-var current_monster_location = None
-
-func check_monster_location():
-	match current_monster_location:
-		None:
-			pass
-		hill_upper:
-			pass
-		hill_lower:
-			pass
-		behind_barn:
-			pass
-		behind_fence:
-			pass
-		past_fence:
-			pass
-		past_fence_x1:
-			pass
-		past_fence_x2:
-			pass
-		past_fence_x3:
-			pass
-		past_fence_x4:
-			pass
-		past_fence_x5:
-			pass
-
-func _check_timescale():
-	var time = Data.cur_timeScale
-	if (time >= 0.50):
-		pass
 
 func _hide_gameplay():
 	Data.isPaused = true
@@ -72,7 +25,7 @@ func _show_gameplay():
 	$Cherry_hold.show()
 
 func _ready() -> void:
-	mouse = Game_Mouse
+	mouse = $Mouse
 	holding_cherry = $Cherry_hold
 	Data.isClicked = true
 	
@@ -120,15 +73,18 @@ func _process(delta: float) -> void:
 		_cherry_timer_main()
 		holding_cherry.position = get_global_mouse_position()
 		if (Data.isHoldingCherry == true):
-			Game_Mouse.get_node("Mouse/Mouse_textures/Normal").hide()
-			Game_Mouse.get_node("Mouse/Mouse_textures/Grab").show()
-			Game_Mouse.get_node("Mouse/Mouse_textures/Open").hide()
+			$Mouse.get_node("Mouse/Mouse_textures/Normal").hide()
+			$Mouse.get_node("Mouse/Mouse_textures/Grab").show()
+			$Mouse.get_node("Mouse/Mouse_textures/Open").hide()
 			holding_cherry.show()
 			if (Data.isClicked == true):
 				$Cherry_init/AudioStreamPlayer2D.play(0.0)
 				Data.isClicked = false
 		elif (Data.isHoldingCherry == false):
 			holding_cherry.hide()
+			
+#		if Data.isPaused == false && Input.is_action_just_pressed("interact"):
+#			self.hide()
 			
 		if (Data.isPaused == false && Input.is_action_just_pressed("exit")):
 			var pause_menu_instance = Pause_menu.instantiate()
@@ -138,23 +94,8 @@ func _process(delta: float) -> void:
 		$Cherry_hold.emit_signal(
 			"look_for_cherry_model")
 			
-#		time_ex = time_ex + 0.001
-#		$World/DirectionalLight3D.rotate_z(time_ex)
-#
-#		if (time_ex > 0.01):
-#			time_ex = 0
-				
 func _input(event: InputEvent) -> void:
 	if (Data.isPaused == false):
-		if (Input.is_action_just_pressed("look_behind")):
-			isLookingBehind = !isLookingBehind
-			if (isLookingBehind):
-				print("Looked Behind")
-				
-			elif (!isLookingBehind):
-				print("Looked frou")
-			
-		
 		if (Input.is_action_just_pressed("get_cherry")):
 			if (Data.isHoldingCherry == true):
 				Data.isHoldingCherry = false

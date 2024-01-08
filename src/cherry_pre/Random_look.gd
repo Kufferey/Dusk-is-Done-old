@@ -8,7 +8,7 @@ func _ready() -> void:
 	var Random_look = randi_range(0,1)
 	_cherry_look(Random_look)
 	
-static func _cherry_look(_look:int=0):
+func _cherry_look(_look:int=0):
 	match _look:
 		0:
 			$cherry1.show()
@@ -32,6 +32,6 @@ func _on_button_pressed() -> void:
 
 func _process(delta: float) -> void:
 	if ($Button.is_hovered()):
-		Game_Mouse.get_node("Mouse/Mouse_textures/Normal").hide()
-		Game_Mouse.get_node("Mouse/Mouse_textures/Grab").hide()
-		Game_Mouse.get_node("Mouse/Mouse_textures/Open").show()
+		$Mouse.get_node("Mouse/Mouse_textures/Normal").hide()
+		$Mouse.get_node("Mouse/Mouse_textures/Grab").hide()
+		$Mouse.get_node("Mouse/Mouse_textures/Open").show()

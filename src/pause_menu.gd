@@ -36,7 +36,7 @@ func _process(delta: float) -> void:
 		$Exit.hide()
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 		if (Data.Settings["customMouse"] == true):
-			Game_Mouse.hide()
+			$Mouse.hide()
 		$Shop_home.show()
 		
 		if (curSelection > 2):
@@ -67,10 +67,10 @@ func _process(delta: float) -> void:
 		$Shop_home.hide()
 		
 		if (Data.Settings["customMouse"] == true):
-			Game_Mouse.show()
+			$Mouse.show()
 			Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
 		else :
-			Game_Mouse.hide()
+			$Mouse.hide()
 			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 
 

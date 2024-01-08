@@ -22,6 +22,8 @@ func _ready() -> void:
 	Data._load_settings()
 	Data._load_player()
 	
+	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	
 	new = Data.Player["Level"]
 	
 	$Buttons/Continue.hide()

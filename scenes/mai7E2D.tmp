@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://cob0s6rvvkkup"]
+[gd_scene load_steps=22 format=3 uid="uid://cob0s6rvvkkup"]
 
 [ext_resource type="Script" path="res://src/main.gd" id="1_3hc7g"]
 [ext_resource type="Script" path="res://src/maingame.gd" id="1_rr6yx"]
@@ -15,11 +15,7 @@
 [ext_resource type="Script" path="res://src/Cherry_hold.gd" id="6_y7nys"]
 [ext_resource type="PackedScene" uid="uid://f4s735vi1in1" path="res://assets/scenes/prefab/UI.tscn" id="7_kb7u1"]
 [ext_resource type="Texture2D" uid="uid://bs2j8w4ydimn" path="res://assets/images/pickups/Cherry_1.png" id="7_nhcsy"]
-[ext_resource type="Script" path="res://src/Mouse/Mouse.gd" id="9_8oqn4"]
 [ext_resource type="AudioStream" uid="uid://bc6apk21c46t8" path="res://assets/music/Gameplay_music.ogg" id="10_724wg"]
-[ext_resource type="Texture2D" uid="uid://c6v6mm2youemj" path="res://assets/images/mouse/Mouse_normal.png" id="10_s77x2"]
-[ext_resource type="Texture2D" uid="uid://brg3j7vp2167o" path="res://assets/images/mouse/Mouse_open.png" id="11_ywwmi"]
-[ext_resource type="Texture2D" uid="uid://bsobj3dnnaqo" path="res://assets/images/mouse/Mouse_grab.png" id="12_nklki"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_u1c3j"]
 panorama = ExtResource("2_0sy0t")
@@ -294,40 +290,6 @@ metadata/_edit_lock_ = true
 visible = false
 script = ExtResource("1_3hc7g")
 
-[node name="Mouse" type="CanvasLayer" parent="Cherrygame"]
-visible = false
-
-[node name="Mouse" type="Node2D" parent="Cherrygame/Mouse"]
-position = Vector2(-55, -53)
-script = ExtResource("9_8oqn4")
-
-[node name="Mouse_textures" type="Node2D" parent="Cherrygame/Mouse/Mouse"]
-position = Vector2(55, 53)
-metadata/_edit_lock_ = true
-
-[node name="Normal" type="Sprite2D" parent="Cherrygame/Mouse/Mouse/Mouse_textures"]
-visible = false
-z_index = 500
-texture_filter = 1
-texture = ExtResource("10_s77x2")
-metadata/_edit_lock_ = true
-
-[node name="Open" type="Sprite2D" parent="Cherrygame/Mouse/Mouse/Mouse_textures"]
-visible = false
-texture_filter = 1
-position = Vector2(88, 128)
-scale = Vector2(2.53333, 2.53333)
-texture = ExtResource("11_ywwmi")
-metadata/_edit_lock_ = true
-
-[node name="Grab" type="Sprite2D" parent="Cherrygame/Mouse/Mouse/Mouse_textures"]
-visible = false
-texture_filter = 1
-position = Vector2(160, 208)
-scale = Vector2(3.33333, 3.33333)
-texture = ExtResource("12_nklki")
-metadata/_edit_lock_ = true
-
 [node name="bush" type="Sprite2D" parent="Cherrygame"]
 modulate = Color(0.282353, 0.282353, 0.282353, 1)
 position = Vector2(208, 416)
@@ -401,7 +363,6 @@ offset_right = 40.0
 offset_bottom = 23.0
 theme = SubResource("Theme_ccyom")
 
-[connection signal="_change_mouse_sig" from="Cherrygame/Mouse/Mouse" to="Cherrygame/Mouse/Mouse" method="_on__change_mouse_sig" flags=18]
 [connection signal="_cherry_pick_location_sig" from="Cherrygame/Cherry_init" to="Cherrygame/Cherry_init" method="_on__cherry_pick_location_sig"]
 [connection signal="look_for_cherry_model" from="Cherrygame/Cherry_hold" to="Cherrygame/Cherry_hold" method="_on_look_for_cherry_model"]
 [connection signal="finished" from="Cherrygame/AudioStreamPlayer" to="Cherrygame" method="_on_audio_stream_player_finished"]

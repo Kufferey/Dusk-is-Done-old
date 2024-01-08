@@ -5,13 +5,13 @@ var enabledCustomMouse:bool = true
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	if (Data.Settings["fullScreen"] == true):
+	if (Data.Settings["Display"]["fullScreen"] == true):
 		$Buttons/FS.set("button_pressed", true)
-	elif (Data.Settings["fullScreen"] == false):
+	elif (Data.Settings["Display"]["fullScreen"] == false):
 		$Buttons/FS.set("button_pressed", false)
-	if (Data.Settings["customMouse"] == true):
+	if (Data.Settings["Display"]["customMouse"] == true):
 		$Buttons/ShowCustomMouse.set("button_pressed", true)
-	elif (Data.Settings["customMouse"] == false):
+	elif (Data.Settings["Display"]["customMouse"] == false):
 		$Buttons/ShowCustomMouse.set("button_pressed", false)
 
 func _on_fs_toggled(button_pressed: bool) -> void:
@@ -28,20 +28,20 @@ func _on_show_custom_mouse_toggled(button_pressed: bool) -> void:
 
 func _on_apply_pressed() -> void:
 	if (enabledFullScreen == true):
-		Data.Settings["fullScreen"] = true
+		Data.Settings["Display"]["fullScreen"] = true
 	elif (enabledFullScreen == false):
-		Data.Settings["fullScreen"] = false
+		Data.Settings["Display"]["fullScreen"] = false
 	
 	if (enabledCustomMouse == true):
-		Data.Settings["customMouse"] = true
+		Data.Settings["Display"]["customMouse"] = true
 	elif (enabledCustomMouse == false):
-		Data.Settings["customMouse"] = false
+		Data.Settings["Display"]["customMouse"] = false
 	
 	Data._save_settings()
 	Data._load_settings()
 	
 	Data.isInOptionsMenu = false
-	queue_free()
+	super.queue_free()
 
 func _on_cancel_pressed() -> void:
 	Data.isInOptionsMenu = false

@@ -34,12 +34,18 @@ var Player:Dictionary = {
 }
 # SETTINGS
 var Settings:Dictionary = {
-	"customMouse": true,
-	"fullScreen": false
+	"Display" = {
+		"customMouse": true,
+		"fullScreen": false
+	},
+	"Gameplay" = {
+		"sens": 0.5,
+		"fov": 70.0
+	}
 }
 # SAVE PATHS
-var save_path_settings = "res://saves/options.json"
-var save_path_player = "res://saves/player_data.json"
+const save_path_settings = "res://saves/options.json"
+const save_path_player = "res://saves/player_data.json"
 
 func _load_settings():
 	var file = FileAccess.open(save_path_settings, FileAccess.READ)
@@ -51,19 +57,20 @@ func _load_settings():
 		if (!file.eof_reached()):
 			var cl = JSON.parse_string(file.get_line())
 			if (cl):
-				Settings["customMouse"] = cl["customMouse"]
-				Settings["fullScreen"] = cl["fullScreen"]
+				Settings["Display"]["fullScreen"] = cl["Display"]["fullScreen"]
 						
-	if (Data.Settings["fullScreen"] == true):
+	if (Data.Settings["Display"]["fullScreen"] == true):
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
-	if (Data.Settings["fullScreen"] == false):
+	if (Data.Settings["Display"]["fullScreen"] == false):
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
 	
 func _save_settings():
-	var file = FileAccess.open(save_path_settings, FileAccess.WRITE)
-	var item = {
-		"customMouse": Settings["customMouse"],
-		"fullScreen": Settings["fullScreen"]
+	var file:FileAccess = FileAccess.open(save_path_settings, FileAccess.WRITE)
+	var item:Dictionary = {
+		"Display": {
+			"customMouse": Settings["Display"]["customMouse"],
+			"fullScreen": Settings["Display"]["fullScreen"]
+		}
 	}
 	var items_mashed = JSON.stringify(item)
 	file.store_line(items_mashed)
