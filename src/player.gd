@@ -9,10 +9,11 @@ func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 func _input(event: InputEvent) -> void:
-	if event is InputEventMouseMotion:
-		rotate_y(-deg_to_rad(event.relative.x * sens))
-		camera.rotate_x(-deg_to_rad(event.relative.y * sens))
-		camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-89), deg_to_rad(89))
+	if !Data.lockMouse:
+		if event is InputEventMouseMotion:
+			rotate_y(-deg_to_rad(event.relative.x * sens))
+			camera.rotate_x(-deg_to_rad(event.relative.y * sens))
+			camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-89), deg_to_rad(89))
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:

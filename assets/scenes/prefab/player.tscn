@@ -8,3 +8,6 @@ script = ExtResource("1_qnopx")
 [node name="camera" type="Node3D" parent="."]
 
 [node name="Camera3D" type="Camera3D" parent="camera"]
+
+[node name="RayCast3D" type="RayCast3D" parent="camera"]
+target_position = Vector3(0, 0, -1.5)

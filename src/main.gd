@@ -15,6 +15,7 @@ func _hide_gameplay():
 	$Cherry_container.hide()
 	$Cherry_init.hide()
 	$Cherry_hold.hide()
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 func _show_gameplay():
 	Data.isPaused = false
@@ -23,6 +24,7 @@ func _show_gameplay():
 	$Cherry_container.show()
 	$Cherry_init.show()
 	$Cherry_hold.show()
+	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 
 func _ready() -> void:
 	mouse = $Mouse
@@ -35,7 +37,7 @@ func _ready() -> void:
 
 func _drop_cherry() -> void:
 	if (Data.isPaused == false):
-		var dropped_cherry_instance = Dropped_cherry.instantiate()
+		var dropped_cherry_instance:Node2D = Dropped_cherry.instantiate()
 		dropped_cherry_instance.position = get_global_mouse_position()
 		Data.Player["Score"] += 7
 		Data.Player["Cherrys"] += 1
@@ -53,7 +55,6 @@ func _reload_cherry() -> void:
 				var child = Cherry_count.get_child(0)
 				Cherry_count.remove_child(child)
 				child.queue_free()
-				break
 				
 			$Cherry_init.emit_signal(
 				"_cherry_pick_location_sig",

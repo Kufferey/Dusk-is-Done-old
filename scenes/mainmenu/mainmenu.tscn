@@ -151,6 +151,7 @@ volume_db = -7.0
 autoplay = true
 
 [node name="Level" type="Node2D" parent="."]
+visible = false
 
 [node name="progress" type="TextureProgressBar" parent="Level"]
 offset_right = 112.0

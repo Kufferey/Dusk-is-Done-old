@@ -4,6 +4,7 @@ extends Node
 var isHoldingCherry:bool = false
 var isClicked:bool = false
 var isPaused:bool = false
+var lockMouse:bool = false
 var isInCombo:bool = false
 var isInOptionsMenu:bool = false
 var isInAchievementsMenu:bool = false

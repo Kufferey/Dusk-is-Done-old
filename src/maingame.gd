@@ -1,5 +1,7 @@
 extends Node
 
+signal justDied
+
 enum {
 	None,          # 0
 	hill_upper,    # 1
@@ -41,13 +43,5 @@ func check_monster_location():
 		past_fence_x5:
 			pass
 
-func make_cherry_branch_visible_and_mouse_lock(to:bool):
-	if to == true:
-		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-		$Cherrygame.show()
-		$Cherrygame/Mouse.show()
-	else :
-		if 
-		Input.set_mouse_mode(Input)
-		$Cherrygame.hide()
-		$Cherrygame/Mouse.hide()
+func _on_just_died() -> void:
+	pass

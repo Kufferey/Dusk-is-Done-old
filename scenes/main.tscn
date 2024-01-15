@@ -1,8 +1,9 @@
-[gd_scene load_steps=26 format=3 uid="uid://cob0s6rvvkkup"]
+[gd_scene load_steps=27 format=3 uid="uid://cob0s6rvvkkup"]
 
 [ext_resource type="Script" path="res://src/main.gd" id="1_3hc7g"]
 [ext_resource type="Script" path="res://src/maingame.gd" id="1_rr6yx"]
 [ext_resource type="Texture2D" uid="uid://crpc1emfd5l0b" path="res://assets/images/background/sky.jpg" id="2_0sy0t"]
+[ext_resource type="Script" path="res://src/3dwordview.gd" id="2_8kuid"]
 [ext_resource type="Texture2D" uid="uid://d3fw67aikt4s0" path="res://assets/images/background/Mountain.png" id="2_i6jvt"]
 [ext_resource type="PackedScene" uid="uid://dg11hlk3pwpy" path="res://assets/scenes/prefab/player.tscn" id="2_m8rvv"]
 [ext_resource type="Texture2D" uid="uid://cfcbbt28qecf6" path="res://assets/images/bush.png" id="3_boyfi"]
@@ -54,6 +55,7 @@ albedo_color = Color(0.282353, 0.639216, 0, 1)
 script = ExtResource("1_rr6yx")
 
 [node name="World" type="Node3D" parent="."]
+script = ExtResource("2_8kuid")
 
 [node name="player" parent="World" instance=ExtResource("2_m8rvv")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.70508, 3.67973, 1.95753)
@@ -291,11 +293,9 @@ sky_mode = 1
 metadata/_edit_lock_ = true
 
 [node name="Cherrygame" type="Node2D" parent="."]
-visible = false
 script = ExtResource("1_3hc7g")
 
 [node name="Mouse" type="CanvasLayer" parent="Cherrygame"]
-visible = false
 
 [node name="Mouse" type="Node2D" parent="Cherrygame/Mouse"]
 position = Vector2(-55, -53)
@@ -390,6 +390,7 @@ visible = false
 texture = ExtResource("4_6tyxv")
 
 [node name="UI" parent="Cherrygame" instance=ExtResource("7_kb7u1")]
+visible = false
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Cherrygame"]
 stream = ExtResource("10_724wg")
@@ -401,6 +402,15 @@ offset_right = 40.0
 offset_bottom = 23.0
 theme = SubResource("Theme_ccyom")
 
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[connection signal="justDied" from="." to="." method="_on_just_died"]
 [connection signal="_change_mouse_sig" from="Cherrygame/Mouse/Mouse" to="Cherrygame/Mouse/Mouse" method="_on__change_mouse_sig" flags=18]
 [connection signal="_cherry_pick_location_sig" from="Cherrygame/Cherry_init" to="Cherrygame/Cherry_init" method="_on__cherry_pick_location_sig"]
 [connection signal="look_for_cherry_model" from="Cherrygame/Cherry_hold" to="Cherrygame/Cherry_hold" method="_on_look_for_cherry_model"]
