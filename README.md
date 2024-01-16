@@ -1,4 +1,4 @@
-# Night-Collector
+# Done at Dusk
 Done at Dusk is a horror type game. Its mainly came from: [Cherry Picking Simulator](https://kufferey.itch.io/cherry-picking-simulator)
 
 # Debugging/Stats Options
