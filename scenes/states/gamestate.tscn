@@ -1,3 +1,11 @@
-[gd_scene format=3 uid="uid://bfe0uacbmm1ay"]
+[gd_scene load_steps=2 format=3 uid="uid://bfe0uacbmm1ay"]
+
+[ext_resource type="Script" path="res://src/gameplay/gamestate.gd" id="1_8gblt"]
 
 [node name="Gamestate" type="Node3D"]
+script = ExtResource("1_8gblt")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.320183)
+
+[node name="cherries" type="Node3D" parent="."]

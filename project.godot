@@ -11,5 +11,6 @@ config_version=5
 [application]
 
 config/name="Done At Dusk"
+config/tags=PackedStringArray("3d", "base_game", "full_game", "horror")
 config/features=PackedStringArray("4.2", "Forward Plus")
 config/icon="res://icon.svg"

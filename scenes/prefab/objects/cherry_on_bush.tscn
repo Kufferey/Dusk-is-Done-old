@@ -1,0 +1,34 @@
+[gd_scene load_steps=7 format=3 uid="uid://b582134iwcwk2"]
+
+[ext_resource type="PackedScene" uid="uid://3l2skaf610n5" path="res://assets/models/cherries/cherry1.glb" id="1_3lhwb"]
+[ext_resource type="Script" path="res://src/gameplay/cherries/cherry_on_bush.gd" id="1_c2l4w"]
+[ext_resource type="PackedScene" uid="uid://txperidiljt2" path="res://assets/models/cherries/cherry2.glb" id="2_6xwl8"]
+[ext_resource type="PackedScene" uid="uid://cvu5627cc1sy2" path="res://assets/models/cherries/special/cherrySpoiled.glb" id="4_bw1pu"]
+[ext_resource type="PackedScene" uid="uid://dv0yjgehxrls6" path="res://assets/models/cherries/special/cherryWithDon2005.glb" id="5_fi7g0"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_bxaum"]
+size = Vector3(4.91309, 5.18555, 5.42188)
+
+[node name="CherryOnBush" type="Node3D"]
+script = ExtResource("1_c2l4w")
+
+[node name="Models" type="Node3D" parent="."]
+
+[node name="cherry1" parent="Models" instance=ExtResource("1_3lhwb")]
+
+[node name="cherry2" parent="Models" instance=ExtResource("2_6xwl8")]
+visible = false
+
+[node name="cherrySpoiled" parent="Models" instance=ExtResource("4_bw1pu")]
+visible = false
+
+[node name="cherryWithDon2005" parent="Models" instance=ExtResource("5_fi7g0")]
+visible = false
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01, 0, 0.0227856, 0)
+shape = SubResource("BoxShape3D_bxaum")
+
+[connection signal="collectCherry" from="." to="." method="_on_collect_cherry"]
