@@ -9,7 +9,7 @@
 [sub_resource type="BoxShape3D" id="BoxShape3D_bxaum"]
 size = Vector3(4.91309, 5.18555, 5.42188)
 
-[node name="CherryOnBush" type="Node3D"]
+[node name="CherryOnBush" type="Node3D" groups=["cherry"]]
 script = ExtResource("1_c2l4w")
 
 [node name="Models" type="Node3D" parent="."]

@@ -6,6 +6,7 @@ signal collectCherry
 @export_category("Cherry Options")
 @export var Type:String
 @export var Model:int
+@export var isHolding:bool
 @export var isGood:bool
 @export var isEatable:bool
 
@@ -58,5 +59,4 @@ func _ready() -> void:
 			#pass
 
 func _on_collect_cherry() -> void:
-	queue_free()
-	print("Cherry deleted!")
+	self.queue_free()

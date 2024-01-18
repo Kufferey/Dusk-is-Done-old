@@ -1,11 +1,33 @@
-[gd_scene load_steps=2 format=3 uid="uid://bfe0uacbmm1ay"]
+[gd_scene load_steps=4 format=3 uid="uid://bfe0uacbmm1ay"]
 
 [ext_resource type="Script" path="res://src/gameplay/gamestate.gd" id="1_8gblt"]
+[ext_resource type="PackedScene" uid="uid://b582134iwcwk2" path="res://scenes/prefab/objects/cherry_on_bush.tscn" id="2_gpr1r"]
+[ext_resource type="Script" path="res://src/gameplay/Player.gd" id="2_q2ps6"]
 
 [node name="Gamestate" type="Node3D"]
 script = ExtResource("1_8gblt")
 
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.320183)
-
 [node name="cherries" type="Node3D" parent="."]
+
+[node name="CherryOnBush2" parent="cherries" instance=ExtResource("2_gpr1r")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0578054, -0.0862429, -0.0905782)
+
+[node name="CherryOnBush" parent="cherries" instance=ExtResource("2_gpr1r")]
+transform = Transform3D(8.27757, 0, 0, 0, 8.27757, 0, 0, 0, 8.27757, 0, 0, -0.438204)
+
+[node name="Player" type="Node3D" parent="."]
+script = ExtResource("2_q2ps6")
+
+[node name="cameraPos" type="Node3D" parent="Player"]
+
+[node name="ItemHolder" type="Node3D" parent="Player/cameraPos"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0578054, -0.0862429, -0.0905782)
+
+[node name="Camera3D" type="Camera3D" parent="Player/cameraPos"]
+
+[node name="RayCast3D" type="RayCast3D" parent="Player/cameraPos"]
+target_position = Vector3(0, 0, -2)
+
+[node name="WorldObjects" type="Node3D" parent="."]
+
+[connection signal="gameOver" from="." to="." method="_on_game_over"]
