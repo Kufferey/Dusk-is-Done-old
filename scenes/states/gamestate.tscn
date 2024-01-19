@@ -7,14 +7,6 @@
 [node name="Gamestate" type="Node3D"]
 script = ExtResource("1_8gblt")
 
-[node name="cherries" type="Node3D" parent="."]
-
-[node name="CherryOnBush2" parent="cherries" instance=ExtResource("2_gpr1r")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0578054, -0.0862429, -0.0905782)
-
-[node name="CherryOnBush" parent="cherries" instance=ExtResource("2_gpr1r")]
-transform = Transform3D(8.27757, 0, 0, 0, 8.27757, 0, 0, 0, 8.27757, 0, 0, -0.438204)
-
 [node name="Player" type="Node3D" parent="."]
 script = ExtResource("2_q2ps6")
 
@@ -27,7 +19,16 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0578054, -0.0862429, -0.090
 
 [node name="RayCast3D" type="RayCast3D" parent="Player/cameraPos"]
 target_position = Vector3(0, 0, -2)
+collide_with_areas = true
 
 [node name="WorldObjects" type="Node3D" parent="."]
+
+[node name="cherries" type="Node3D" parent="."]
+
+[node name="CherryOnBush2" parent="cherries" instance=ExtResource("2_gpr1r")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0922555, -0.103875, -0.589387)
+
+[node name="CherryOnBush" parent="cherries" instance=ExtResource("2_gpr1r")]
+transform = Transform3D(8.27757, 0, 0, 0, 8.27757, 0, 0, 0, 8.27757, 0, 0, -1.06026)
 
 [connection signal="gameOver" from="." to="." method="_on_game_over"]
