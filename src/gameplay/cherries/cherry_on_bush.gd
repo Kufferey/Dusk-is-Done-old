@@ -57,6 +57,3 @@ func _ready() -> void:
 			#pass
 		#_:
 			#pass
-
-func _on_collect_cherry() -> void:
-	self.queue_free()

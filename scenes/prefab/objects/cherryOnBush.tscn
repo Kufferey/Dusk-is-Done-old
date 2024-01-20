@@ -1,0 +1,33 @@
+[gd_scene load_steps=7 format=3 uid="uid://dch6a6f1daf6n"]
+
+[ext_resource type="PackedScene" uid="uid://bc2skl5nbytm0" path="res://scenes/prefab/interactableObject.tscn" id="1_gj0r3"]
+[ext_resource type="Script" path="res://src/gameplay/cherries/cherryOnBush.gd" id="2_irony"]
+[ext_resource type="PackedScene" uid="uid://3l2skaf610n5" path="res://assets/models/cherries/cherry1.glb" id="3_8h8xc"]
+[ext_resource type="PackedScene" uid="uid://txperidiljt2" path="res://assets/models/cherries/cherry2.glb" id="4_lgvj1"]
+[ext_resource type="PackedScene" uid="uid://cvu5627cc1sy2" path="res://assets/models/cherries/special/cherrySpoiled.glb" id="5_j0dn6"]
+[ext_resource type="PackedScene" uid="uid://dv0yjgehxrls6" path="res://assets/models/cherries/special/cherryWithDon2005.glb" id="6_hygie"]
+
+[node name="CherryOnBush" groups=["cherry"] instance=ExtResource("1_gj0r3")]
+script = ExtResource("2_irony")
+Type = ""
+Model = 0
+isGood = false
+isEatable = false
+canInteract = true
+
+[node name="cherry1" parent="Model" index="0" instance=ExtResource("3_8h8xc")]
+
+[node name="cherry2" parent="Model" index="1" instance=ExtResource("4_lgvj1")]
+visible = false
+
+[node name="cherrySpoiled" parent="Model" index="2" instance=ExtResource("5_j0dn6")]
+visible = false
+
+[node name="cherryWithDon2005" parent="Model" index="3" instance=ExtResource("6_hygie")]
+visible = false
+
+[node name="Area3D" parent="." index="1"]
+collision_mask = 16
+
+[node name="CollisionShape3D" parent="Area3D" index="0"]
+disabled = false

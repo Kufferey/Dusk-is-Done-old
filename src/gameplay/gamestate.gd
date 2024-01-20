@@ -1,21 +1,19 @@
 extends Node3D
 
-signal gameOver
-
 # Cherry
 var cherriesContainer:Node3D
 
 var cherryTypes:Array[String] = ['normal', 'spoiled']
 var cherryTypesStory:Array[String]
 
-var currentHeldItem:Node3D
-var currentHoveredItem:Node3D
-
 var cherrySection:int
 
 # Player Vars
 var isHoldingItem:bool
-var isHoldingCherry:bool
+
+var currentHeldItemType:String # cherry, medicalpills, medicalscanner
+var currentHeldItem:Node3D
+var currentHoveredItem:Node3D
 
 var isInCherryPickingState:bool
 var isInCherryCombineState:bool
@@ -24,6 +22,10 @@ var playerCamera:Node3D
 var playerRaycast:RayCast3D
 
 var playerItemHolderHand:Node3D
+
+# UI Vars
+var interationText:String
+var interactionTextNode:Label
 
 # Gameplay Vars
 
@@ -77,19 +79,47 @@ func get_cherry_count() -> int:
 
 func get_current_hovered_item() -> Node3D:
 	if playerRaycast.is_colliding():
-		var theObject = playerRaycast.get_collider()
+		var theObject:Node3D = playerRaycast.get_collider()
 		var theObjectsParent:Node3D = theObject.get_parent()
 		return theObjectsParent
 	return
+
+func _update_interaction_text() -> String:
+	if isHoldingItem:
+		return ""
+	elif !isHoldingItem:
+		if playerRaycast.is_colliding():
+			var theObject:Node3D = playerRaycast.get_collider()
+			var thatObjectParent:Node3D = theObject.get_parent()
+			if thatObjectParent.is_in_group("cherry"):
+				return "Press [E] to Pick."
+			elif thatObjectParent.is_in_group("table"):
+				return  "Press [E] to Use."
+			elif thatObjectParent.is_in_group("medicalpills"):
+				return "Press [E] to Grab."
+			elif thatObjectParent.is_in_group("medicalscanner"):
+				return "Press [E] to Grab."
+			else :
+				return ""
+		else :
+			return ""
+	return ""
 
 func set_hovered_to_held_item():
 	if !isHoldingItem:
 		var object:Node3D = get_current_hovered_item()
 		if playerRaycast.is_colliding():
-			if get_current_hovered_item():
-				if object.is_in_group("cherry"):
+			if object:
+				
+				if object.is_in_group("cherry") && object.canInteract == true:
 					currentHeldItem = object
 					isHoldingItem = true
+					currentHeldItemType = 'cherry'
+				elif object.is_in_group("medicalpills") && object.canInteract == true:
+					currentHeldItem = object
+					isHoldingItem = true
+					currentHeldItemType = 'medicalpills'
+	
 	else :
 		print("Could not pick item up: Already have one in hand.")
 
@@ -107,23 +137,21 @@ func _new_cherry_section() -> void:
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	# start
-	cherriesContainer = $cherries
+	cherriesContainer = $InteractableItems
 	
 	playerRaycast = $Player/cameraPos/RayCast3D
 	playerCamera = $Player/cameraPos
 	playerItemHolderHand = $Player/cameraPos/ItemHolder
 	
+	interactionTextNode = $UI/interactionText
+	
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
 	
 	_create_cherry_on_bush(cherryTypes[0], Vector3(0,0,0), Vector3(0,0,0), 1)
 	await get_tree().create_timer(1.5).timeout
 	_new_cherry_section()
 	_create_cherry_on_bush(cherryTypes[1], Vector3(0,0,0.3), Vector3(0,0,0), 1)
-	await get_tree().create_timer(1.5).timeout
-	#currentHeldItem = $cherries/CherryOnBush2
-	isHoldingCherry = true
-	await get_tree().create_timer(8.5).timeout
-	isHoldingCherry = true
 
 func _input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed("interact"):
@@ -132,17 +160,18 @@ func _input(event: InputEvent) -> void:
 func _physics_process(delta: float) -> void:
 	# Player Stuff
 	if isHoldingItem && currentHeldItem != null:
-		if isHoldingCherry == true && currentHeldItem != null:
+		if isHoldingItem == true && currentHeldItem != null:
 			currentHeldItem.rotation.y = playerItemHolderHand.global_rotation.y
 			currentHeldItem.rotation.x = playerItemHolderHand.global_rotation.x
-			currentHeldItem.position = lerp(Vector3(currentHeldItem.position.x, currentHeldItem.position.y, currentHeldItem.position.z), Vector3(playerItemHolderHand.global_position.x, playerItemHolderHand.global_position.y, playerItemHolderHand.global_position.z), 5 * delta)
+			currentHeldItem.position = lerp(Vector3(
+				currentHeldItem.position.x, currentHeldItem.position.y, currentHeldItem.position.z),
+				Vector3(playerItemHolderHand.global_position.x, playerItemHolderHand.global_position.y, playerItemHolderHand.global_position.z),
+				5 * delta)
 
 func _process(delta: float) -> void:
 	# Player Stuff
+	interactionTextNode.text = _update_interaction_text()
 	currentHoveredItem = get_current_hovered_item()
 	# Cherry Handler
 	if is_section_clear():
 		pass
-
-func _on_game_over() -> void:
-	pass # Replace with function body.

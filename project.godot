@@ -15,6 +15,11 @@ config/tags=PackedStringArray("3d", "base_game", "full_game", "horror")
 config/features=PackedStringArray("4.2", "Forward Plus")
 config/icon="res://icon.svg"
 
+[display]
+
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+
 [input]
 
 interact={
