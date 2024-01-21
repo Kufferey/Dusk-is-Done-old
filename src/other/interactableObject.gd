@@ -1,8 +1,11 @@
 extends Node3D
 class_name InteractableObject
 
-@export_category("Object Settings")
-@export var canInteract:bool
-@export var isHolding:bool
+## A Base class for intatable game objects.
 
-@onready var _modelNode:Node3D = $Model
+@export_category("Object Settings")
+## if true, that object can be iteracted with. (Pick up)
+@export var canInteract:bool
+## if true, Then your holding it.
+## @experimental
+@export var isHolding:bool

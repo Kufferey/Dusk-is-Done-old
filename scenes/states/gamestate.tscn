@@ -1,9 +1,8 @@
-[gd_scene load_steps=11 format=3 uid="uid://bfe0uacbmm1ay"]
+[gd_scene load_steps=10 format=3 uid="uid://bfe0uacbmm1ay"]
 
 [ext_resource type="Script" path="res://src/gameplay/gamestate.gd" id="1_8gblt"]
 [ext_resource type="Script" path="res://src/gameplay/Player.gd" id="2_q2ps6"]
 [ext_resource type="PackedScene" uid="uid://k71doxgciqfv" path="res://scenes/prefab/objects/equipment/medical_pills.tscn" id="4_fc4xa"]
-[ext_resource type="PackedScene" uid="uid://dch6a6f1daf6n" path="res://scenes/prefab/objects/cherryOnBush.tscn" id="4_mv128"]
 
 [sub_resource type="Theme" id="Theme_k5lch"]
 default_font_size = 55
@@ -91,6 +90,11 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = SubResource("Theme_roc6v")
 
+[node name="itemControlls" type="Label" parent="UI"]
+layout_mode = 1
+offset_right = 256.0
+offset_bottom = 128.0
+
 [node name="WorldObjects" type="Node3D" parent="."]
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldObjects"]
@@ -126,7 +130,7 @@ script = ExtResource("2_q2ps6")
 [node name="cameraPos" type="Node3D" parent="Player"]
 
 [node name="ItemHolder" type="Node3D" parent="Player/cameraPos"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0804005, -0.0862429, -0.0905782)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0962808, -0.0862429, -0.100495)
 
 [node name="Camera3D" type="Camera3D" parent="Player/cameraPos"]
 
@@ -136,9 +140,6 @@ target_position = Vector3(0, 0, -2)
 collide_with_areas = true
 
 [node name="InteractableItems" type="Node3D" parent="."]
-
-[node name="CherryOnBush3" parent="InteractableItems" instance=ExtResource("4_mv128")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.32255)
 
 [node name="MedicalPills" parent="InteractableItems" instance=ExtResource("4_fc4xa")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0169726, -0.163998, -0.279901)

@@ -1,55 +1,35 @@
 class_name CherryOnBush extends InteractableObject
 
+## A class of a cherry.
+
 @export_category("Cherry Options")
+## The type of cherry. 'normal', 'spoiled', 'donStory'
 @export var Type:String
-@export var Model:int
+## Check if good or not.
 @export var isGood:bool
-@export var isEatable:bool
 
 func _ready() -> void:
+	var modelNode:Node3D = $Model
 	match Type:
 		'normal':
+			modelNode.remove_child($Model/cherrySpoiled)
+			modelNode.remove_child($Model/cherryWithDon2005)
+			
+			var random:int = randi_range(0,1)
+			if random == 0:
+				modelNode.remove_child($Model/cherry2)
+			elif random != 0:
+				modelNode.remove_child($Model/cherry1)
+				
 			isGood = true
-			isEatable = true
-			var randomModel:int = randi_range(0, 1)
-			match randomModel:
-				0:
-					$Model/cherry1.show()
-					$Model/cherry2.hide()
-					$Model/cherrySpoiled.hide()
-					$Model/cherryWithDon2005.hide()
-				1:
-					$Model/cherry1.hide()
-					$Model/cherry2.show()
-					$Model/cherrySpoiled.hide()
-					$Model/cherryWithDon2005.hide()
 			
 		'spoiled':
-			isGood = false
-			isEatable = false
-			$Model/cherry1.hide()
-			$Model/cherry2.hide()
-			$Model/cherrySpoiled.show()
-			$Model/cherryWithDon2005.hide()
+			modelNode.remove_child($Model/cherry1)
+			modelNode.remove_child($Model/cherry2)
+			modelNode.remove_child($Model/cherryWithDon2005)
 			
-		'donStory':
 			isGood = false
-			isEatable = false
-			$Model/cherry1.hide()
-			$Model/cherry2.hide()
-			$Model/cherryWithDon2005.show()
+		'donStory':
+			pass
 		_:
 			Type = 'normal'
-	#match Model:
-		#0:
-			#pass
-		#1:
-			#pass
-		#2:
-			#pass
-		#3:
-			#pass
-		#4:
-			#pass
-		#_:
-			#pass
