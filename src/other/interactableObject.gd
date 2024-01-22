@@ -1,7 +1,7 @@
 extends Node3D
 class_name InteractableObject
 
-## A Base class for intatable game objects.
+## A Base class for interactable game objects.
 
 @export_category("Object Settings")
 ## if true, that object can be iteracted with. (Pick up)

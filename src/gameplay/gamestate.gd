@@ -1,19 +1,21 @@
-extends Node3D
+class_name GameState extends Node3D
 
 # Item Var
-var interationObjectsContainer:Node3D
+var interationObjectsContainer:Node3D ## The node that all World interatable objects go to.
 
-var cherryTypes:Array[String] = ['normal', 'spoiled']
-var cherryTypesStory:Array[String]
+var cherryTypes:Array[String] = ['normal', 'spoiled'] ## The cherry types that will get added to bush. 'normal', 'spoiled by default.'
+var cherryTypesStory:Array[String] ## Any Story related item to add to cherry bush. 'donStory', 'killed2004'
 
-var cherrySection:int
+var cherrySection:int ## The section your on.
 
 # Player Vars
-var isHoldingItem:bool
+var playerHealth:float ## Player Health. 0 to 1.
+
+var isHoldingItem:bool ## Checks if holding item.
 
 var currentHeldItemType:String ## cherry, medicalpills, medicalscanner
-var currentHeldItem:Node3D
-var currentHoveredItem:Node3D
+var currentHeldItem:InteractableObject ## Current item in hand
+var currentHoveredItem:InteractableObject ## Current Object your looking at.
 
 var isInCherryPickingState:bool
 var isInCherryCombineState:bool
@@ -28,6 +30,8 @@ var interationText:String
 var interactionTextNode:Label
 var itemControllsTextNode:Label
 
+var DebuggingText:Label
+
 # Gameplay Vars
 
 func _create_cherry_on_bush(typeOfCherry:String, positionObject:Vector3, rotationObject:Vector3, amount:int) -> void:
@@ -36,7 +40,7 @@ func _create_cherry_on_bush(typeOfCherry:String, positionObject:Vector3, rotatio
 		amount = 5
 	
 	for i in amount:
-		var cherryOnBushInstance:Node3D = load("res://scenes/prefab/objects/cherryOnBush.tscn").instantiate()
+		var cherryOnBushInstance:CherryOnBush = load("res://scenes/prefab/objects/cherryOnBush.tscn").instantiate()
 		cherryOnBushInstance.Type = typeOfCherry
 		cherryOnBushInstance.position = positionObject
 		cherryOnBushInstance.rotation = rotationObject
@@ -87,10 +91,10 @@ func get_cherry_count() -> int:
 	var currentCherries:int = interationObjectsContainer.get_child_count(true)
 	return currentCherries
 
-func get_current_hovered_item() -> Node3D:
+func get_current_hovered_item() -> InteractableObject:
 	if playerRaycast.is_colliding():
 		var theObject:Node3D = playerRaycast.get_collider()
-		var theObjectsParent:Node3D = theObject.get_parent()
+		var theObjectsParent:InteractableObject = theObject.get_parent()
 		return theObjectsParent
 	return
 
@@ -103,7 +107,7 @@ func _update_current_controls_text() -> String:
 			currentHeldItemType == 'medicalpills' 
 			|| currentHeldItemType == 'medicalscanner'
 		):
-			return "Press [Q] to Drop.\nPress [RMB] to Use."
+			return "Press [Q] to Drop.\nPress [LMB] to Use."
 			
 	elif !isHoldingItem:
 		return ""
@@ -115,15 +119,15 @@ func _update_interaction_text() -> String:
 	elif !isHoldingItem:
 		if playerRaycast.is_colliding():
 			var theObject:Node3D = playerRaycast.get_collider()
-			var thatObjectParent:Node3D = theObject.get_parent()
+			var theObjectParent:InteractableObject = theObject.get_parent()
 			
-			if thatObjectParent.is_in_group("cherry"):
+			if theObjectParent.is_in_group("cherry"):
 				return "Press [E] to Pick."
-			elif thatObjectParent.is_in_group("table"):
+			elif theObjectParent.is_in_group("table"):
 				return  "Press [E] to Use."
-			elif thatObjectParent.is_in_group("medicalpills"):
+			elif theObjectParent.is_in_group("medicalpills"):
 				return "Press [E] to Grab."
-			elif thatObjectParent.is_in_group("medicalscanner"):
+			elif theObjectParent.is_in_group("medicalscanner"):
 				return "Press [E] to Grab."
 			
 			else :
@@ -133,15 +137,28 @@ func _update_interaction_text() -> String:
 	return ""
 
 func _use_item() -> void:
-	match currentHeldItemType:
-		'cherry':
-			pass
-		'medicalpills':
-			pass
-		'medicalscanner':
-			pass
+	if (
+		isHoldingItem == true
+		&& currentHeldItem != null
+		&& currentHeldItemType != ""
+	):
+		match currentHeldItemType:
+			'cherry':
+				pass
+			'medicalpills':
+				currentHeldItem.emit_signal("consumeMedicalPills")
+				await (get_tree().create_timer(1.7).timeout)
+				playerHealth += 0.2
+				_reset_all_hold_items()
+			'medicalscanner':
+				pass
 
-func set_hovered_to_held_item():
+func _reset_all_hold_items() -> void:
+	isHoldingItem = false
+	currentHeldItem = null
+	currentHeldItemType = ""
+
+func set_hovered_to_held_item() -> void:
 	if !isHoldingItem:
 		var object:Node3D = get_current_hovered_item()
 		if playerRaycast.is_colliding():
@@ -184,12 +201,14 @@ func _ready() -> void:
 	# start
 	interationObjectsContainer = $InteractableItems
 	
+	playerHealth = 1
 	playerRaycast = $Player/cameraPos/RayCast3D
 	playerCamera = $Player/cameraPos
 	playerItemHolderHand = $Player/cameraPos/ItemHolder
 	
 	interactionTextNode = $UI/interactionText
 	itemControllsTextNode = $UI/itemControlls
+	DebuggingText = $UI/DebugText
 	
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
@@ -200,6 +219,9 @@ func _ready() -> void:
 func _input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed("interact"):
 		set_hovered_to_held_item()
+		
+	if Input.is_action_just_pressed("use"):
+		_use_item()
 
 func _physics_process(delta: float) -> void:
 	# Player Stuff
@@ -218,12 +240,40 @@ func _physics_process(delta: float) -> void:
 				Vector3(playerItemHolderHand.global_position.x, playerItemHolderHand.global_position.y, playerItemHolderHand.global_position.z),
 				5 * delta)
 
+func _debug_Update() -> String:
+	return (
+		(
+			"ITEM HAND/HOVER STATS:" +
+			"\n" +
+			"\n" +
+			"Current Held Item: " + str(currentHeldItem) +
+			"\n" +
+			"Current Hovered Item: " + str(currentHoveredItem) +
+			"\n" +
+			"Current Held Item Type: " + str(currentHeldItemType) +
+			"\n" +
+			"\n" +
+			"PLAYER STATS:" +
+			"\n" +
+			"\n" +
+			"PlayerHealth: " + str(playerHealth)
+		)
+	)
+
 func _process(delta: float) -> void:
+	# debug
+	
+	DebuggingText.text = _debug_Update()
+	
 	# Player Stuff
 	interactionTextNode.text = _update_interaction_text()
 	itemControllsTextNode.text = _update_current_controls_text()
 	
 	currentHoveredItem = get_current_hovered_item()
+	
+	if playerHealth > 1:
+		playerHealth = 1
+	
 	# Cherry Handler
 	if is_section_clear():
 		pass

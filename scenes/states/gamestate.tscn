@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://src/gameplay/gamestate.gd" id="1_8gblt"]
 [ext_resource type="Script" path="res://src/gameplay/Player.gd" id="2_q2ps6"]
-[ext_resource type="PackedScene" uid="uid://k71doxgciqfv" path="res://scenes/prefab/objects/equipment/medical_pills.tscn" id="4_fc4xa"]
+[ext_resource type="PackedScene" uid="uid://k71doxgciqfv" path="res://scenes/prefab/objects/equipment/medical_pills.tscn" id="3_f2wx4"]
 
 [sub_resource type="Theme" id="Theme_k5lch"]
 default_font_size = 55
@@ -17,39 +17,18 @@ corner_radius_bottom_left = 25
 [sub_resource type="Theme" id="Theme_roc6v"]
 Panel/styles/panel = SubResource("StyleBoxFlat_krho7")
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_40mp6"]
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_4w4pv"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
-ground_bottom_color = Color(0, 0.215686, 0.0666667, 1)
 ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
-ground_curve = 0.00015625
-ground_energy_multiplier = 0.7
-sun_angle_max = 30.45
-sun_curve = 0.0832177
 
-[sub_resource type="Sky" id="Sky_j4gta"]
-sky_material = SubResource("ProceduralSkyMaterial_40mp6")
+[sub_resource type="Sky" id="Sky_1jcs2"]
+sky_material = SubResource("ProceduralSkyMaterial_4w4pv")
 
-[sub_resource type="Environment" id="Environment_yuofw"]
+[sub_resource type="Environment" id="Environment_q17ch"]
 background_mode = 2
-sky = SubResource("Sky_j4gta")
-ssr_depth_tolerance = 128.0
-ssao_enabled = true
-ssao_radius = 4.89
-ssao_intensity = 16.0
-ssao_power = 15.2947
-ssao_detail = 5.0
-ssao_horizon = 0.75
-ssao_sharpness = 1.0
-ssao_light_affect = 1.0
-ssao_ao_channel_affect = 1.0
-ssil_radius = 16.0
-ssil_intensity = 16.0
+sky = SubResource("Sky_1jcs2")
+tonemap_mode = 2
 glow_enabled = true
-glow_strength = 1.7
-glow_bloom = 0.25
-glow_blend_mode = 4
-adjustment_enabled = true
-adjustment_saturation = 2.15
 
 [node name="Gamestate" type="Node3D"]
 script = ExtResource("1_8gblt")
@@ -95,10 +74,22 @@ layout_mode = 1
 offset_right = 256.0
 offset_bottom = 128.0
 
+[node name="DebugText" type="Label" parent="UI"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 23.0
+grow_horizontal = 0
+
 [node name="WorldObjects" type="Node3D" parent="."]
 
+[node name="WorldEnvironment" type="WorldEnvironment" parent="WorldObjects"]
+environment = SubResource("Environment_q17ch")
+
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldObjects"]
-transform = Transform3D(-0.387622, 0.921763, -0.0101184, -0.893545, -0.373013, 0.249877, 0.226553, 0.105899, 0.968225, 0, 0, 0)
+transform = Transform3D(-0.387622, 0.921763, -0.0101182, 0.921403, 0.387754, 0.0257568, 0.027665, 0.00066094, -0.999617, 0, 0, 0)
 light_color = Color(1, 0.513726, 0, 1)
 light_angular_distance = 15.0
 light_bake_mode = 1
@@ -110,19 +101,6 @@ shadow_blur = 5.0
 directional_shadow_mode = 1
 directional_shadow_blend_splits = true
 sky_mode = 2
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="WorldObjects"]
-environment = SubResource("Environment_yuofw")
-
-[node name="SpotLight3D" type="SpotLight3D" parent="WorldObjects"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5.98213)
-light_color = Color(0.784314, 0.709804, 0, 1)
-light_energy = 4.048
-light_specular = 0.0
-shadow_enabled = true
-distance_fade_enabled = true
-spot_range = 4096.0
-spot_attenuation = 0.233258
 
 [node name="Player" type="Node3D" parent="."]
 script = ExtResource("2_q2ps6")
@@ -141,5 +119,5 @@ collide_with_areas = true
 
 [node name="InteractableItems" type="Node3D" parent="."]
 
-[node name="MedicalPills" parent="InteractableItems" instance=ExtResource("4_fc4xa")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0169726, -0.163998, -0.279901)
+[node name="MedicalPills" parent="InteractableItems" instance=ExtResource("3_f2wx4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0560369, -0.247752)
