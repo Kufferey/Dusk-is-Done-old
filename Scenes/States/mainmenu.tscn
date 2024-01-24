@@ -1,0 +1,42 @@
+[gd_scene load_steps=8 format=3 uid="uid://csft04orp86k2"]
+
+[ext_resource type="Script" path="res://Src/Menus/mainmenu.gd" id="1_cx8so"]
+[ext_resource type="Shader" path="res://Src/Menus/mainmenu/cherryShader.gdshader" id="2_4ueo3"]
+[ext_resource type="PackedScene" uid="uid://dtxecb7dh11gl" path="res://Scenes/Prefabs/mainmenu/menu_ui.tscn" id="3_la75e"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_s5hbg"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_34rai"]
+sky_material = SubResource("ProceduralSkyMaterial_s5hbg")
+
+[sub_resource type="Environment" id="Environment_cca25"]
+background_mode = 2
+sky = SubResource("Sky_34rai")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_eudxu"]
+render_priority = 0
+shader = ExtResource("2_4ueo3")
+
+[node name="MainMenu" type="Node2D"]
+script = ExtResource("1_cx8so")
+
+[node name="MenuScreen" type="Node3D" parent="."]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="MenuScreen"]
+environment = SubResource("Environment_cca25")
+
+[node name="Camera3D" type="Camera3D" parent="MenuScreen"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="MenuScreen"]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
+
+[node name="CSGBox3D" type="CSGBox3D" parent="MenuScreen"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.79748)
+material = SubResource("ShaderMaterial_eudxu")
+
+[node name="MenuUi" parent="." instance=ExtResource("3_la75e")]
