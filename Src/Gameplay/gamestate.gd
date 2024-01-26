@@ -12,6 +12,8 @@ var currentHoveredItem:InteractableObject ## Current Object your looking at.
 var isInCherryPickingState:bool
 var isInCherryCombineState:bool
 
+var canInteract:bool
+
 var playerCamera:Node3D
 var playerRaycast:RayCast3D
 
@@ -26,6 +28,12 @@ var DebuggingText:Label
 
 # Gameplay Vars
 
+var interactableItemList:Array[String] = [
+	'cherry',          # 0
+	'medicalpills',    # 1
+	'medicalscanner'   # 2
+]
+
 # - Cherry
 
 var cherryTypes:Array[String] = ['normal', 'spoiled'] ## The cherry types that will get added to bush. 'normal', 'spoiled by default.'
@@ -33,7 +41,7 @@ var cherryTypesStory:Array[String] ## Any Story related item to add to cherry bu
 
 var cherrySection:int ## The section your on.
 
-# Item Var (Lag Spike fix)
+# Item Preload (Lag Spike fix)
 
 @onready var cherryOnBush:PackedScene = preload("res://Scenes/Prefabs/objects/cherryOnBush.tscn")
 @onready var medicalPills:PackedScene = preload("res://Scenes/Prefabs/objects/equipment/medical_pills.tscn")
@@ -108,14 +116,14 @@ func get_current_hovered_item() -> InteractableObject:
 
 func _update_current_controls_text() -> String:
 	if isHoldingItem:
-
-		if currentHeldItemType == 'cherry':
-			return "Press [Q] to Drop."
+		
+		if currentHeldItemType == interactableItemList[0]:
+			return "Press [E] while looking at table to Drop."
 		elif (
-			currentHeldItemType == 'medicalpills' 
-			|| currentHeldItemType == 'medicalscanner'
+			currentHeldItemType == interactableItemList[1] 
+			|| currentHeldItemType == interactableItemList[2]
 		):
-			return "Press [Q] to Drop.\nPress [LMB] to Use."
+			return "Press [E] while looking at table to Drop.\nPress [LMB] to Use."
 			
 	elif !isHoldingItem:
 		return ""
@@ -129,13 +137,13 @@ func _update_interaction_text() -> String:
 			var theObject:Node3D = playerRaycast.get_collider()
 			var theObjectParent:InteractableObject = theObject.get_parent()
 			
-			if theObjectParent.is_in_group("cherry"):
+			if theObjectParent.is_in_group(interactableItemList[0]):
 				return "Press [E] to Pick."
 			elif theObjectParent.is_in_group("table"):
 				return  "Press [E] to Use."
-			elif theObjectParent.is_in_group("medicalpills"):
+			elif theObjectParent.is_in_group(interactableItemList[1]):
 				return "Press [E] to Grab."
-			elif theObjectParent.is_in_group("medicalscanner"):
+			elif theObjectParent.is_in_group(interactableItemList[2]):
 				return "Press [E] to Grab."
 			
 			else :
@@ -153,17 +161,28 @@ func _use_item() -> void:
 		match currentHeldItemType:
 			'cherry':
 				pass
+				
 			'medicalpills':
 				currentHeldItem.emit_signal("consumeMedicalPills")
+				
 				await (get_tree().create_timer(1.7).timeout)
+				
 				playerHealth += 0.2
 				_reset_all_hold_items()
+			
 			'medicalscanner':
 				pass
+
+func _new_held_item(isHolding:bool, newHeldItem:InteractableObject, canInteract:bool, newHeldType:String) -> void:
+	isHoldingItem = isHolding
+	currentHeldItem = newHeldItem
+	canInteract = canInteract
+	currentHeldItemType = newHeldType
 
 func _reset_all_hold_items() -> void:
 	isHoldingItem = false
 	currentHeldItem = null
+	canInteract = true
 	currentHeldItemType = ""
 
 func set_hovered_to_held_item() -> void:
@@ -174,20 +193,26 @@ func set_hovered_to_held_item() -> void:
 			if object:
 				
 				if (
-					object.is_in_group("cherry") 
+					object.is_in_group(interactableItemList[0]) 
 					&& object.canInteract == true
 				):
-					currentHeldItem = object
-					isHoldingItem = true
-					currentHeldItemType = 'cherry'
+					_new_held_item(
+						true,
+						object,
+						false,
+						interactableItemList[0]
+					)
 				
 				elif (
-					object.is_in_group("medicalpills") 
+					object.is_in_group(interactableItemList[1]) 
 					&& object.canInteract == true
 				):
-					currentHeldItem = object
-					isHoldingItem = true
-					currentHeldItemType = 'medicalpills'
+					_new_held_item(
+						true,
+						object,
+						false,
+						interactableItemList[1]
+					)
 					
 				print("\nCurrent held item: ", currentHeldItem, "\nThe type of this object: ", currentHeldItemType)
 	else :
@@ -195,7 +220,10 @@ func set_hovered_to_held_item() -> void:
 
 func is_section_clear() -> bool:
 	var cherryCount:int = interationObjectsContainer.get_child_count(true)
-	if (cherryCount <= 0):
+	if (
+		cherryCount <= 0
+		|| cherryCount == null
+	):
 		return true
 	else :
 		return false
@@ -237,6 +265,8 @@ func _ready() -> void:
 	playerCamera = $Player/cameraPos
 	playerItemHolderHand = $Player/cameraPos/ItemHolder
 	
+	canInteract = true
+	
 	interactionTextNode = $UI/interactionText
 	itemControllsTextNode = $UI/itemControlls
 	DebuggingText = $UI/DebugText
@@ -254,7 +284,10 @@ func _ready() -> void:
 	_create_cherry_on_bush(cherryTypes[0], Vector3(0.0,0.5,0), Vector3(0,0,0), 1)
 
 func _input(event: InputEvent) -> void:
-	if Input.is_action_just_pressed("interact"):
+	if (
+		Input.is_action_just_pressed("interact")
+		&& canInteract == true
+	):
 		set_hovered_to_held_item()
 		
 	if Input.is_action_just_pressed("use"):
