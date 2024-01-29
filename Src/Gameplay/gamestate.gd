@@ -1,7 +1,16 @@
 class_name GameState extends Node3D
 
+signal newDay(dayName:String, scoreForComplete:float)
+
+# Day Vars
+var currentDay:int
+var currentDaysPast:int
+
 # Player Vars
 var playerHealth:float ## Player Health. 0 to 1.
+var playerScore:int
+
+var currentTableItems:Array
 
 var isHoldingItem:bool ## Checks if holding item.
 
@@ -40,11 +49,20 @@ var cherryTypes:Array[String] = ['normal', 'spoiled'] ## The cherry types that w
 var cherryTypesStory:Array[String] ## Any Story related item to add to cherry bush. 'donStory', 'killed2004'
 
 var cherrySection:int ## The section your on.
+var lastCherrySection:int ## The last section your on.
 
 # Item Preload (Lag Spike fix)
 
-@onready var cherryOnBush:PackedScene = preload("res://Scenes/Prefabs/objects/cherryOnBush.tscn")
-@onready var medicalPills:PackedScene = preload("res://Scenes/Prefabs/objects/equipment/medical_pills.tscn")
+#Old
+#@onready
+#var cherryOnBush:PackedScene = preload("res://Scenes/Prefabs/objects/cherryOnBush.tscn")
+#@onready
+#var medicalPills:PackedScene = preload("res://Scenes/Prefabs/objects/equipment/medical_pills.tscn")
+
+@export_category("Game Objects")
+@export_group("Items")
+@export var cherryOnBush:PackedScene = preload("res://Scenes/Prefabs/objects/cherryOnBush.tscn")
+@export var medicalPills:PackedScene = preload("res://Scenes/Prefabs/objects/equipment/medical_pills.tscn")
 
 # - Nodes
 var interationObjectsContainer:Node3D ## The node that all World interatable objects go to.
@@ -61,7 +79,7 @@ func _create_cherry_on_bush(typeOfCherry:String, positionObject:Vector3, rotatio
 		cherryOnBushInstance.position = positionObject
 		cherryOnBushInstance.rotation = rotationObject
 		
-		interationObjectsContainer.add_child(cherryOnBushInstance)
+		interationObjectsContainer.get_node('Cherries').add_child(cherryOnBushInstance)
 		
 	print(amount, " ", typeOfCherry, " Cherry(s) Created. ", " AT POSITION: ", positionObject, " ROTATION OF: ", rotationObject)
 
@@ -71,8 +89,8 @@ func _remove_all_cherries() -> void:
 	
 	if (
 		totalCount <= 0 
-	|| totalObjects == [] 
-	|| totalObjects.is_empty()
+		|| totalObjects == [] 
+		|| totalObjects.is_empty()
 	):
 		print("Could not remove objects. None to remove.")
 		return
@@ -87,25 +105,32 @@ func _remove_all_cherries() -> void:
 	
 	print(totalCount, " Objects Deleted.")
 
-func _create_object_from_prefab(pathToPrefab:String, objectPosition:Vector3, objectRotation:Vector3) -> void:
-	var prefabFullPath:String = ("res://Scenes/Prefabs/" + pathToPrefab)
-	if prefabFullPath:
-		if prefabFullPath == null:
-			print("Object could not be created. No pathToPrefab argument.")
+func _create_object_from_prefab(prefab:PackedScene, objectPosition:Vector3, objectRotation:Vector3) -> void:
+	var loadedObject:Node3D = prefab.instantiate()
+	if loadedObject:
+		if loadedObject == null:
+			print("Object could not be created. No prefab argument.")
 			return
-		elif prefabFullPath != null:
-			var objectInstance:Node3D = load(pathToPrefab).instantiate()
-			objectInstance.rotation = objectRotation
-			objectInstance.position = objectPosition
+		elif loadedObject != null:
+			loadedObject.rotation = objectRotation
+			loadedObject.position = objectPosition
 			
-			add_child(objectInstance)
+			print("Added Prefab: " + str(loadedObject))
+			interationObjectsContainer.add_child(loadedObject)
 
 func add_cherry_type(newType:String) -> void:
 	cherryTypes.append(newType)
 
+func add_table_item(newItem:String) -> void:
+	currentTableItems.append(newItem)
+
 func get_cherry_count() -> int:
 	var currentCherries:int = interationObjectsContainer.get_child_count(true)
 	return currentCherries
+
+func get_current_table_items() -> Array:
+	var placeholder:Array = ["medicalpills"]
+	return placeholder
 
 func get_current_hovered_item() -> InteractableObject:
 	if playerRaycast.is_colliding():
@@ -165,9 +190,9 @@ func _use_item() -> void:
 			'medicalpills':
 				currentHeldItem.emit_signal("consumeMedicalPills")
 				
-				await (get_tree().create_timer(1.7).timeout)
+				await (get_tree().create_timer(2).timeout)
 				
-				playerHealth += 0.2
+				playerHealth += 0.32
 				_reset_all_hold_items()
 			
 			'medicalscanner':
@@ -219,7 +244,7 @@ func set_hovered_to_held_item() -> void:
 		print("Could not pick item up: Already have one in hand.")
 
 func is_section_clear() -> bool:
-	var cherryCount:int = interationObjectsContainer.get_child_count(true)
+	var cherryCount:int = interationObjectsContainer.get_node("Cherries").get_child_count(true)
 	if (
 		cherryCount <= 0
 		|| cherryCount == null
@@ -229,6 +254,7 @@ func is_section_clear() -> bool:
 		return false
 
 func _new_cherry_section() -> void:
+	lastCherrySection = cherrySection
 	cherrySection += 1
 	print("New Cherry Section: ", cherrySection)
 
@@ -260,7 +286,7 @@ func _ready() -> void:
 	# start
 	interationObjectsContainer = $InteractableItems
 	
-	playerHealth = 1
+	playerHealth = .1
 	playerRaycast = $Player/cameraPos/RayCast3D
 	playerCamera = $Player/cameraPos
 	playerItemHolderHand = $Player/cameraPos/ItemHolder
@@ -272,7 +298,7 @@ func _ready() -> void:
 	DebuggingText = $UI/DebugText
 	
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-	DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+	DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN)
 	
 	await get_tree().create_timer(1.5).timeout
 	_create_cherry_on_bush(cherryTypes[0], Vector3(0.5,0,0), Vector3(0,0,0), 1)
@@ -281,11 +307,11 @@ func _ready() -> void:
 	await get_tree().create_timer(1.5).timeout
 	_create_cherry_on_bush(cherryTypes[0], Vector3(-0.5,0,0), Vector3(0,0,0), 1)
 	await get_tree().create_timer(1.5).timeout
-	_create_cherry_on_bush(cherryTypes[0], Vector3(0.0,0.5,0), Vector3(0,0,0), 1)
+	_create_object_from_prefab(medicalPills, Vector3(0, 0.4, 0), Vector3(0,0,0))
 
 func _input(event: InputEvent) -> void:
 	if (
-		Input.is_action_just_pressed("interact")
+		event.is_action_pressed("interact")
 		&& canInteract == true
 	):
 		set_hovered_to_held_item()
@@ -296,19 +322,16 @@ func _input(event: InputEvent) -> void:
 func _physics_process(delta: float) -> void:
 	# Player Stuff
 	if (
-		isHoldingItem
+		isHoldingItem == true
 		&& currentHeldItem != null
 	):
-		if (
-			isHoldingItem == true
-			&& currentHeldItem != null
-		):
-			currentHeldItem.rotation.y = playerItemHolderHand.global_rotation.y
-			currentHeldItem.rotation.x = playerItemHolderHand.global_rotation.x
-			currentHeldItem.position = lerp(Vector3(
-				currentHeldItem.position.x, currentHeldItem.position.y, currentHeldItem.position.z),
-				Vector3(playerItemHolderHand.global_position.x, playerItemHolderHand.global_position.y, playerItemHolderHand.global_position.z),
-				5 * delta)
+		currentHeldItem.rotation.z = playerItemHolderHand.global_rotation.z
+		currentHeldItem.rotation.y = playerItemHolderHand.global_rotation.y
+		currentHeldItem.rotation.x = playerItemHolderHand.global_rotation.x
+		currentHeldItem.position = lerp(Vector3(
+			currentHeldItem.position.x, currentHeldItem.position.y, currentHeldItem.position.z),
+			Vector3(playerItemHolderHand.global_position.x, playerItemHolderHand.global_position.y, playerItemHolderHand.global_position.z),
+			5.5 * delta)
 
 func _process(delta: float) -> void:
 	# debug
@@ -319,6 +342,7 @@ func _process(delta: float) -> void:
 	interactionTextNode.text = _update_interaction_text()
 	itemControllsTextNode.text = _update_current_controls_text()
 	
+	currentTableItems = get_current_table_items()
 	currentHoveredItem = get_current_hovered_item()
 	
 	if playerHealth > 1:
