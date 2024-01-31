@@ -331,7 +331,7 @@ func _physics_process(delta: float) -> void:
 		currentHeldItem.position = lerp(Vector3(
 			currentHeldItem.position.x, currentHeldItem.position.y, currentHeldItem.position.z),
 			Vector3(playerItemHolderHand.global_position.x, playerItemHolderHand.global_position.y, playerItemHolderHand.global_position.z),
-			5.5 * delta)
+			9.5 * delta)
 
 func _process(delta: float) -> void:
 	# debug
