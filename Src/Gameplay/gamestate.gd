@@ -257,32 +257,6 @@ func _on_new_day(dayName: String, dayEvents: Array, dayDescription: String, dayS
 	currentDay += 1
 	
 	playerScore += scoreForComplete
-	
-	var daySave:Dictionary = {
-		 "Day " + str(currentDay): {
-			"Name": dayName,
-			"Events": dayEvents,
-			"Description": dayDescription,
-			"Data": daySaveData
-		}
-	}
-	
-	#var folder:bool = DirAccess.dir_exists_absolute("user://Days")
-	#if !folder:
-		#var folderDirectory = DirAccess.make_dir_recursive_absolute("user://Days/ " + "Day " + str(currentDay))
-		#var file = FileAccess.open("user://Days/ " + "Day " + str(currentDay), FileAccess.WRITE)
-		#
-		#var Json:JSON = JSON.new()
-		#
-		#file.store_string(
-			#Json.stringify(
-			#daySave
-		#))
-		#
-		#file.close()
-		#file = null
-		#folderDirectory = null
-		#print("Created dir GREATLY")
 
 func _new_cherry_section() -> void:
 	lastCherrySection = cherrySection
@@ -316,14 +290,6 @@ func _debug_Update() -> String:
 func _ready() -> void:
 	# start
 	interationObjectsContainer = $InteractableItems
-	
-	# dayName: String, dayEvents: Dictionary, dayDescription: String, daySaveData: Dictionary, scoreForComplete: float
-	#super.emit_signal("newDay", "Day TEST", [
-		#'don', 'phill', 'smuggler', 'rain'
-	#], "A rainy Day - Desc", {
-		#"score": 0,
-		#"Section": 0
-	#}, 256.4)
 	
 	playerHealth = 1
 	playerRaycast = $Player/cameraPos/RayCast3D
