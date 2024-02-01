@@ -1,6 +1,6 @@
 class_name GameState extends Node3D
 
-signal newDay(dayName:String, scoreForComplete:float)
+signal newDay(dayName:String, dayEvents:Array, dayDescription:String, daySaveData:Dictionary, scoreForComplete:float)
 
 # Day Vars
 var currentDay:int
@@ -36,7 +36,6 @@ var itemControllsTextNode:Label
 var DebuggingText:Label
 
 # Gameplay Vars
-
 var interactableItemList:Array[String] = [
 	'cherry',          # 0
 	'medicalpills',    # 1
@@ -253,6 +252,38 @@ func is_section_clear() -> bool:
 	else :
 		return false
 
+func _on_new_day(dayName: String, dayEvents: Array, dayDescription: String, daySaveData: Dictionary, scoreForComplete: float) -> void:
+	currentDaysPast = currentDay
+	currentDay += 1
+	
+	playerScore += scoreForComplete
+	
+	var daySave:Dictionary = {
+		 "Day " + str(currentDay): {
+			"Name": dayName,
+			"Events": dayEvents,
+			"Description": dayDescription,
+			"Data": daySaveData
+		}
+	}
+	
+	#var folder:bool = DirAccess.dir_exists_absolute("user://Days")
+	#if !folder:
+		#var folderDirectory = DirAccess.make_dir_recursive_absolute("user://Days/ " + "Day " + str(currentDay))
+		#var file = FileAccess.open("user://Days/ " + "Day " + str(currentDay), FileAccess.WRITE)
+		#
+		#var Json:JSON = JSON.new()
+		#
+		#file.store_string(
+			#Json.stringify(
+			#daySave
+		#))
+		#
+		#file.close()
+		#file = null
+		#folderDirectory = null
+		#print("Created dir GREATLY")
+
 func _new_cherry_section() -> void:
 	lastCherrySection = cherrySection
 	cherrySection += 1
@@ -286,7 +317,15 @@ func _ready() -> void:
 	# start
 	interationObjectsContainer = $InteractableItems
 	
-	playerHealth = .1
+	# dayName: String, dayEvents: Dictionary, dayDescription: String, daySaveData: Dictionary, scoreForComplete: float
+	#super.emit_signal("newDay", "Day TEST", [
+		#'don', 'phill', 'smuggler', 'rain'
+	#], "A rainy Day - Desc", {
+		#"score": 0,
+		#"Section": 0
+	#}, 256.4)
+	
+	playerHealth = 1
 	playerRaycast = $Player/cameraPos/RayCast3D
 	playerCamera = $Player/cameraPos
 	playerItemHolderHand = $Player/cameraPos/ItemHolder
