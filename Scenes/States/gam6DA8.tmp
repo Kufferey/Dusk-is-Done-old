@@ -32,6 +32,8 @@ glow_enabled = true
 
 [node name="Gamestate" type="Node3D"]
 script = ExtResource("1_8gblt")
+cherryOnBush = null
+medicalPills = null
 
 [node name="UI" type="Control" parent="."]
 layout_mode = 3
@@ -127,5 +129,4 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0560369, -0.247752)
 [node name="MedicalPills2" parent="InteractableItems" instance=ExtResource("3_f2wx4")]
 transform = Transform3D(-0.175521, 0, -0.984476, 0, 1, 0, 0.984476, 0, -0.175521, 0.228653, -0.0560369, -0.247752)
 
-[connection signal="hasDied" from="." to="." method="_on_has_died"]
 [connection signal="newDay" from="." to="." method="_on_new_day"]
