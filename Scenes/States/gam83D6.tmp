@@ -1,0 +1,130 @@
+[gd_scene load_steps=10 format=3 uid="uid://bfe0uacbmm1ay"]
+
+[ext_resource type="Script" path="res://Src/Gameplay/gamestate.gd" id="1_8gblt"]
+[ext_resource type="Script" path="res://Src/Gameplay/Player.gd" id="2_q2ps6"]
+[ext_resource type="PackedScene" uid="uid://k71doxgciqfv" path="res://Scenes/Prefabs/objects/equipment/medical_pills.tscn" id="3_f2wx4"]
+
+[sub_resource type="Theme" id="Theme_k5lch"]
+default_font_size = 55
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_krho7"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 25
+corner_radius_top_right = 25
+corner_radius_bottom_right = 25
+corner_radius_bottom_left = 25
+
+[sub_resource type="Theme" id="Theme_roc6v"]
+Panel/styles/panel = SubResource("StyleBoxFlat_krho7")
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_4w4pv"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_1jcs2"]
+sky_material = SubResource("ProceduralSkyMaterial_4w4pv")
+
+[sub_resource type="Environment" id="Environment_q17ch"]
+background_mode = 2
+sky = SubResource("Sky_1jcs2")
+tonemap_mode = 2
+glow_enabled = true
+
+[node name="Gamestate" type="Node3D"]
+script = ExtResource("1_8gblt")
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="interactionText" type="Label" parent="UI"]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = 116.0
+offset_bottom = 192.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_k5lch")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="curser" type="Panel" parent="UI"]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = 568.0
+offset_top = -12.0
+offset_right = -568.0
+offset_bottom = 4.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_roc6v")
+
+[node name="itemControlls" type="Label" parent="UI"]
+layout_mode = 1
+offset_right = 256.0
+offset_bottom = 128.0
+
+[node name="DebugText" type="Label" parent="UI"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 23.0
+grow_horizontal = 0
+
+[node name="WorldObjects" type="Node3D" parent="."]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="WorldObjects"]
+environment = SubResource("Environment_q17ch")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldObjects"]
+transform = Transform3D(-0.387622, 0.921763, -0.0101182, 0.921403, 0.387754, 0.0257568, 0.027665, 0.00066094, -0.999617, 0, 0, 0)
+light_color = Color(1, 0.513726, 0, 1)
+light_angular_distance = 15.0
+light_bake_mode = 1
+light_cull_mask = 4294966273
+shadow_enabled = true
+shadow_bias = 10.0
+shadow_normal_bias = 10.0
+shadow_blur = 5.0
+directional_shadow_mode = 1
+directional_shadow_blend_splits = true
+sky_mode = 2
+
+[node name="Player" type="Node3D" parent="."]
+script = ExtResource("2_q2ps6")
+
+[node name="cameraPos" type="Node3D" parent="Player"]
+
+[node name="ItemHolder" type="Node3D" parent="Player/cameraPos"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.096, -0.1, -0.1)
+
+[node name="Camera3D" type="Camera3D" parent="Player/cameraPos"]
+
+[node name="RayCast3D" type="RayCast3D" parent="Player/cameraPos"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.159193)
+target_position = Vector3(0, 0, -2)
+collide_with_areas = true
+
+[node name="InteractableItems" type="Node3D" parent="."]
+
+[node name="Cherries" type="Node3D" parent="InteractableItems"]
+
+[node name="MedicalPills" parent="InteractableItems" instance=ExtResource("3_f2wx4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0560369, -0.247752)
+
+[node name="MedicalPills2" parent="InteractableItems" instance=ExtResource("3_f2wx4")]
+transform = Transform3D(-0.175521, 0, -0.984476, 0, 1, 0, 0.984476, 0, -0.175521, 0.228653, -0.0560369, -0.247752)
+
+[connection signal="newDay" from="." to="." method="_on_new_day"]
