@@ -1,5 +1,5 @@
 # Dusk is Done
-Done at Dusk is a horror type game. Its mainly came from: [Cherry Picking Simulator](https://kufferey.itch.io/cherry-picking-simulator)
+Dusk is Done is a horror type game. Its mainly came from: [Cherry Picking Simulator](https://kufferey.itch.io/cherry-picking-simulator)
 
 # Debugging/Stats Options
 in the game's folder. create a file called `launch.txt`. In the file Copy&Paste this: `%GAMEPLAY_CHANGER%`. This tells the game you want to change the stats.
