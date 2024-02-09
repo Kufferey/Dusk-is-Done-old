@@ -1,13 +1,18 @@
 class_name GameState extends Node3D
 
-signal newDay(dayName:String, dayEvents:Array, dayDescription:String, daySaveData:Dictionary, scoreForComplete:float)
+signal newDay(dayName:String, dayDescription:String, daySaveData:Dictionary, scoreForComplete:float)
+signal hasDied(reason:String, onDay:int)
 
 # Day Vars
 var currentDay:int
 var currentDaysPast:int
+const CURRENTDAYSFORMNEW:int = 5
 
 # Player Vars
+const PLAYERMAXHEALTH:float = 1.0
+const PLAYERMINHEALTH:float = 0.0
 var playerHealth:float ## Player Health. 0 to 1.
+
 var playerScore:int
 
 var currentTableItems:Array
@@ -18,8 +23,10 @@ var currentHeldItemType:String ## cherry, medicalpills, medicalscanner
 var currentHeldItem:InteractableObject ## Current item in hand
 var currentHoveredItem:InteractableObject ## Current Object your looking at.
 
-var isInCherryPickingState:bool
-var isInCherryCombineState:bool
+var isTrayPlaced:bool
+
+#var isInCherryPickingState:bool
+#var isInCherryCombineState:bool
 
 var canInteract:bool
 
@@ -49,6 +56,7 @@ var cherryTypesStory:Array[String] ## Any Story related item to add to cherry bu
 
 var cherrySection:int ## The section your on.
 var lastCherrySection:int ## The last section your on.
+var currentCherrySectionsLeft:int ## Until A new day.
 
 # Item Preload (Lag Spike fix)
 
@@ -116,6 +124,9 @@ func _create_object_from_prefab(prefab:PackedScene, objectPosition:Vector3, obje
 			
 			print("Added Prefab: " + str(loadedObject))
 			interationObjectsContainer.add_child(loadedObject)
+
+func _add_table_items() -> void:
+	pass
 
 func add_cherry_type(newType:String) -> void:
 	cherryTypes.append(newType)
@@ -252,14 +263,19 @@ func is_section_clear() -> bool:
 	else :
 		return false
 
-func _on_new_day(dayName: String, dayEvents: Array, dayDescription: String, daySaveData: Dictionary, scoreForComplete: float) -> void:
+func _on_new_day(dayName: String, dayDescription: String, daySaveData: Dictionary, scoreForComplete: float) -> void:
 	currentDaysPast = currentDay
+	currentCherrySectionsLeft = (currentCherrySectionsLeft + 5)
 	currentDay += 1
 	
 	playerScore += scoreForComplete
 
+func _on_has_died(reason: String, onDay: int) -> void:
+	pass # Replace with function body.
+
 func _new_cherry_section() -> void:
 	lastCherrySection = cherrySection
+	currentCherrySectionsLeft = currentCherrySectionsLeft - 1
 	cherrySection += 1
 	print("New Cherry Section: ", cherrySection)
 
@@ -286,10 +302,28 @@ func _debug_Update() -> String:
 		)
 	)
 
+func heldItemSway(delta) -> void:
+	if (
+		isHoldingItem == true
+		&& currentHeldItem != null
+	):
+		currentHeldItem.rotation.z = playerItemHolderHand.global_rotation.z
+		currentHeldItem.rotation.y = playerItemHolderHand.global_rotation.y
+		currentHeldItem.rotation.x = playerItemHolderHand.global_rotation.x
+		currentHeldItem.position = lerp(Vector3(
+			currentHeldItem.position.x, currentHeldItem.position.y, currentHeldItem.position.z),
+			Vector3(playerItemHolderHand.global_position.x, playerItemHolderHand.global_position.y, playerItemHolderHand.global_position.z),
+			9.5 * delta)
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	# start
 	interationObjectsContainer = $InteractableItems
+	
+	currentDay = 1 
+	currentDaysPast = 0
+	
+	currentCherrySectionsLeft = (currentCherrySectionsLeft + CURRENTDAYSFORMNEW)
 	
 	playerHealth = 1
 	playerRaycast = $Player/cameraPos/RayCast3D
@@ -297,13 +331,15 @@ func _ready() -> void:
 	playerItemHolderHand = $Player/cameraPos/ItemHolder
 	
 	canInteract = true
+	isTrayPlaced = false
 	
 	interactionTextNode = $UI/interactionText
 	itemControllsTextNode = $UI/itemControlls
 	DebuggingText = $UI/DebugText
 	
+	
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-	DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN)
+	#DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN)
 	
 	await get_tree().create_timer(1.5).timeout
 	_create_cherry_on_bush(cherryTypes[0], Vector3(0.5,0,0), Vector3(0,0,0), 1)
@@ -326,17 +362,7 @@ func _input(event: InputEvent) -> void:
 
 func _physics_process(delta: float) -> void:
 	# Player Stuff
-	if (
-		isHoldingItem == true
-		&& currentHeldItem != null
-	):
-		currentHeldItem.rotation.z = playerItemHolderHand.global_rotation.z
-		currentHeldItem.rotation.y = playerItemHolderHand.global_rotation.y
-		currentHeldItem.rotation.x = playerItemHolderHand.global_rotation.x
-		currentHeldItem.position = lerp(Vector3(
-			currentHeldItem.position.x, currentHeldItem.position.y, currentHeldItem.position.z),
-			Vector3(playerItemHolderHand.global_position.x, playerItemHolderHand.global_position.y, playerItemHolderHand.global_position.z),
-			9.5 * delta)
+	heldItemSway(delta)
 
 func _process(delta: float) -> void:
 	# debug
@@ -350,9 +376,41 @@ func _process(delta: float) -> void:
 	currentTableItems = get_current_table_items()
 	currentHoveredItem = get_current_hovered_item()
 	
-	if playerHealth > 1:
+	if playerHealth > PLAYERMAXHEALTH:
 		playerHealth = 1
+	elif playerHealth < PLAYERMINHEALTH:
+		emit_signal("hasDied", "Health got too low.", currentDay)
+	
+	# dayName:String, dayDescription:String, daySaveData:Dictionary, scoreForComplete:float
+	if currentCherrySectionsLeft == 0:
+		var playerSaveData:Dictionary = {
+			"days": currentDay,
+			"score": playerScore,
+			"sections": cherrySection,
+			"health": playerHealth,
+		}
+		emit_signal(
+			"newDay",
+			("Day ") + str(currentDay),
+			("You have survived " + str(currentDaysPast) + " Days."),
+			playerSaveData
+			)
 	
 	# Cherry Handler
-	if is_section_clear():
-		pass
+	if (
+		is_section_clear()
+		&& isTrayPlaced == true
+	):
+		_new_cherry_section()
+	elif (
+		is_section_clear()
+		&& isTrayPlaced == false
+	):
+		_new_cherry_section()
+		
+		for cherry in interationObjectsContainer.get_node("Cherries").get_children(false):
+			cherry.canInteract = false
+			
+	if isTrayPlaced:
+		for cherry in interationObjectsContainer.get_node("Cherries").get_children(false):
+			cherry.canInteract = true

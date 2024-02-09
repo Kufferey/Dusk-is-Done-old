@@ -10,8 +10,8 @@ config_version=5
 
 [application]
 
-config/name="Done at Dusk"
-config/tags=PackedStringArray("3d", "base_game", "full_game", "horror")
+config/name="Dusk is Done"
+config/tags=PackedStringArray("3d", "base_game", "full_game", "horror", "uses_godot_engine_4.2.1")
 run/main_scene="res://Scenes/States/mainmenu.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
 config/icon="res://Assets/Images/_branding/Icon.png"
@@ -21,7 +21,7 @@ config/windows_native_icon="res://Icon.ico"
 
 window/subwindows/embed_subwindows=false
 window/stretch/mode="canvas_items"
-window/stretch/aspect="expand"
+window/stretch/aspect="ignore"
 
 [input]
 
