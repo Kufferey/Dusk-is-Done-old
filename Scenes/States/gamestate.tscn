@@ -1,7 +1,8 @@
-[gd_scene load_steps=10 format=3 uid="uid://bfe0uacbmm1ay"]
+[gd_scene load_steps=11 format=3 uid="uid://bfe0uacbmm1ay"]
 
 [ext_resource type="Script" path="res://Src/Gameplay/gamestate.gd" id="1_8gblt"]
 [ext_resource type="Script" path="res://Src/Gameplay/Player.gd" id="2_q2ps6"]
+[ext_resource type="PackedScene" uid="uid://dch6a6f1daf6n" path="res://Scenes/Prefabs/objects/cherryOnBush.tscn" id="3_bmn3y"]
 [ext_resource type="PackedScene" uid="uid://k71doxgciqfv" path="res://Scenes/Prefabs/objects/equipment/medical_pills.tscn" id="3_f2wx4"]
 
 [sub_resource type="Theme" id="Theme_k5lch"]
@@ -120,6 +121,9 @@ collide_with_areas = true
 [node name="InteractableItems" type="Node3D" parent="."]
 
 [node name="Cherries" type="Node3D" parent="InteractableItems"]
+
+[node name="CherryOnBush" parent="InteractableItems/Cherries" instance=ExtResource("3_bmn3y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.44449, 0, 0)
 
 [node name="MedicalPills" parent="InteractableItems" instance=ExtResource("3_f2wx4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0560369, -0.247752)

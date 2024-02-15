@@ -74,6 +74,87 @@ var currentCherrySectionsLeft:int ## Until A new day.
 # - Nodes
 var interationObjectsContainer:Node3D ## The node that all World interatable objects go to.
 
+func _ready() -> void:
+	# start
+	interationObjectsContainer = $InteractableItems
+	
+	currentDay = 1 
+	currentDaysPast = 0
+	
+	currentCherrySectionsLeft = (currentCherrySectionsLeft + CURRENTDAYSFORMNEW)
+	
+	playerHealth = 1
+	playerRaycast = $Player/cameraPos/RayCast3D
+	playerCamera = $Player/cameraPos
+	playerItemHolderHand = $Player/cameraPos/ItemHolder
+	
+	canInteract = true
+	isTrayPlaced = false
+	
+	interactionTextNode = $UI/interactionText
+	itemControllsTextNode = $UI/itemControlls
+	DebuggingText = $UI/DebugText
+	
+	
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN)
+
+func _input(event: InputEvent) -> void:
+	if (
+		event.is_action_pressed("interact")
+		&& canInteract == true
+	):
+		set_hovered_to_held_item()
+		
+	if Input.is_action_just_pressed("use"):
+		_use_item()
+
+func _physics_process(delta: float) -> void:
+	# Player Stuff
+	heldItemSway(delta)
+
+func _process(delta: float) -> void:
+	# debug
+	
+	DebuggingText.text = _debug_Update()
+	
+	# Player Stuff
+	interactionTextNode.text = _update_interaction_text()
+	itemControllsTextNode.text = _update_current_controls_text()
+	
+	currentTableItems = get_current_table_items()
+	currentHoveredItem = get_current_hovered_item()
+	
+	if playerHealth > PLAYERMAXHEALTH:
+		playerHealth = 1
+	elif playerHealth < PLAYERMINHEALTH:
+		emit_signal("hasDied", "Health got too low.", currentDay)
+	
+	# dayName:String, dayDescription:String, daySaveData:Dictionary, scoreForComplete:float
+	if currentCherrySectionsLeft == 0:
+		var playerSaveData:Dictionary = {
+			"days": currentDay,
+			"score": playerScore,
+			"sections": cherrySection,
+			"health": playerHealth,
+		}
+		emit_signal(
+			"newDay",
+			("Day ") + str(currentDay),
+			("You have survived " + str(currentDaysPast) + " Days."),
+			playerSaveData
+			)
+	
+	# Cherry Handler
+	if is_section_clear():
+		_new_cherry_section()
+		
+		if isTrayPlaced == false:
+			setCurrentCherries(false)
+		else :
+			setCurrentCherries(true)
+
+
 func _create_cherry_on_bush(typeOfCherry:String, positionObject:Vector3, rotationObject:Vector3, amount:int) -> void:
 	
 	if amount >= 5:
@@ -148,6 +229,10 @@ func get_current_hovered_item() -> InteractableObject:
 		var theObjectsParent:InteractableObject = theObject.get_parent()
 		return theObjectsParent
 	return
+
+func setCurrentCherries(lock:bool) -> void:
+	for cherry in interationObjectsContainer.get_node("Cherries").get_children(false):
+		cherry.canInteract = lock
 
 func _update_current_controls_text() -> String:
 	if isHoldingItem:
@@ -314,103 +399,3 @@ func heldItemSway(delta) -> void:
 			currentHeldItem.position.x, currentHeldItem.position.y, currentHeldItem.position.z),
 			Vector3(playerItemHolderHand.global_position.x, playerItemHolderHand.global_position.y, playerItemHolderHand.global_position.z),
 			9.5 * delta)
-
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	# start
-	interationObjectsContainer = $InteractableItems
-	
-	currentDay = 1 
-	currentDaysPast = 0
-	
-	currentCherrySectionsLeft = (currentCherrySectionsLeft + CURRENTDAYSFORMNEW)
-	
-	playerHealth = 1
-	playerRaycast = $Player/cameraPos/RayCast3D
-	playerCamera = $Player/cameraPos
-	playerItemHolderHand = $Player/cameraPos/ItemHolder
-	
-	canInteract = true
-	isTrayPlaced = false
-	
-	interactionTextNode = $UI/interactionText
-	itemControllsTextNode = $UI/itemControlls
-	DebuggingText = $UI/DebugText
-	
-	
-	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-	#DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN)
-	
-	await get_tree().create_timer(1.5).timeout
-	_create_cherry_on_bush(cherryTypes[0], Vector3(0.5,0,0), Vector3(0,0,0), 1)
-	await get_tree().create_timer(1.5).timeout
-	_create_cherry_on_bush(cherryTypes[0], Vector3(0.8,0.1,0), Vector3(0,0,0), 1)
-	await get_tree().create_timer(1.5).timeout
-	_create_cherry_on_bush(cherryTypes[0], Vector3(-0.5,0,0), Vector3(0,0,0), 1)
-	await get_tree().create_timer(1.5).timeout
-	_create_object_from_prefab(medicalPills, Vector3(0, 0.4, 0), Vector3(0,0,0))
-
-func _input(event: InputEvent) -> void:
-	if (
-		event.is_action_pressed("interact")
-		&& canInteract == true
-	):
-		set_hovered_to_held_item()
-		
-	if Input.is_action_just_pressed("use"):
-		_use_item()
-
-func _physics_process(delta: float) -> void:
-	# Player Stuff
-	heldItemSway(delta)
-
-func _process(delta: float) -> void:
-	# debug
-	
-	DebuggingText.text = _debug_Update()
-	
-	# Player Stuff
-	interactionTextNode.text = _update_interaction_text()
-	itemControllsTextNode.text = _update_current_controls_text()
-	
-	currentTableItems = get_current_table_items()
-	currentHoveredItem = get_current_hovered_item()
-	
-	if playerHealth > PLAYERMAXHEALTH:
-		playerHealth = 1
-	elif playerHealth < PLAYERMINHEALTH:
-		emit_signal("hasDied", "Health got too low.", currentDay)
-	
-	# dayName:String, dayDescription:String, daySaveData:Dictionary, scoreForComplete:float
-	if currentCherrySectionsLeft == 0:
-		var playerSaveData:Dictionary = {
-			"days": currentDay,
-			"score": playerScore,
-			"sections": cherrySection,
-			"health": playerHealth,
-		}
-		emit_signal(
-			"newDay",
-			("Day ") + str(currentDay),
-			("You have survived " + str(currentDaysPast) + " Days."),
-			playerSaveData
-			)
-	
-	# Cherry Handler
-	if (
-		is_section_clear()
-		&& isTrayPlaced == true
-	):
-		_new_cherry_section()
-	elif (
-		is_section_clear()
-		&& isTrayPlaced == false
-	):
-		_new_cherry_section()
-		
-		for cherry in interationObjectsContainer.get_node("Cherries").get_children(false):
-			cherry.canInteract = false
-			
-	if isTrayPlaced:
-		for cherry in interationObjectsContainer.get_node("Cherries").get_children(false):
-			cherry.canInteract = true
