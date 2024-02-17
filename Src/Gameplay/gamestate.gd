@@ -11,17 +11,17 @@ const CURRENTDAYSFORMNEW:int = 5
 # Player Vars
 const PLAYERMAXHEALTH:float = 1.0
 const PLAYERMINHEALTH:float = 0.0
-var playerHealth:float ## Player Health. 0 to 1.
+var playerHealth:float
 
 var playerScore:int
 
 var currentTableItems:Array
 
-var isHoldingItem:bool ## Checks if holding item.
+var isHoldingItem:bool
 
-var currentHeldItemType:String ## cherry, medicalpills, medicalscanner
-var currentHeldItem:InteractableObject ## Current item in hand
-var currentHoveredItem:InteractableObject ## Current Object your looking at.
+var currentHeldItemType:String
+var currentHeldItem:InteractableObject
+var currentHoveredItem:InteractableObject
 
 var isTrayPlaced:bool
 
@@ -46,8 +46,16 @@ var DebuggingText:Label
 var interactableItemList:Array[String] = [
 	'cherry',          # 0
 	'medicalpills',    # 1
-	'medicalscanner'   # 2
+	'medicalscanner',  # 2
+	'table'            # 3
 ]
+
+var interactableItemListNames:Dictionary = {
+	'cherry': interactableItemList[0],
+	'medicalpills': interactableItemList[1],
+	'medicalscanner': interactableItemList[2],
+	'table': interactableItemList[3]
+}
 
 # - Cherry
 
@@ -107,11 +115,11 @@ func _input(event: InputEvent) -> void:
 		set_hovered_to_held_item()
 		
 	if Input.is_action_just_pressed("use"):
-		_use_item()
+		use_item()
 
 func _physics_process(delta: float) -> void:
 	# Player Stuff
-	heldItemSway(delta)
+	make_current_item_sway(delta)
 
 func _process(delta: float) -> void:
 	# debug
@@ -122,7 +130,7 @@ func _process(delta: float) -> void:
 	interactionTextNode.text = _update_interaction_text()
 	itemControllsTextNode.text = _update_current_controls_text()
 	
-	currentTableItems = get_current_table_items()
+	#currentTableItems = get_current_table_items()
 	currentHoveredItem = get_current_hovered_item()
 	
 	if playerHealth > PLAYERMAXHEALTH:
@@ -147,15 +155,15 @@ func _process(delta: float) -> void:
 	
 	# Cherry Handler
 	if is_section_clear():
-		_new_cherry_section()
+		new_cherry_section()
 		
 		if isTrayPlaced == false:
-			setCurrentCherries(false)
+			set_current_cherries(false)
 		else :
-			setCurrentCherries(true)
+			set_current_cherries(true)
 
 
-func _create_cherry_on_bush(typeOfCherry:String, positionObject:Vector3, rotationObject:Vector3, amount:int) -> void:
+func create_cherry_on_bush(typeOfCherry:String, positionObject:Vector3, rotationObject:Vector3, amount:int) -> void:
 	
 	if amount >= 5:
 		amount = 5
@@ -171,7 +179,7 @@ func _create_cherry_on_bush(typeOfCherry:String, positionObject:Vector3, rotatio
 		
 	print(amount, " ", typeOfCherry, " Cherry(s) Created. ", " AT POSITION: ", positionObject, " ROTATION OF: ", rotationObject)
 
-func _remove_all_cherries() -> void:
+func remove_all_cherries() -> void:
 	var totalCount:int = get_cherry_count()
 	var totalObjects:Array[Node] = interationObjectsContainer.get_children(true)
 	
@@ -193,7 +201,7 @@ func _remove_all_cherries() -> void:
 	
 	print(totalCount, " Objects Deleted.")
 
-func _create_object_from_prefab(prefab:PackedScene, objectPosition:Vector3, objectRotation:Vector3) -> void:
+func create_object_from_prefab(prefab:PackedScene, objectPosition:Vector3, objectRotation:Vector3) -> void:
 	var loadedObject:Node3D = prefab.instantiate()
 	if loadedObject:
 		if loadedObject == null:
@@ -206,7 +214,7 @@ func _create_object_from_prefab(prefab:PackedScene, objectPosition:Vector3, obje
 			print("Added Prefab: " + str(loadedObject))
 			interationObjectsContainer.add_child(loadedObject)
 
-func _add_table_items() -> void:
+func add_table_items() -> void:
 	pass
 
 func add_cherry_type(newType:String) -> void:
@@ -219,9 +227,8 @@ func get_cherry_count() -> int:
 	var currentCherries:int = interationObjectsContainer.get_child_count(true)
 	return currentCherries
 
-func get_current_table_items() -> Array:
-	var placeholder:Array = ["medicalpills"]
-	return placeholder
+func get_current_table_items() -> void: #make  -> Array: 
+	pass
 
 func get_current_hovered_item() -> InteractableObject:
 	if playerRaycast.is_colliding():
@@ -230,49 +237,46 @@ func get_current_hovered_item() -> InteractableObject:
 		return theObjectsParent
 	return
 
-func setCurrentCherries(lock:bool) -> void:
+func set_current_cherries(lock:bool) -> void:
 	for cherry in interationObjectsContainer.get_node("Cherries").get_children(false):
 		cherry.canInteract = lock
 
 func _update_current_controls_text() -> String:
 	if isHoldingItem:
 		
-		if currentHeldItemType == interactableItemList[0]:
-			return "Press [E] while looking at table to Drop."
+		if currentHeldItemType == interactableItemList[0]: return "Press [E] while looking at table to Drop."
+		
 		elif (
-			currentHeldItemType == interactableItemList[1] 
-			|| currentHeldItemType == interactableItemList[2]
+			currentHeldItemType == interactableItemListNames["medicalpills"]
+			|| currentHeldItemType == interactableItemListNames["medicalscanner"]
 		):
 			return "Press [E] while looking at table to Drop.\nPress [LMB] to Use."
 			
-	elif !isHoldingItem:
-		return ""
 	return ""
 
 func _update_interaction_text() -> String:
-	if isHoldingItem:
-		return ""
+	if isHoldingItem: return ""
+	
 	elif !isHoldingItem:
 		if playerRaycast.is_colliding():
 			var theObject:Node3D = playerRaycast.get_collider()
 			var theObjectParent:InteractableObject = theObject.get_parent()
 			
-			if theObjectParent.is_in_group(interactableItemList[0]):
-				return "Press [E] to Pick."
-			elif theObjectParent.is_in_group("table"):
-				return  "Press [E] to Use."
-			elif theObjectParent.is_in_group(interactableItemList[1]):
-				return "Press [E] to Grab."
-			elif theObjectParent.is_in_group(interactableItemList[2]):
-				return "Press [E] to Grab."
+			#if theObjectParent.is_in_group(interactableItemList[0]): return "Press [E] to Pick."   #Cherry
+			#elif theObjectParent.is_in_group(interactableItemList[1]): return "Press [E] to Grab." #medicalpills
+			#elif theObjectParent.is_in_group(interactableItemList[2]): return "Press [E] to Grab." #mecicalscanner
+			#elif theObjectParent.is_in_group(interactableItemList[3]): return "Press [E] to Use."  #table
 			
-			else :
-				return ""
-		else :
-			return ""
+			if theObjectParent.is_in_group(interactableItemListNames['cherry']): return "Press [E] to Pick."   #Cherry
+			elif theObjectParent.is_in_group(interactableItemListNames['medicalpills']): return "Press [E] to Grab." #medicalpills
+			elif theObjectParent.is_in_group(interactableItemListNames['medicalscanner']): return "Press [E] to Grab." #mecicalscanner
+			elif theObjectParent.is_in_group(interactableItemListNames['table']): return "Press [E] to Use."  #table
+			
+			else : return ""
+		else : return ""
 	return ""
 
-func _use_item() -> void:
+func use_item() -> void:
 	if (
 		isHoldingItem == true
 		&& currentHeldItem != null
@@ -285,21 +289,21 @@ func _use_item() -> void:
 			'medicalpills':
 				currentHeldItem.emit_signal("consumeMedicalPills")
 				
-				await (get_tree().create_timer(2).timeout)
+				await (get_tree().create_timer(1.8).timeout)
 				
 				playerHealth += 0.32
-				_reset_all_hold_items()
+				reset_all_hold_items()
 			
 			'medicalscanner':
 				pass
 
-func _new_held_item(isHolding:bool, newHeldItem:InteractableObject, canInteract:bool, newHeldType:String) -> void:
+func new_held_item(isHolding:bool, newHeldItem:InteractableObject, canInteract:bool, newHeldType:String) -> void:
 	isHoldingItem = isHolding
 	currentHeldItem = newHeldItem
 	canInteract = canInteract
 	currentHeldItemType = newHeldType
 
-func _reset_all_hold_items() -> void:
+func reset_all_hold_items() -> void:
 	isHoldingItem = false
 	currentHeldItem = null
 	canInteract = true
@@ -313,25 +317,25 @@ func set_hovered_to_held_item() -> void:
 			if object:
 				
 				if (
-					object.is_in_group(interactableItemList[0]) 
+					object.is_in_group(interactableItemListNames["cherry"]) 
 					&& object.canInteract == true
 				):
-					_new_held_item(
+					new_held_item(
 						true,
 						object,
 						false,
-						interactableItemList[0]
+						interactableItemListNames["cherry"]
 					)
 				
 				elif (
-					object.is_in_group(interactableItemList[1]) 
+					object.is_in_group(interactableItemListNames["medicalpills"]) 
 					&& object.canInteract == true
 				):
-					_new_held_item(
+					new_held_item(
 						true,
 						object,
 						false,
-						interactableItemList[1]
+						interactableItemListNames["medicalpills"]
 					)
 					
 				print("\nCurrent held item: ", currentHeldItem, "\nThe type of this object: ", currentHeldItemType)
@@ -340,13 +344,8 @@ func set_hovered_to_held_item() -> void:
 
 func is_section_clear() -> bool:
 	var cherryCount:int = interationObjectsContainer.get_node("Cherries").get_child_count(true)
-	if (
-		cherryCount <= 0
-		|| cherryCount == null
-	):
-		return true
-	else :
-		return false
+	if (cherryCount <= 0 || cherryCount == null):return true
+	else:return false
 
 func _on_new_day(dayName: String, dayDescription: String, daySaveData: Dictionary, scoreForComplete: float) -> void:
 	currentDaysPast = currentDay
@@ -358,7 +357,7 @@ func _on_new_day(dayName: String, dayDescription: String, daySaveData: Dictionar
 func _on_has_died(reason: String, onDay: int) -> void:
 	pass # Replace with function body.
 
-func _new_cherry_section() -> void:
+func new_cherry_section() -> void:
 	lastCherrySection = cherrySection
 	currentCherrySectionsLeft = currentCherrySectionsLeft - 1
 	cherrySection += 1
@@ -387,7 +386,7 @@ func _debug_Update() -> String:
 		)
 	)
 
-func heldItemSway(delta) -> void:
+func make_current_item_sway(delta) -> void:
 	if (
 		isHoldingItem == true
 		&& currentHeldItem != null
