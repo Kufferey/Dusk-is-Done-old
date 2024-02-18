@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="Mods" load_steps=2 format=3 uid="uid://bfwkxe607uheb"]
+
+[ext_resource type="Script" path="res://Src/Other/mods.gd" id="1_3oqo2"]
+
+[resource]
+script = ExtResource("1_3oqo2")
+mod_name = "Mod Name"
+mod_description = "Mod Desc"
+mod_version = "0.0.0"

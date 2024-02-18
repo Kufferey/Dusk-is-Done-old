@@ -1,0 +1,33 @@
+[gd_scene load_steps=4 format=3 uid="uid://dtxecb7dh11gl"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j6r36"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q1vdg"]
+corner_radius_top_right = 86
+corner_radius_bottom_right = 430
+anti_aliasing_size = 0.5
+
+[sub_resource type="Theme" id="Theme_l3m85"]
+default_font_size = 35
+Button/styles/focus = SubResource("StyleBoxFlat_j6r36")
+Button/styles/normal = SubResource("StyleBoxFlat_q1vdg")
+
+[node name="MenuUi" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_group_ = true
+metadata/_edit_lock_ = true
+
+[node name="playButton" type="Button" parent="."]
+layout_mode = 0
+offset_top = 128.0
+offset_right = 256.0
+offset_bottom = 192.0
+theme = SubResource("Theme_l3m85")
+text = "TEST TEXT"
+alignment = 0
+metadata/_edit_group_ = true

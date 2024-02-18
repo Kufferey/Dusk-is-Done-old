@@ -1,0 +1,82 @@
+[gd_scene load_steps=6 format=3 uid="uid://bk3nfdssu88vn"]
+
+[ext_resource type="Script" path="res://Src/Menus/dayselect/DaySelectSlot.gd" id="1_s4o83"]
+[ext_resource type="Texture2D" uid="uid://cooq8k3435srj" path="res://Assets/Images/_branding/Icon.png" id="2_cv0o5"]
+
+[sub_resource type="Theme" id="Theme_5h8x1"]
+default_font_size = 30
+
+[sub_resource type="Theme" id="Theme_eyck5"]
+default_font_size = 15
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0e3n0"]
+size = Vector2(144, 144)
+
+[node name="DaySelectSlot" type="Node2D" groups=["dayselectslot"]]
+script = ExtResource("1_s4o83")
+
+[node name="Icon" type="Node2D" parent="."]
+
+[node name="Icon1" type="SubViewportContainer" parent="Icon"]
+offset_left = -64.0
+offset_top = -64.0
+offset_right = 64.0
+offset_bottom = 64.0
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="Icon/Icon1"]
+handle_input_locally = false
+size = Vector2i(128, 128)
+render_target_update_mode = 4
+
+[node name="Sprite2D" type="Sprite2D" parent="Icon/Icon1/SubViewport"]
+position = Vector2(55, 55)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_cv0o5")
+
+[node name="Node3D" type="Node3D" parent="Icon/Icon1/SubViewport"]
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -64.0
+offset_top = -64.0
+offset_right = 64.0
+offset_bottom = 64.0
+mouse_default_cursor_shape = 2
+
+[node name="DayName" type="Label" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_5h8x1")
+text = "DAY"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="DayEvents" type="Label" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 80.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_eyck5")
+text = "EVENTS"
+horizontal_alignment = 1
+vertical_alignment = 2
+autowrap_mode = 3
+clip_text = true
+text_overrun_behavior = 2
+
+[node name="Area2D" type="Area2D" parent="."]
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_0e3n0")
+metadata/_edit_lock_ = true
