@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://ffpjwmqtv2pa"]
+
+[ext_resource type="PackedScene" uid="uid://bc2skl5nbytm0" path="res://Scenes/Prefabs/interactableObject.tscn" id="1_pqq1x"]
+[ext_resource type="Texture2D" uid="uid://clnflwjvttuoe" path="res://Assets/Images/story/introduction.png" id="2_brton"]
+
+[node name="InterductionPaper" groups=["paper1"] instance=ExtResource("1_pqq1x")]
+canInteract = true
+
+[node name="Sprite3D" type="Sprite3D" parent="Model" index="0"]
+transform = Transform3D(0.0134471, 0, 0, 0, 0.0134471, 0, 0, 0, 0.0134471, 0.00126949, 0.0216142, -0.000396837)
+billboard = 2
+transparent = false
+shaded = true
+texture = ExtResource("2_brton")
+
+[node name="CollisionShape3D" parent="Area3D" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0216553, -0.00214843)
