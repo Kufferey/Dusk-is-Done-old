@@ -1,9 +1,31 @@
-[gd_scene load_steps=3 format=3 uid="uid://csft04orp86k2"]
+[gd_scene load_steps=11 format=3 uid="uid://csft04orp86k2"]
 
 [ext_resource type="Script" path="res://Src/Menus/mainmenu.gd" id="1_cx8so"]
+[ext_resource type="Script" path="res://Src/Menus/mainmenu/ItemInspector.gd" id="2_7djbc"]
+[ext_resource type="Texture2D" uid="uid://dqofkjslvqapo" path="res://Assets/Images/item_inspector/arrow_spritesheet.png" id="2_bjb3c"]
+[ext_resource type="PackedScene" uid="uid://c6ya6hl8bqx3j" path="res://Assets/Models/sesonal/summer/water.glb" id="4_88gm4"]
 
 [sub_resource type="Theme" id="Theme_604wc"]
 default_font_size = 15
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_aqs40"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_bhvts"]
+sky_material = SubResource("ProceduralSkyMaterial_aqs40")
+
+[sub_resource type="Environment" id="Environment_e4s56"]
+background_mode = 2
+sky = SubResource("Sky_bhvts")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_diwxy"]
+size = Vector2(176, 128)
+
+[sub_resource type="Theme" id="Theme_wb43w"]
+default_font_size = 35
 
 [node name="MainMenu" type="Node"]
 script = ExtResource("1_cx8so")
@@ -18,6 +40,7 @@ visible = false
 metadata/_edit_lock_ = true
 
 [node name="Options" type="Node2D" parent="Menus"]
+visible = false
 metadata/_edit_lock_ = true
 
 [node name="Settings" type="Control" parent="Menus/Options"]
@@ -47,6 +70,7 @@ tab_focus_mode = 1
 layout_mode = 2
 
 [node name="maxfps" type="Label" parent="Menus/Options/Settings/TabContainer/Display"]
+layout_mode = 0
 offset_left = 64.0
 offset_top = 57.0
 offset_right = 174.0
@@ -102,6 +126,7 @@ visible = false
 layout_mode = 2
 
 [node name="Label" type="Label" parent="Menus/Options/Settings/TabContainer/Gameplay"]
+layout_mode = 0
 offset_left = 64.0
 offset_top = 57.0
 offset_right = 174.0
@@ -120,3 +145,85 @@ offset_left = 64.0
 offset_top = 64.0
 offset_right = 1088.0
 offset_bottom = 408.0
+
+[node name="ItemInspector" type="Node2D" parent="Menus"]
+script = ExtResource("2_7djbc")
+
+[node name="ViewPort" type="Node3D" parent="Menus/ItemInspector"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Menus/ItemInspector/ViewPort"]
+environment = SubResource("Environment_e4s56")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Menus/ItemInspector/ViewPort"]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Camera3D" type="Camera3D" parent="Menus/ItemInspector/ViewPort"]
+
+[node name="Items" type="Node3D" parent="Menus/ItemInspector/ViewPort"]
+
+[node name="Arrows" type="Node2D" parent="Menus/ItemInspector"]
+position = Vector2(0, 576)
+
+[node name="ArrowLeft" type="Node2D" parent="Menus/ItemInspector/Arrows"]
+position = Vector2(112, -16)
+
+[node name="MouseHover" type="Control" parent="Menus/ItemInspector/Arrows/ArrowLeft"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -88.0
+offset_top = -64.0
+offset_right = 88.0
+offset_bottom = 64.0
+mouse_filter = 1
+mouse_default_cursor_shape = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="Menus/ItemInspector/Arrows/ArrowLeft"]
+texture = ExtResource("2_bjb3c")
+hframes = 2
+
+[node name="Area2D" type="Area2D" parent="Menus/ItemInspector/Arrows/ArrowLeft"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Menus/ItemInspector/Arrows/ArrowLeft/Area2D"]
+shape = SubResource("RectangleShape2D_diwxy")
+
+[node name="ArrowRight" type="Node2D" parent="Menus/ItemInspector/Arrows"]
+position = Vector2(1040, -16)
+
+[node name="MouseHover" type="Control" parent="Menus/ItemInspector/Arrows/ArrowRight"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -88.0
+offset_top = -64.0
+offset_right = 88.0
+offset_bottom = 64.0
+mouse_filter = 1
+mouse_default_cursor_shape = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="Menus/ItemInspector/Arrows/ArrowRight"]
+scale = Vector2(-1, -1)
+texture = ExtResource("2_bjb3c")
+hframes = 2
+
+[node name="Area2D2" type="Area2D" parent="Menus/ItemInspector/Arrows/ArrowRight"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Menus/ItemInspector/Arrows/ArrowRight/Area2D2"]
+shape = SubResource("RectangleShape2D_diwxy")
+
+[node name="ItemName" type="Label" parent="Menus/ItemInspector"]
+offset_left = 256.0
+offset_top = 512.0
+offset_right = 896.0
+offset_bottom = 640.0
+theme = SubResource("Theme_wb43w")
+text = "MEDICAL PILLS"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="water" parent="." instance=ExtResource("4_88gm4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.29057, 0, -0.358385)
+
+[connection signal="mouse_entered" from="Menus/ItemInspector/Arrows/ArrowLeft/Area2D" to="Menus/ItemInspector" method="_on_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="Menus/ItemInspector/Arrows/ArrowLeft/Area2D" to="Menus/ItemInspector" method="_on_area_2d_mouse_exited"]
+[connection signal="mouse_entered" from="Menus/ItemInspector/Arrows/ArrowRight/Area2D2" to="Menus/ItemInspector" method="_on_area_2d_2_mouse_entered"]
+[connection signal="mouse_exited" from="Menus/ItemInspector/Arrows/ArrowRight/Area2D2" to="Menus/ItemInspector" method="_on_area_2d_2_mouse_exited"]

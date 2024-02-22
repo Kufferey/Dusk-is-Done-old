@@ -1,7 +1,11 @@
+@icon("res://Assets/Images/_branding/Icon.png")
 class_name GameState extends Node3D
 
 signal newDay(dayName:String, dayDescription:String, daySaveData:Dictionary, scoreForComplete:float)
 signal hasDied(reason:String, onDay:int)
+
+# Season Vars
+static var currentSeason:String
 
 # Day Vars
 static var currentDay:int
@@ -51,7 +55,10 @@ var interactableItemList:Array[String] = [
 	'medicalpills',    # 1
 	'medicalscanner',  # 2
 	'table',           # 3
-	'paper1'           # 4
+	'paper1',          # 4
+	
+	# Summer
+	'waterbottle'      # 5
 ]
 
 var interactableItemListNames:Dictionary = {
@@ -59,7 +66,10 @@ var interactableItemListNames:Dictionary = {
 	'medicalpills': interactableItemList[1],
 	'medicalscanner': interactableItemList[2],
 	'table': interactableItemList[3],
-	'paper1': interactableItemList[4]
+	'paper1': interactableItemList[4],
+	
+	# Summer
+	'waterbottle': interactableItemList[5]
 }
 
 # Cherry
@@ -273,11 +283,15 @@ func _update_interaction_text() -> String:
 			#elif theObjectParent.is_in_group(interactableItemList[2]): return "Press [E] to Grab." #mecicalscanner
 			#elif theObjectParent.is_in_group(interactableItemList[3]): return "Press [E] to Use."  #table
 			
+			# Normal
 			if theObjectParent.is_in_group(String(interactableItemListNames['cherry'])): return "Press [E] to Pick."   #Cherry
 			elif theObjectParent.is_in_group(String(interactableItemListNames['medicalpills'])): return "Press [E] to Grab." #medicalpills
 			elif theObjectParent.is_in_group(String(interactableItemListNames['medicalscanner'])): return "Press [E] to Grab." #mecicalscanner
 			elif theObjectParent.is_in_group(String(interactableItemListNames['table'])): return "Press [E] to Use."  #table
 			elif theObjectParent.is_in_group(String(interactableItemListNames['paper1'])): return "Press [E] to Read."  #paper1
+			
+			# Summer
+			elif theObjectParent.is_in_group(String(interactableItemListNames['waterbottle'])): return "Press [E] to Grab."  #paper1
 			
 			else : return ""
 		else : return ""
@@ -294,15 +308,30 @@ func use_item() -> void:
 				pass
 				
 			'medicalpills':
-				currentHeldItem.emit_signal("consumeMedicalPills")
-				
-				await (get_tree().create_timer(1.8).timeout)
-				
-				set_player_health(false, float(0.32))
-				reset_all_hold_items()
+				use_item_effects(
+					"consumeMedicalPills",
+					1.8,
+					func():
+						set_player_health(bool(false), float(0.32))
+						reset_all_hold_items()
+				)
 			
 			'medicalscanner':
 				pass
+				
+			# Summer
+			'waterbottle':
+				use_item_effects(
+					"consume_waterbottle",
+					1.2,
+					func():
+						reset_all_hold_items()
+				)
+
+func use_item_effects(signal_name:String, time_until_done:float, effect:Callable) -> void:
+	currentHeldItem.emit_signal(String(signal_name))
+	await (get_tree().create_timer(float(time_until_done)).timeout)
+	effect.call()
 
 func new_held_item(isHolding:bool, newHeldItem:InteractableObject, canInteract:bool, newHeldType:String) -> void:
 	isHoldingItem = isHolding
@@ -353,13 +382,27 @@ func set_hovered_to_held_item() -> void:
 					var sound = load("res://Assets/Audio/paper/paperSample_3.ogg")
 					
 					audio.stream = sound
+					audio.pitch_scale = float(1.5)
 					
 					add_child(audio)
-					audio.play(0.5)
+					audio.play(float(0.5))
 					
 					object.queue_free()
 					await get_tree().create_timer(1.5).timeout
+					sound = null
 					audio.queue_free()
+					
+				# Summer
+				elif (
+					object.is_in_group(String(interactableItemListNames["waterbottle"])) 
+					&& object.canInteract == true
+				):
+					new_held_item(
+						true,
+						object,
+						false,
+						String(interactableItemListNames['waterbottle'])
+					)
 					
 				print("\nCurrent held item: ", currentHeldItem, "\nThe type of this object: ", currentHeldItemType)
 	else :
@@ -367,8 +410,8 @@ func set_hovered_to_held_item() -> void:
 
 func is_section_clear() -> bool:
 	var cherryCount:int = interationObjectsContainer.get_node("Cherries").get_child_count(true)
-	if (cherryCount <= 0 || cherryCount == null):return true
-	else:return false
+	if (cherryCount <= 0 || cherryCount == null): return true
+	else: return false
 
 func _on_new_day(dayName: String, dayDescription: String, daySaveData: Dictionary, scoreForComplete: float) -> void:
 	currentDaysPast = int(currentDay)
