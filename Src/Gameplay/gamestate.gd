@@ -112,6 +112,7 @@ func _ready() -> void:
 	itemControllsTextNode = $UI/itemControlls
 	DebuggingText = $UI/DebugText
 	
+	create_cherry_on_bush('normal', Vector3(0.4,0,0), Vector3(0,0,0), 1)
 	
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN)
@@ -433,6 +434,7 @@ func _debug_Update() -> String:
 	return (
 		(
 			"CURRENT FPS: " + str(Engine.get_frames_per_second()) + "/" + str(Engine.max_fps) +
+			"\nCURRENT MEM: " + str(OS.get_static_memory_usage()) +
 			"\n" +
 			"\n" +
 			"ITEM HAND/HOVER STATS:" +

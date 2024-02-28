@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://b255nxpwbyhv0"
-path="res://.godot/imported/cherrySpoiled.glb-409270348f6ee9fc6fc212477691a1a5.scn"
+uid="uid://dqjbmm21u0j1e"
+path="res://.godot/imported/medicalScanner.glb-33c76caaa80396327960e850b7967967.scn"
 
 [deps]
 
-source_file="res://Assets/Models/cherries/special/cherrySpoiled.glb"
-dest_files=["res://.godot/imported/cherrySpoiled.glb-409270348f6ee9fc6fc212477691a1a5.scn"]
+source_file="res://Assets/Models/medicalscanner/medicalScanner.glb"
+dest_files=["res://.godot/imported/medicalScanner.glb-33c76caaa80396327960e850b7967967.scn"]
 
 [params]
 

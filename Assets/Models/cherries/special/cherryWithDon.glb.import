@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://b255nxpwbyhv0"
-path="res://.godot/imported/cherrySpoiled.glb-409270348f6ee9fc6fc212477691a1a5.scn"
+uid="uid://dc0y07wflps7r"
+path="res://.godot/imported/cherryWithDon.glb-b0776a493735c255a68bc7213ae12a25.scn"
 
 [deps]
 
-source_file="res://Assets/Models/cherries/special/cherrySpoiled.glb"
-dest_files=["res://.godot/imported/cherrySpoiled.glb-409270348f6ee9fc6fc212477691a1a5.scn"]
+source_file="res://Assets/Models/cherries/special/cherryWithDon.glb"
+dest_files=["res://.godot/imported/cherryWithDon.glb-b0776a493735c255a68bc7213ae12a25.scn"]
 
 [params]
 
