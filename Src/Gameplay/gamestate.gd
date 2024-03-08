@@ -100,7 +100,7 @@ func _ready() -> void:
 	
 	currentCherrySectionsLeft = int((currentCherrySectionsLeft + CURRENTSECTIONSLEFT))
 	
-	playerHealth = float(1)
+	playerHealth = float(0.2)
 	playerRaycast = $Player/cameraPos/RayCast3D
 	playerCamera = $Player/cameraPos
 	playerItemHolderHand = $Player/cameraPos/ItemHolder
@@ -124,7 +124,11 @@ func _input(event: InputEvent) -> void:
 	):
 		set_hovered_to_held_item()
 		
-	if event.is_action_pressed("use"):
+	if (
+		event.is_action_pressed("use")
+		&& currentHeldItem != null
+		&& currentHeldItemType != ""
+	):
 		use_item()
 
 func _physics_process(delta: float) -> void:
@@ -172,7 +176,7 @@ func _process(delta: float) -> void:
 		else :
 			set_current_cherries(bool(true))
 
-func create_cherry_on_bush(typeOfCherry:String, positionObject:Vector3, rotationObject:Vector3, amount:int) -> void:
+func create_cherry_on_bush( typeOfCherry:String , positionObject:Vector3 , rotationObject:Vector3 , amount:int ) -> void:
 	
 	if amount >= 5:
 		amount = 5
@@ -210,7 +214,7 @@ func remove_all_cherries() -> void:
 	
 	print(totalCount, " Objects Deleted.")
 
-func create_object_from_prefab(prefab:PackedScene, objectPosition:Vector3, objectRotation:Vector3) -> void:
+func create_object_from_prefab( prefab:PackedScene , objectPosition:Vector3 , objectRotation:Vector3 ) -> void:
 	var loadedObject:Node3D = prefab.instantiate()
 	if loadedObject:
 		if loadedObject == null:
@@ -223,7 +227,7 @@ func create_object_from_prefab(prefab:PackedScene, objectPosition:Vector3, objec
 			print("Added Prefab: " + str(loadedObject))
 			interationObjectsContainer.add_child(loadedObject)
 
-func set_player_health(subtract:bool, amount:float) -> void:
+func set_player_health( subtract:bool , amount:float ) -> void:
 	if subtract == null: subtract = false
 	
 	if subtract: playerHealth -= float(amount)
@@ -232,10 +236,10 @@ func set_player_health(subtract:bool, amount:float) -> void:
 func add_table_items() -> void:
 	pass
 
-func add_cherry_type(newType:String) -> void:
+func add_cherry_type( newType:String ) -> void:
 	cherryTypes.append(String(newType))
 
-func add_table_item(newItem:String) -> void:
+func add_table_item( newItem:String ) -> void:
 	currentTableItems.append(String(newItem))
 
 func get_cherry_count() -> int:
@@ -253,9 +257,35 @@ func get_current_hovered_item() -> InteractableObject:
 		return theObjectsParent
 	return
 
-func set_current_cherries(lock:bool) -> void:
+func item_can_interact( object:Node3D , item_group:String ) -> bool:
+	if (
+		object.is_in_group(item_group)
+		&& object.canInteract == true
+	):
+		return true
+	else :
+		return false
+
+func set_current_cherries( lock:bool ) -> void:
 	for cherry in interationObjectsContainer.get_node("Cherries").get_children(false):
 		cherry.canInteract = bool(lock)
+
+func show_screen_text( text:String , duration:float , fade_in:bool ) -> void:
+	if fade_in:
+		var tween:Tween = Tween.new()
+		tween.bind_node($UI/poptext/popTextBox)
+		tween.play()
+		
+		$UI/poptext/popTextBox.text = text
+		await get_tree().create_timer(duration).timeout
+		$UI/poptext/popTextBox.text = ""
+		$UI/poptext.hide()
+	else :
+		$UI/poptext.show()
+		$UI/poptext/popTextBox.text = text
+		await get_tree().create_timer(duration).timeout
+		$UI/poptext/popTextBox.text = ""
+		$UI/poptext.hide()
 
 func _update_current_controls_text() -> String:
 	if isHoldingItem:
@@ -285,14 +315,14 @@ func _update_interaction_text() -> String:
 			#elif theObjectParent.is_in_group(interactableItemList[3]): return "Press [E] to Use."  #table
 			
 			# Normal
-			if theObjectParent.is_in_group(String(interactableItemListNames['cherry'])): return "Press [E] to Pick."   #Cherry
-			elif theObjectParent.is_in_group(String(interactableItemListNames['medicalpills'])): return "Press [E] to Grab." #medicalpills
-			elif theObjectParent.is_in_group(String(interactableItemListNames['medicalscanner'])): return "Press [E] to Grab." #mecicalscanner
-			elif theObjectParent.is_in_group(String(interactableItemListNames['table'])): return "Press [E] to Use."  #table
-			elif theObjectParent.is_in_group(String(interactableItemListNames['paper1'])): return "Press [E] to Read."  #paper1
+			if theObjectParent.is_in_group( String(interactableItemListNames['cherry'] )): return "Press [E] to Pick."   #Cherry
+			elif theObjectParent.is_in_group( String(interactableItemListNames['medicalpills'] )): return "Press [E] to Grab." #medicalpills
+			elif theObjectParent.is_in_group( String(interactableItemListNames['medicalscanner'] )): return "Press [E] to Grab." #mecicalscanner
+			elif theObjectParent.is_in_group( String(interactableItemListNames['table'] )): return "Press [E] to Use."  #table
+			elif theObjectParent.is_in_group( String(interactableItemListNames['paper1'] )): return "Press [E] to Read."  #paper1
 			
 			# Summer
-			elif theObjectParent.is_in_group(String(interactableItemListNames['waterbottle'])): return "Press [E] to Grab."  #paper1
+			elif theObjectParent.is_in_group( String(interactableItemListNames['waterbottle'] )): return "Press [E] to Grab."  #paper1
 			
 			else : return ""
 		else : return ""
@@ -329,12 +359,12 @@ func use_item() -> void:
 						reset_all_hold_items()
 				)
 
-func use_item_effects(signal_name:String, time_until_done:float, effect:Callable) -> void:
+func use_item_effects( signal_name:String , time_until_done:float , effect:Callable ) -> void:
 	currentHeldItem.emit_signal(String(signal_name))
 	await (get_tree().create_timer(float(time_until_done)).timeout)
 	effect.call()
 
-func new_held_item(isHolding:bool, newHeldItem:InteractableObject, canInteract:bool, newHeldType:String) -> void:
+func new_held_item( isHolding:bool , newHeldItem:InteractableObject , canInteract:bool , newHeldType:String ) -> void:
 	isHoldingItem = isHolding
 	currentHeldItem = newHeldItem
 	canInteract = canInteract
@@ -353,10 +383,8 @@ func set_hovered_to_held_item() -> void:
 			
 			if object:
 				
-				if (
-					object.is_in_group(String(interactableItemListNames["cherry"])) 
-					&& object.canInteract == true
-				):
+				if item_can_interact( object , String(interactableItemListNames["cherry"]) ):
+					
 					new_held_item(
 						true,
 						object,
@@ -364,10 +392,8 @@ func set_hovered_to_held_item() -> void:
 						String(interactableItemListNames["cherry"])
 					)
 				
-				elif (
-					object.is_in_group(String(interactableItemListNames["medicalpills"])) 
-					&& object.canInteract == true
-				):
+				elif item_can_interact( object , String(interactableItemListNames["medicalpills"]) ):
+					
 					new_held_item(
 						true,
 						object,
@@ -375,10 +401,8 @@ func set_hovered_to_held_item() -> void:
 						String(interactableItemListNames["medicalpills"])
 					)
 					
-				elif (
-					object.is_in_group(String(interactableItemListNames["paper1"])) 
-					&& object.canInteract == true
-				):
+				elif item_can_interact( object , String(interactableItemListNames["paper1"]) ):
+					
 					var audio:AudioStreamPlayer = AudioStreamPlayer.new()
 					var sound = load("res://Assets/Audio/paper/paperSample_3.ogg")
 					
@@ -388,16 +412,16 @@ func set_hovered_to_held_item() -> void:
 					add_child(audio)
 					audio.play(float(0.5))
 					
+					show_screen_text( "- Note Added to Inventory." , 2.5 , true )
+					
 					object.queue_free()
 					await get_tree().create_timer(1.5).timeout
 					sound = null
 					audio.queue_free()
 					
 				# Summer
-				elif (
-					object.is_in_group(String(interactableItemListNames["waterbottle"])) 
-					&& object.canInteract == true
-				):
+				elif item_can_interact( object , String(interactableItemListNames["waterbottle"]) ):
+					
 					new_held_item(
 						true,
 						object,

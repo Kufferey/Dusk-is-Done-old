@@ -1,8 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://bfe0uacbmm1ay"]
+[gd_scene load_steps=12 format=3 uid="uid://bfe0uacbmm1ay"]
 
 [ext_resource type="Script" path="res://Src/Gameplay/gamestate.gd" id="1_8gblt"]
 [ext_resource type="Script" path="res://Src/Gameplay/Player.gd" id="2_q2ps6"]
+[ext_resource type="Script" path="res://Src/Gameplay/poptext.gd" id="2_vee5y"]
 [ext_resource type="PackedScene" uid="uid://k71doxgciqfv" path="res://Scenes/Prefabs/objects/equipment/medical_pills.tscn" id="3_f2wx4"]
+[ext_resource type="PackedScene" uid="uid://ffpjwmqtv2pa" path="res://Scenes/Prefabs/objects/papers/interduction_paper.tscn" id="4_y2iil"]
 
 [sub_resource type="Theme" id="Theme_k5lch"]
 default_font_size = 55
@@ -83,6 +85,29 @@ offset_left = -40.0
 offset_bottom = 23.0
 grow_horizontal = 0
 
+[node name="poptext" type="Control" parent="UI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_vee5y")
+
+[node name="popTextBox" type="Label" parent="UI/poptext"]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -148.0
+offset_bottom = -72.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_k5lch")
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="WorldObjects" type="Node3D" parent="."]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="WorldObjects"]
@@ -123,6 +148,12 @@ collide_with_areas = true
 
 [node name="MedicalPills" parent="." instance=ExtResource("3_f2wx4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00399862, 0, -0.250296)
+
+[node name="InterductionPaper" parent="." instance=ExtResource("4_y2iil")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.221848, 0, -0.233243)
+
+[node name="MedicalPills2" parent="." instance=ExtResource("3_f2wx4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.247112, 0, 0.0354723)
 
 [connection signal="hasDied" from="." to="." method="_on_has_died"]
 [connection signal="newDay" from="." to="." method="_on_new_day"]
