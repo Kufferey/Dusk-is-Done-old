@@ -1,4 +1,4 @@
-class_name MedicalPills extends InteractableObject
+extends InteractableObject
 
 signal consumeMedicalPills
 
