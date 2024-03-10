@@ -36,6 +36,7 @@ static var isTrayPlaced:bool
 #var isInCherryCombineState:bool
 
 var canInteract:bool
+var canUseItem:bool
 
 var playerCamera:Node3D
 var playerRaycast:RayCast3D
@@ -106,6 +107,7 @@ func _ready() -> void:
 	playerItemHolderHand = $Player/cameraPos/ItemHolder
 	
 	canInteract = bool(true)
+	canUseItem = bool(true)
 	isTrayPlaced = bool(false)
 	
 	interactionTextNode = $UI/interactionText
@@ -270,22 +272,65 @@ func set_current_cherries( lock:bool ) -> void:
 	for cherry in interationObjectsContainer.get_node("Cherries").get_children(false):
 		cherry.canInteract = bool(lock)
 
-func show_screen_text( text:String , duration:float , fade_in:bool ) -> void:
-	if fade_in:
-		var tween:Tween = Tween.new()
-		tween.bind_node($UI/poptext/popTextBox)
-		tween.play()
-		
-		$UI/poptext/popTextBox.text = text
-		await get_tree().create_timer(duration).timeout
-		$UI/poptext/popTextBox.text = ""
-		$UI/poptext.hide()
-	else :
-		$UI/poptext.show()
-		$UI/poptext/popTextBox.text = text
-		await get_tree().create_timer(duration).timeout
-		$UI/poptext/popTextBox.text = ""
-		$UI/poptext.hide()
+#OLD
+#func show_screen_text( text:String , duration:float , fade_in:bool ) -> void:
+	#
+	#if fade_in:
+		#$UI/poptext.show()
+		#var current_transparency:float = 1
+		#var popup_node:Control = $UI/poptext/popTextBox
+		#
+		#popup_node.modulate = Color( 1, 1, 1, current_transparency )
+		#
+		#popup_node.text = text
+		#
+		#await get_tree().create_timer(duration).timeout
+		#
+		#while current_transparency > 0.1:
+			#current_transparency -= 0.1
+			#popup_node.modulate = Color( 1, 1, 1, current_transparency )
+			#await (get_tree().create_timer(0.1).timeout)
+		#
+		#popup_node.text = ""
+		#
+		#$UI/poptext.hide()
+		#popup_node = null
+		#
+	#else :
+		#$UI/poptext.show()
+		#$UI/poptext/popTextBox.text = text
+		#await get_tree().create_timer(duration).timeout
+		#$UI/poptext/popTextBox.text = ""
+		#$UI/poptext.hide()
+
+func show_screen_text( text:String , duration:float ) -> void:
+	if duration == null || duration > 1: duration = 0.01
+	if text == null || text == "": text = "TEXT IS BLANK OR\nNO TEXT."
+	
+	var current_transparency:float = 1
+	var new_text_node:Label = Label.new()
+	new_text_node.text = text
+	new_text_node.modulate = Color( 1 , 1 , 1 , current_transparency )
+	new_text_node.theme = $UI/poptext/popTextBox.theme
+	new_text_node.position.x = $UI/poptext/popTextBox.position.x
+	new_text_node.position.y = $UI/poptext/popTextBox.position.y
+	new_text_node.horizontal_alignment = $UI/poptext/popTextBox.horizontal_alignment
+	new_text_node.vertical_alignment = $UI/poptext/popTextBox.vertical_alignment
+	new_text_node.anchors_preset = $UI/poptext/popTextBox.anchors_preset
+	new_text_node.set("layout_mode", $UI/poptext/popTextBox.layout_mode)
+	new_text_node.set("anchors_preset", $UI/poptext/popTextBox.get("anchors_preset"))
+	#new_text_node.set("size", $UI/poptext/popTextBox.get("size"))
+	#new_text_node.set("position", $UI/poptext/popTextBox.get("position"))
+	
+	get_node("UI/poptext").add_child(new_text_node)
+	
+	while current_transparency > 0.0:
+		new_text_node.position.y += 1.5
+		current_transparency -= 0.01
+		new_text_node.modulate = Color( 1 , 1 , 1 , current_transparency )
+		await (get_tree().create_timer(duration).timeout)
+	
+	new_text_node.queue_free()
 
 func _update_current_controls_text() -> String:
 	if isHoldingItem:
@@ -333,7 +378,9 @@ func use_item() -> void:
 		isHoldingItem == true
 		&& currentHeldItem != null
 		&& currentHeldItemType != ""
+		&& canUseItem != false
 	):
+		canUseItem = bool(false)
 		match String(currentHeldItemType):
 			'cherry':
 				pass
@@ -341,9 +388,13 @@ func use_item() -> void:
 			'medicalpills':
 				use_item_effects(
 					"consumeMedicalPills",
-					1.8,
+					1.5,
 					func():
-						set_player_health(bool(false), float(0.32))
+						var random_health_amount:float = randf_range( 0.32 , 0.65 )
+						
+						show_screen_text( "+"+str(( float(snappedf(random_health_amount, 0.01)) ) )+" Health" , 2 )
+						
+						set_player_health(bool(false), float(random_health_amount))
 						reset_all_hold_items()
 				)
 			
@@ -360,20 +411,23 @@ func use_item() -> void:
 				)
 
 func use_item_effects( signal_name:String , time_until_done:float , effect:Callable ) -> void:
+	canUseItem = bool(false)
 	currentHeldItem.emit_signal(String(signal_name))
 	await (get_tree().create_timer(float(time_until_done)).timeout)
 	effect.call()
 
-func new_held_item( isHolding:bool , newHeldItem:InteractableObject , canInteract:bool , newHeldType:String ) -> void:
+func new_held_item( isHolding:bool , newHeldItem:InteractableObject , canInteract:bool , canUseItem:bool , newHeldType:String ) -> void:
 	isHoldingItem = isHolding
 	currentHeldItem = newHeldItem
 	canInteract = canInteract
+	canUseItem = canUseItem
 	currentHeldItemType = newHeldType
 
 func reset_all_hold_items() -> void:
 	isHoldingItem = false
 	currentHeldItem = null
 	canInteract = true
+	canUseItem = true
 	currentHeldItemType = ""
 
 func set_hovered_to_held_item() -> void:
@@ -389,6 +443,7 @@ func set_hovered_to_held_item() -> void:
 						true,
 						object,
 						false,
+						true,
 						String(interactableItemListNames["cherry"])
 					)
 				
@@ -398,6 +453,7 @@ func set_hovered_to_held_item() -> void:
 						true,
 						object,
 						false,
+						true,
 						String(interactableItemListNames["medicalpills"])
 					)
 					
@@ -412,7 +468,7 @@ func set_hovered_to_held_item() -> void:
 					add_child(audio)
 					audio.play(float(0.5))
 					
-					show_screen_text( "- Note Added to Inventory." , 2.5 , true )
+					show_screen_text( "Grabed Paper." , 2 )
 					
 					object.queue_free()
 					await get_tree().create_timer(1.5).timeout
@@ -426,6 +482,7 @@ func set_hovered_to_held_item() -> void:
 						true,
 						object,
 						false,
+						true,
 						String(interactableItemListNames['waterbottle'])
 					)
 					
@@ -464,6 +521,8 @@ func _debug_Update() -> String:
 			"ITEM HAND/HOVER STATS:" +
 			"\n" +
 			"\n" +
+			"Can Use Item: " + str(canUseItem) +
+			"\n" +
 			"Current Held Item: " + str(currentHeldItem) +
 			"\n" +
 			"Current Hovered Item: " + str(currentHoveredItem) +
@@ -478,15 +537,15 @@ func _debug_Update() -> String:
 		)
 	)
 
-func make_current_item_sway(delta) -> void:
+func make_current_item_sway( delta:float ) -> void:
 	if (
 		isHoldingItem == true
 		&& currentHeldItem != null
 	):
-		currentHeldItem.rotation.z = playerItemHolderHand.global_rotation.z
-		currentHeldItem.rotation.y = playerItemHolderHand.global_rotation.y
-		currentHeldItem.rotation.x = playerItemHolderHand.global_rotation.x
+		currentHeldItem.rotation.z = float(playerItemHolderHand.global_rotation.z)
+		currentHeldItem.rotation.y = float(playerItemHolderHand.global_rotation.y)
+		currentHeldItem.rotation.x = float(playerItemHolderHand.global_rotation.x)
 		currentHeldItem.position = lerp(Vector3(
-			currentHeldItem.position.x, currentHeldItem.position.y, currentHeldItem.position.z),
-			Vector3(playerItemHolderHand.global_position.x, playerItemHolderHand.global_position.y, playerItemHolderHand.global_position.z),
+			float(currentHeldItem.position.x), float(currentHeldItem.position.y), float(currentHeldItem.position.z)),
+			Vector3(float(playerItemHolderHand.global_position.x), float(playerItemHolderHand.global_position.y), float(playerItemHolderHand.global_position.z)),
 			9.5 * float(delta))
