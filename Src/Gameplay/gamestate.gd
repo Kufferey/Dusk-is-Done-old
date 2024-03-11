@@ -444,7 +444,10 @@ func use_item() -> void:
 						elif currentPillsTooken == 4: emit_signal("hasDied", "Drug overdose.", currentDay)
 						
 						set_player_health(bool(false), float(random_health_amount))
+						
 						currentPillsTooken += 1
+						
+						currentHeldItem.queue_free()
 						reset_all_hold_items()
 						
 				)
