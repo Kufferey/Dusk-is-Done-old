@@ -145,7 +145,7 @@ script = ExtResource("2_q2ps6")
 [node name="cameraPos" type="Node3D" parent="Player"]
 
 [node name="ItemHolder" type="Node3D" parent="Player/cameraPos"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.096, -0.1, -0.1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.154, -0.15, -0.16)
 
 [node name="Camera3D" type="Camera3D" parent="Player/cameraPos"]
 
@@ -157,6 +157,9 @@ collide_with_areas = true
 [node name="InteractableItems" type="Node3D" parent="."]
 
 [node name="Cherries" type="Node3D" parent="InteractableItems"]
+
+[node name="MedicalPills6" parent="." instance=ExtResource("3_f2wx4")]
+transform = Transform3D(0.992323, 0, 0.123671, 0, 1, 0, -0.123671, 0, 0.992323, 0.153904, -0.137204, -0.159889)
 
 [node name="MedicalPills" parent="." instance=ExtResource("3_f2wx4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00399862, 0, -0.250296)

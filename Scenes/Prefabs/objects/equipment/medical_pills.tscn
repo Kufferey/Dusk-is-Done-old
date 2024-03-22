@@ -901,6 +901,9 @@ _data = {
 script = ExtResource("2_r1n8a")
 canInteract = true
 
+[node name="Model" parent="." index="0"]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0, 0)
+
 [node name="body" type="Node3D" parent="Model" index="0"]
 
 [node name="pills" type="Node3D" parent="Model/body" index="0"]

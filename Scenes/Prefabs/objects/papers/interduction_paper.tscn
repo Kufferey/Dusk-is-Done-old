@@ -5,6 +5,7 @@
 [ext_resource type="Script" path="res://Src/Gameplay/iteractableObjects/interduction_paper.gd" id="2_sya8m"]
 
 [node name="InterductionPaper" groups=["paper1"] instance=ExtResource("1_pqq1x")]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0, 0)
 script = ExtResource("2_sya8m")
 canInteract = true
 

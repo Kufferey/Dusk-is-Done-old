@@ -32,9 +32,6 @@ static var currentHoveredItem:InteractableObject
 
 static var isTrayPlaced:bool
 
-#var isInCherryPickingState:bool
-#var isInCherryCombineState:bool
-
 # for misc stuff
 var currentPillsTooken:int
 var currentPillsTookenTotal:int
@@ -56,7 +53,7 @@ var itemControllsTextNode:Label
 var DebuggingText:Label
 
 # Gameplay Vars
-var interactableItemList:Array[String] = [
+static var interactableItemList:Array[String] = [
 	'cherry',          # 0
 	'medicalpills',    # 1
 	'medicalscanner',  # 2
@@ -67,7 +64,7 @@ var interactableItemList:Array[String] = [
 	'waterbottle'      # 5
 ]
 
-var interactableItemListNames:Dictionary = {
+static var interactableItemListNames:Dictionary = {
 	'cherry': interactableItemList[0],
 	'medicalpills': interactableItemList[1],
 	'medicalscanner': interactableItemList[2],
@@ -123,6 +120,7 @@ func _ready() -> void:
 	
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN)
+	SaveManager.dusk_is_done_save("/Save/k.json", false, "")
 
 func _input(event: InputEvent) -> void:
 	if (
@@ -437,10 +435,9 @@ func use_item() -> void:
 					func():
 						var random_health_amount:float = randf_range( 0.30 , 0.50 )
 						
-						
 						show_screen_text( 0 , "+"+str(( float(snappedf(random_health_amount, 0.01)) ) )+" Health" , 2 , true , 0 )
 						
-						if currentPillsTooken == 3: show_screen_text( 1.5 , "Something dont feel right." , 0.05 , false , 0 )
+						if currentPillsTooken == 3: show_screen_text( 1.5 , "Something don't feel right." , 0.05 , false , 0 )
 						elif currentPillsTooken == 4: emit_signal("hasDied", "Drug overdose.", currentDay)
 						
 						set_player_health(bool(false), float(random_health_amount))
@@ -551,7 +548,7 @@ func is_section_clear() -> bool:
 
 func _on_new_day(dayName: String, dayDescription: String, daySaveData: Dictionary, scoreForComplete: float) -> void:
 	currentDaysPast = int(currentDay)
-	currentCherrySectionsLeft = (int(currentCherrySectionsLeft) + 5)
+	currentCherrySectionsLeft = int(currentCherrySectionsLeft) + 5
 	currentDay += 1
 	
 	currentPillsTooken = 0
@@ -559,7 +556,7 @@ func _on_new_day(dayName: String, dayDescription: String, daySaveData: Dictionar
 	playerScore += float(scoreForComplete)
 
 func _on_has_died(reason: String, onDay: int) -> void:
-	pass # Replace with function body.
+	print(reason +"\n"+"On day: "+str(onDay))
 
 func new_cherry_section() -> void:
 	lastCherrySection = int(cherrySection)
